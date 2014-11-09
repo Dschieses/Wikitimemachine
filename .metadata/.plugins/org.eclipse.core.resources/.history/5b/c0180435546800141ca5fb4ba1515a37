@@ -1,0 +1,16 @@
+package util;
+
+public class DbConnector {
+	 
+	  private static DbConnector instance;
+	  
+	  private DbConnector () {}
+	  
+	  public static DbConnector getInstance () {
+	    if (DbConnector.instance == null) {
+	    	DbConnector.instance = new DbConnector ();
+	    }
+	    return DbConnector.instance;
+	  }
+	  
+}
