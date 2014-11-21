@@ -1,0 +1,10 @@
+package util;
+
+public class ApiCaller {
+
+	public void doGet( HttpServletRequest request,
+		    HttpServletResponse response)
+		    	      throws ServletException, IOException {
+
+		    	}
+}
