@@ -1,0 +1,175 @@
+package util;
+
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
+import entity.Category;
+import entity.Page;
+
+public class ApiCaller {
+
+	private final String USER_AGENT = "Mozilla/5.0";
+	private String apcontinue = "";
+	private Connection c;
+	private PreparedStatement stmt;
+	private FileWriter fw;
+	private List<String> apContinueList;
+	private String CATMEMBERS = "http://de.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category:%s&cmcontinue=%s";
+
+	public ApiCaller() {
+		apContinueList = new ArrayList<String>();
+	}
+
+	public void start(String startUrl) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+		String uhrzeit = sdf.format(new Date());
+		System.out.println(uhrzeit);
+		String startString = sendGet(startUrl);
+		JSONObject startJson = getJSON(startString);
+		getApContinue(startJson);
+		String line = "";
+		// fw = new FileWriter("C:/Users/Peter/Desktop/people.csv");
+		do {
+			// List<Page> list = getPageInfo(startJson);
+			//
+			// for (Page page : list) {
+			// // getCategories(page);
+			// // Prüfe ob kategorie zu Person gehört
+			// line = page.getPageid() + ";" + page.getTitle() + ";"
+			// + page.getNs();
+			// fw.write(line + "\n");
+			// fw.flush();
+			//
+			// }
+
+			startString = sendGet(startUrl + getEncoded(apcontinue));
+			startJson = getJSON(startString);
+
+		} while (getApContinue(startJson));
+
+		sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+		uhrzeit = sdf.format(new Date());
+		System.out.println(uhrzeit);
+		System.out.println(apContinueList.size());
+		fw = new FileWriter("C:/Users/Peter/Desktop/apcontinue.csv");
+		for (String string : apContinueList) {
+			fw.write(string + "\n");
+			fw.flush();
+		}
+
+	}
+
+	private String sendGet(String url) throws Exception {
+
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		con.setRequestMethod("GET");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		int responseCode = con.getResponseCode();
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		return response.toString();
+
+	}
+
+	private boolean getApContinue(JSONObject json) throws JSONException {
+		if (!json.has("query-continue")) {
+			apcontinue = "undefined";
+			return false;
+		}
+		apcontinue = getSubJSON(json, "query-continue").getJSONObject(
+				"allpages").getString("apcontinue");
+		apContinueList.add(apcontinue);
+
+		return true;
+	}
+
+	private List<Category> getCategories(Page p) throws Exception {
+		String query = "http://de.wikipedia.org/w/api.php?format=json&action=query&prop=categories&cllimit=500&pageids=";
+		String result = sendGet(query + p.getPageid());
+		JSONObject json = getJSON(result);
+		JSONArray jsonArray = getSubJSON(
+				getSubJSON(getSubJSON(json, "query"), "pages"),
+				String.valueOf(p.getPageid())).getJSONArray("categories");
+		List<Category> returnList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Gson gson = new Gson();
+			Category c = gson.fromJson(jsonArray.getJSONObject(i).toString(),
+					Category.class);
+
+			returnList.add(c);
+		}
+		return returnList;
+
+	}
+
+	private void getCategoryMembers(Category c, String cmcontinue)
+			throws Exception {
+		String query = String.format(CATMEMBERS, c.getTitle(), cmcontinue);
+		String result = sendGet(query);
+		JSONObject json = getJSON(result);
+	}
+
+	private boolean checkCategories() {
+		return true;
+	}
+
+	private List<Page> getPageInfo(JSONObject json) throws JSONException {
+		if (!json.has("query")) {
+			return null;
+		}
+		JSONArray jsonArray = getSubJSON(json, "query")
+				.getJSONArray("allpages");
+
+		List<Page> returnList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Gson gson = new Gson();
+			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
+					Page.class);
+
+			returnList.add(p);
+		}
+
+		return returnList;
+	}
+
+	private JSONObject getJSON(String input) throws JSONException {
+		return new JSONObject(input);
+	}
+
+	private JSONObject getSubJSON(JSONObject json, String subObject)
+			throws JSONException {
+		return json.getJSONObject(subObject);
+	}
+
+	private String getEncoded(String input) throws UnsupportedEncodingException {
+		return URLEncoder.encode(input, "UTF-8");
+	}
+
+}

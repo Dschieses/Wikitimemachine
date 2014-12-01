@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Convert local variable &apos;util.ApiCaller.start().fw&apos; in &apos;util.ApiCaller.start()&apos; to field&#x0D;&#x0A;- Original project: &apos;wikilanguage_crawler&apos;&#x0D;&#x0A;- Original element: &apos;util.ApiCaller.start().fw&apos;&#x0D;&#x0A;- Field name: &apos;fw&apos;&#x0D;&#x0A;- Initialize field in method&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" description="Convert local variable &apos;fw&apos; to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;util{ApiCaller.java" name="fw" selection="1365 56" stamp="1416741469541" static="false" version="1.0" visibility="2"/>
+</session>

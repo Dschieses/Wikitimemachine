@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class DbConnector {
 
 	private static DbConnector instance;
-	private String db = "eardata";
+	private String db = "wikihistory";
 	private String port = "3307";
 	private String host = "localhost";
 	private String dbUsr = "root";
@@ -37,6 +37,13 @@ public class DbConnector {
 
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery(query);
+		return rs;
+	}
+
+	public int executeUpdate(Connection con, String query) throws SQLException {
+
+		Statement st = con.createStatement();
+		int rs = st.executeUpdate(query);
 		return rs;
 	}
 

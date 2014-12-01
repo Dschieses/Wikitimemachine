@@ -1,0 +1,75 @@
+package util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
+import entity.Page;
+
+public class PageApi {
+
+	private List<Page> getPageInfo(JSONObject json) throws JSONException {
+		if (!json.has("query")) {
+			return null;
+		}
+		JSONArray jsonArray = getSubJSON(json, "query")
+				.getJSONArray("allpages");
+
+		List<Page> returnList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Gson gson = new Gson();
+			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
+					Page.class);
+
+			returnList.add(p);
+		}
+
+		return returnList;
+	}
+
+	private List<Page> getPageInfoFromCategoryList(JSONObject json)
+			throws JSONException {
+		if (!json.has("query")) {
+			return null;
+		}
+		JSONArray jsonArray = getSubJSON(json, "query").getJSONArray(
+				"categorymembers");
+
+		List<Page> returnList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Gson gson = new Gson();
+			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
+					Page.class);
+
+			returnList.add(p);
+		}
+
+		return returnList;
+	}
+
+	private JSONObject getJSON(String input) throws JSONException {
+		return new JSONObject(input);
+	}
+
+	private JSONObject getSubJSON(JSONObject json, String subObject)
+			throws JSONException {
+		return json.getJSONObject(subObject);
+	}
+
+	private boolean getApContinue(JSONObject json) throws JSONException {
+		if (!json.has("query-continue")) {
+			apcontinue = "undefined";
+			return false;
+		}
+		apcontinue = getSubJSON(json, "query-continue").getJSONObject(
+				"allpages").getString("apcontinue");
+		apContinueList.add(apcontinue);
+
+		return true;
+	}
+}

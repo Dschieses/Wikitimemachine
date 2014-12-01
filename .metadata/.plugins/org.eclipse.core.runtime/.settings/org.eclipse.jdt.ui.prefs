@@ -1,5 +1,5 @@
 content_assist_disabled_computers=org.eclipse.jdt.ui.javaAllProposalCategory\u0000org.eclipse.jdt.ui.javaNoTypeProposalCategory\u0000org.eclipse.jdt.ui.textProposalCategory\u0000org.eclipse.jdt.ui.javaTypeProposalCategory\u0000org.eclipse.recommenders.calls.rcp.proposalCategory.templates\u0000org.eclipse.recommenders.chain.rcp.proposalCategory.chain\u0000org.eclipse.mylyn.java.ui.javaAllProposalCategory\u0000
-content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"/>
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="util.ApiCaller"><rhs name\="util.ApiCaller"/></lhs><lhs name\="org.apache.http.client.HttpClient"><rhs name\="org.apache.http.impl.client.DefaultHttpClient"/></lhs><lhs name\="java.io.OutputStreamWriter"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.io.Writer"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.lang.Appendable"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.io.Closeable"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.io.Flushable"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.lang.AutoCloseable"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.io.FileWriter"><rhs name\="java.io.FileWriter"/></lhs><lhs name\="java.util.Collection"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Iterable"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.List"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="util.PageApi"><rhs name\="util.PageApi"/></lhs><lhs name\="util.CategoryApi"><rhs name\="util.CategoryApi"/></lhs></history>
 content_assist_number_of_computers=22
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
@@ -11,7 +11,7 @@ org.eclipse.jdt.ui.formatterprofiles.version=12
 org.eclipse.jdt.ui.javadoclocations.migrated=true
 org.eclipse.jdt.ui.text.code_templates_migrated=true
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
-org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="true" context\="java" deleted\="false" description\="" enabled\="true" name\="singleton">private static ${enclosing_type} instance;&\#13;\r\n&\#13;\r\nprivate ${enclosing_type}(){}&\#13;\r\n&\#13;\r\npublic static ${enclosing_type} getInstance(){&\#13;\r\n\tif(null \=\= instance){&\#13;\r\n\t\tinstance \= new ${enclosing_type}();&\#13;\r\n\t}&\#13;\r\n\treturn instance;&\#13;\r\n}</template></templates>
 org.eclipse.jdt.ui.text.templates_migrated=true
 org.eclipse.jface.textfont=1|Courier New|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Courier New;
 proposalOrderMigrated=true

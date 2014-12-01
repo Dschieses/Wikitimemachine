@@ -1,0 +1,279 @@
+2014-11-25 17:37:02,189 [Worker-3] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: ch.fhnw.business.iwi:wikihistorybook:0.8.0.BUILD-SNAPSHOT @ C:\Users\Peter\Documents\GitHub\wikihistorybook_german\pom.xml.
+2014-11-25 17:37:02,344 [Worker-3] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 0 sec
+2014-11-25 17:37:03,497 [Worker-1] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: ch.fhnw.business.iwi:wikihistorybook:0.8.0.BUILD-SNAPSHOT @ C:\Users\Peter\Documents\GitHub\wikihistorybook_german\pom.xml.
+2014-11-25 17:37:10,319 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-graph/0.5.0/wikihistorybook-graph-0.5.0.pom
+2014-11-25 17:37:10,326 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 17:37:10,399 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.pom
+2014-11-25 17:37:10,450 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.pom
+2014-11-25 17:37:10,495 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+2014-11-25 17:37:10,541 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+2014-11-25 17:37:10,579 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+2014-11-25 17:37:10,624 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+2014-11-25 17:37:10,664 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.pom
+2014-11-25 17:37:10,709 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.pom
+2014-11-25 17:37:10,751 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest/1.0.8/fest-1.0.8.pom
+2014-11-25 17:37:10,797 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest/1.0.8/fest-1.0.8.pom
+2014-11-25 17:37:10,841 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.pom
+2014-11-25 17:37:10,889 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.pom
+2014-11-25 17:37:10,933 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.pom
+2014-11-25 17:37:10,980 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.pom
+2014-11-25 17:37:11,018 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.7/slf4j-parent-1.7.7.pom
+2014-11-25 17:37:11,064 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.7/slf4j-parent-1.7.7.pom
+2014-11-25 17:37:11,116 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.pom
+2014-11-25 17:37:11,162 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.pom
+2014-11-25 17:37:11,225 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.pom
+2014-11-25 17:37:11,267 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.pom
+2014-11-25 17:37:11,431 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-graph/0.5.0/wikihistorybook-graph-0.5.0.jar
+2014-11-25 17:37:11,469 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.jar
+2014-11-25 17:37:11,741 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.jar
+2014-11-25 17:37:11,759 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+2014-11-25 17:37:11,862 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+2014-11-25 17:37:11,879 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.jar
+2014-11-25 17:37:11,981 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.jar
+2014-11-25 17:37:11,998 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.jar
+2014-11-25 17:37:12,088 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.jar
+2014-11-25 17:37:12,106 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar
+2014-11-25 17:37:12,186 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar
+2014-11-25 17:37:12,204 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar
+2014-11-25 17:37:12,293 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar
+2014-11-25 17:37:12,311 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.jar
+2014-11-25 17:37:12,387 [Worker-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.jar
+2014-11-25 17:37:12,889 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 17:37:15,585 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 17:38:53,683 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2014-11-25 17:39:06,477 [Worker-9] INFO  o.e.m.i.launch.MavenLaunchDelegate - C:\Users\Peter\Documents\GitHub\wikihistorybook_german
+2014-11-25 17:39:06,478 [Worker-9] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B 
+2014-11-25 17:39:21,597 [main] INFO  o.e.m2e.actions.ExecutePomAction - Using existing launch configuration
+2014-11-25 19:02:07,859 [Worker-62] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: ch.fhnw.business.iwi:wikihistorybook:0.8.0.BUILD-SNAPSHOT @ C:\Users\Peter\Documents\GitHub\wikihistorybook_german\pom.xml.
+2014-11-25 19:03:47,798 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-graph/0.5.0/wikihistorybook-graph-0.5.0.pom
+2014-11-25 19:03:47,802 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:03:47,956 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-svg/0.9.0/wikihistorybook-svg-0.9.0.pom
+2014-11-25 19:03:47,960 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-svg:jar:0.9.0 is missing, no dependency information available
+2014-11-25 19:03:48,111 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-json/0.3.0/wikihistorybook-json-0.3.0.pom
+2014-11-25 19:03:48,115 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-json:jar:0.3.0 is missing, no dependency information available
+2014-11-25 19:03:48,127 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/${wikihistorybook.applet.name}/${wikihistorybook.applet.version}/${wikihistorybook.applet.name}-${wikihistorybook.applet.version}.pom
+2014-11-25 19:03:48,184 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/gs-core/1.2/gs-core-1.2.pom
+2014-11-25 19:03:48,219 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/gs-core/1.2/gs-core-1.2.pom
+2014-11-25 19:03:48,250 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom
+2014-11-25 19:03:48,285 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom
+2014-11-25 19:03:48,314 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.pom
+2014-11-25 19:03:48,349 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.pom
+2014-11-25 19:03:48,380 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+2014-11-25 19:03:48,425 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+2014-11-25 19:03:48,455 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+2014-11-25 19:03:48,491 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+2014-11-25 19:03:48,521 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/pherd/1.0/pherd-1.0.pom
+2014-11-25 19:03:48,559 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/pherd/1.0/pherd-1.0.pom
+2014-11-25 19:03:48,591 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/mbox2/1.0/mbox2-1.0.pom
+2014-11-25 19:03:48,633 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/mbox2/1.0/mbox2-1.0.pom
+2014-11-25 19:03:48,665 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/gs-algo/1.2/gs-algo-1.2.pom
+2014-11-25 19:03:48,704 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/gs-algo/1.2/gs-algo-1.2.pom
+2014-11-25 19:03:48,735 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-math/2.1/commons-math-2.1.pom
+2014-11-25 19:03:48,773 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-math/2.1/commons-math-2.1.pom
+2014-11-25 19:03:48,818 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/14/commons-parent-14.pom
+2014-11-25 19:03:48,860 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/14/commons-parent-14.pom
+2014-11-25 19:03:48,891 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/apache/7/apache-7.pom
+2014-11-25 19:03:48,929 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/apache/7/apache-7.pom
+2014-11-25 19:03:48,966 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-math3/3.0/commons-math3-3.0.pom
+2014-11-25 19:03:49,003 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-math3/3.0/commons-math3-3.0.pom
+2014-11-25 19:03:49,055 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/23/commons-parent-23.pom
+2014-11-25 19:03:49,099 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/23/commons-parent-23.pom
+2014-11-25 19:03:49,130 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/apache/9/apache-9.pom
+2014-11-25 19:03:49,170 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/apache/9/apache-9.pom
+2014-11-25 19:03:49,208 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jfree/jfreechart/1.0.14/jfreechart-1.0.14.pom
+2014-11-25 19:03:49,247 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jfree/jfreechart/1.0.14/jfreechart-1.0.14.pom
+2014-11-25 19:03:49,279 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jfree/jcommon/1.0.17/jcommon-1.0.17.pom
+2014-11-25 19:03:49,326 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jfree/jcommon/1.0.17/jcommon-1.0.17.pom
+2014-11-25 19:03:49,358 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.pom
+2014-11-25 19:03:49,402 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.pom
+2014-11-25 19:03:49,430 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/apache/3/apache-3.pom
+2014-11-25 19:03:49,468 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/apache/3/apache-3.pom
+2014-11-25 19:03:49,497 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/lowagie/itext/2.1.5/itext-2.1.5.pom
+2014-11-25 19:03:49,531 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/lowagie/itext/2.1.5/itext-2.1.5.pom
+2014-11-25 19:03:49,564 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.pom
+2014-11-25 19:03:49,599 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.pom
+2014-11-25 19:03:49,628 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.pom
+2014-11-25 19:03:49,672 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.pom
+2014-11-25 19:03:49,701 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.pom
+2014-11-25 19:03:49,741 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.pom
+2014-11-25 19:03:49,771 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom
+2014-11-25 19:03:49,809 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom
+2014-11-25 19:03:49,840 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.pom
+2014-11-25 19:03:49,875 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.pom
+2014-11-25 19:03:49,904 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.7/slf4j-parent-1.7.7.pom
+2014-11-25 19:03:49,945 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/1.7.7/slf4j-parent-1.7.7.pom
+2014-11-25 19:03:49,989 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.pom
+2014-11-25 19:03:50,033 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.pom
+2014-11-25 19:03:50,067 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.pom
+2014-11-25 19:03:50,109 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.pom
+2014-11-25 19:03:50,141 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.pom
+2014-11-25 19:03:50,177 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.pom
+2014-11-25 19:03:50,210 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom
+2014-11-25 19:03:50,245 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom
+2014-11-25 19:03:50,277 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/sun/faces/jsf-api/2.2.7/jsf-api-2.2.7.pom
+2014-11-25 19:03:50,377 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/sun/faces/jsf-api/2.2.7/jsf-api-2.2.7.pom
+2014-11-25 19:03:50,407 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/sun/faces/jsf-impl/2.2.7/jsf-impl-2.2.7.pom
+2014-11-25 19:03:50,448 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/sun/faces/jsf-impl/2.2.7/jsf-impl-2.2.7.pom
+2014-11-25 19:03:50,479 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/glassfish/web/el-impl/2.2/el-impl-2.2.pom
+2014-11-25 19:03:50,520 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/glassfish/web/el-impl/2.2/el-impl-2.2.pom
+2014-11-25 19:03:50,564 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/glassfish/web/el/2.2/el-2.2.pom
+2014-11-25 19:03:50,605 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/glassfish/web/el/2.2/el-2.2.pom
+2014-11-25 19:03:50,641 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/el/el-api/2.2/el-api-2.2.pom
+2014-11-25 19:03:50,681 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/el/el-api/2.2/el-api-2.2.pom
+2014-11-25 19:03:50,716 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/cglib/cglib/3.1/cglib-3.1.pom
+2014-11-25 19:03:50,756 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/cglib/cglib/3.1/cglib-3.1.pom
+2014-11-25 19:03:50,792 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/ow2/asm/asm/4.2/asm-4.2.pom
+2014-11-25 19:03:50,831 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/ow2/asm/asm/4.2/asm-4.2.pom
+2014-11-25 19:03:50,864 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/ow2/asm/asm-parent/4.2/asm-parent-4.2.pom
+2014-11-25 19:03:50,905 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/ow2/asm/asm-parent/4.2/asm-parent-4.2.pom
+2014-11-25 19:03:50,938 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/ow2/ow2/1.3/ow2-1.3.pom
+2014-11-25 19:03:50,978 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/ow2/ow2/1.3/ow2-1.3.pom
+2014-11-25 19:03:51,012 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-io/commons-io/2.1/commons-io-2.1.pom
+2014-11-25 19:03:51,055 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-io/commons-io/2.1/commons-io-2.1.pom
+2014-11-25 19:03:51,099 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/22/commons-parent-22.pom
+2014-11-25 19:03:51,150 [Worker-74] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/22/commons-parent-22.pom
+2014-11-25 19:03:51,189 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:03:51,194 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-svg:jar:0.9.0 is missing, no dependency information available
+2014-11-25 19:03:51,200 [Worker-74] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-json:jar:0.3.0 is missing, no dependency information available
+2014-11-25 19:04:02,626 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:02,631 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-svg:jar:0.9.0 is missing, no dependency information available
+2014-11-25 19:04:02,636 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-json:jar:0.3.0 is missing, no dependency information available
+2014-11-25 19:04:03,005 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-graph/0.5.0/wikihistorybook-graph-0.5.0.jar
+2014-11-25 19:04:03,149 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-svg/0.9.0/wikihistorybook-svg-0.9.0.jar
+2014-11-25 19:04:03,306 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/ch/fhnw/business/iwi/wikihistorybook-json/0.3.0/wikihistorybook-json-0.3.0.jar
+2014-11-25 19:04:03,344 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/gs-core/1.2/gs-core-1.2.jar
+2014-11-25 19:04:03,843 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/gs-core/1.2/gs-core-1.2.jar
+2014-11-25 19:04:03,859 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.jar
+2014-11-25 19:04:03,970 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/junit/junit/4.11/junit-4.11.jar
+2014-11-25 19:04:03,984 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+2014-11-25 19:04:04,055 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+2014-11-25 19:04:04,067 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/pherd/1.0/pherd-1.0.jar
+2014-11-25 19:04:04,141 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/pherd/1.0/pherd-1.0.jar
+2014-11-25 19:04:04,157 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/mbox2/1.0/mbox2-1.0.jar
+2014-11-25 19:04:04,228 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/mbox2/1.0/mbox2-1.0.jar
+2014-11-25 19:04:04,243 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/graphstream/gs-algo/1.2/gs-algo-1.2.jar
+2014-11-25 19:04:04,390 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/graphstream/gs-algo/1.2/gs-algo-1.2.jar
+2014-11-25 19:04:04,411 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-math/2.1/commons-math-2.1.jar
+2014-11-25 19:04:04,611 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-math/2.1/commons-math-2.1.jar
+2014-11-25 19:04:04,632 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/apache/commons/commons-math3/3.0/commons-math3-3.0.jar
+2014-11-25 19:04:04,905 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/apache/commons/commons-math3/3.0/commons-math3-3.0.jar
+2014-11-25 19:04:04,919 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jfree/jfreechart/1.0.14/jfreechart-1.0.14.jar
+2014-11-25 19:04:05,221 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jfree/jfreechart/1.0.14/jfreechart-1.0.14.jar
+2014-11-25 19:04:05,238 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jfree/jcommon/1.0.17/jcommon-1.0.17.jar
+2014-11-25 19:04:05,383 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jfree/jcommon/1.0.17/jcommon-1.0.17.jar
+2014-11-25 19:04:05,397 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar
+2014-11-25 19:04:05,504 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar
+2014-11-25 19:04:05,524 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/lowagie/itext/2.1.5/itext-2.1.5.jar
+2014-11-25 19:04:05,777 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/lowagie/itext/2.1.5/itext-2.1.5.jar
+2014-11-25 19:04:05,792 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.jar
+2014-11-25 19:04:05,911 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.jar
+2014-11-25 19:04:05,932 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.jar
+2014-11-25 19:04:06,251 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.jar
+2014-11-25 19:04:06,265 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
+2014-11-25 19:04:06,343 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
+2014-11-25 19:04:06,356 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar
+2014-11-25 19:04:06,428 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-log4j12/1.7.7/slf4j-log4j12-1.7.7.jar
+2014-11-25 19:04:06,442 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar
+2014-11-25 19:04:06,525 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar
+2014-11-25 19:04:06,540 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar
+2014-11-25 19:04:06,686 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar
+2014-11-25 19:04:06,701 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.jar
+2014-11-25 19:04:06,771 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.jar
+2014-11-25 19:04:06,786 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar
+2014-11-25 19:04:06,872 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar
+2014-11-25 19:04:06,893 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/sun/faces/jsf-api/2.2.7/jsf-api-2.2.7.jar
+2014-11-25 19:04:07,079 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/sun/faces/jsf-api/2.2.7/jsf-api-2.2.7.jar
+2014-11-25 19:04:07,107 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/com/sun/faces/jsf-impl/2.2.7/jsf-impl-2.2.7.jar
+2014-11-25 19:04:07,570 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/com/sun/faces/jsf-impl/2.2.7/jsf-impl-2.2.7.jar
+2014-11-25 19:04:07,585 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/glassfish/web/el-impl/2.2/el-impl-2.2.jar
+2014-11-25 19:04:07,670 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/glassfish/web/el-impl/2.2/el-impl-2.2.jar
+2014-11-25 19:04:07,686 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/javax/el/el-api/2.2/el-api-2.2.jar
+2014-11-25 19:04:07,756 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/javax/el/el-api/2.2/el-api-2.2.jar
+2014-11-25 19:04:07,772 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/cglib/cglib/3.1/cglib-3.1.jar
+2014-11-25 19:04:07,880 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/cglib/cglib/3.1/cglib-3.1.jar
+2014-11-25 19:04:07,895 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/ow2/asm/asm/4.2/asm-4.2.jar
+2014-11-25 19:04:07,968 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/ow2/asm/asm/4.2/asm-4.2.jar
+2014-11-25 19:04:07,986 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/commons-io/commons-io/2.1/commons-io-2.1.jar
+2014-11-25 19:04:08,082 [Worker-62] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/commons-io/commons-io/2.1/commons-io-2.1.jar
+2014-11-25 19:04:09,963 [Worker-76] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:09,999 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.pom
+2014-11-25 19:04:10,015 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:10,020 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-svg:jar:0.9.0 is missing, no dependency information available
+2014-11-25 19:04:10,025 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-json:jar:0.3.0 is missing, no dependency information available
+2014-11-25 19:04:10,036 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.pom
+2014-11-25 19:04:10,071 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.pom
+2014-11-25 19:04:10,107 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.pom
+2014-11-25 19:04:10,164 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.pom
+2014-11-25 19:04:10,201 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.pom
+2014-11-25 19:04:10,230 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest/1.0.8/fest-1.0.8.pom
+2014-11-25 19:04:10,282 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest/1.0.8/fest-1.0.8.pom
+2014-11-25 19:04:10,315 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.pom
+2014-11-25 19:04:10,353 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.pom
+2014-11-25 19:04:10,436 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar
+2014-11-25 19:04:10,536 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar
+2014-11-25 19:04:10,559 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar
+2014-11-25 19:04:10,844 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar
+2014-11-25 19:04:10,866 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.jar
+2014-11-25 19:04:10,973 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-assert/1.4/fest-assert-1.4.jar
+2014-11-25 19:04:10,989 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.jar
+2014-11-25 19:04:11,075 [Worker-76] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/easytesting/fest-util/1.1.6/fest-util-1.1.6.jar
+2014-11-25 19:04:11,419 [Worker-76] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:13,584 [Worker-72] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:13,676 [Worker-72] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:04:22,145 [Worker-77] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.pom
+2014-11-25 19:04:22,181 [Worker-77] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.pom
+2014-11-25 19:04:22,278 [Worker-77] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar
+2014-11-25 19:04:22,619 [Worker-77] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar
+2014-11-25 19:11:16,675 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:11:24,888 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:11:25,037 [Worker-62] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for ch.fhnw.business.iwi:wikihistorybook-graph:jar:0.5.0 is missing, no dependency information available
+2014-11-25 19:14:22,577 [main] ERROR o.e.r.c.r.CompletionContextFunctions - Cannot access LookupEnvironment by reflection.
+java.lang.NullPointerException: null
+	at sun.reflect.UnsafeFieldAccessorImpl.ensureObj(Unknown Source) ~[na:1.7.0_65]
+	at sun.reflect.UnsafeObjectFieldAccessorImpl.get(Unknown Source) ~[na:1.7.0_65]
+	at java.lang.reflect.Field.get(Unknown Source) ~[na:1.7.0_65]
+	at org.eclipse.recommenders.completion.rcp.CompletionContextFunctions$LookupEnvironmentContextFunction.compute(CompletionContextFunctions.java:515) [org.eclipse.recommenders.completion.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.recommenders.completion.rcp.CompletionContextFunctions$LookupEnvironmentContextFunction.compute(CompletionContextFunctions.java:1) [org.eclipse.recommenders.completion.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.recommenders.completion.rcp.RecommendersCompletionContext.get(RecommendersCompletionContext.java:328) [org.eclipse.recommenders.completion.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.recommenders.internal.calls.rcp.CallCompletionSessionProcessor.startSession(CallCompletionSessionProcessor.java:102) [org.eclipse.recommenders.calls.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.recommenders.completion.rcp.processable.IntelligentCompletionProposalComputer.fireStartSession(IntelligentCompletionProposalComputer.java:229) [org.eclipse.recommenders.completion.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.recommenders.completion.rcp.processable.IntelligentCompletionProposalComputer.computeCompletionProposals(IntelligentCompletionProposalComputer.java:131) [org.eclipse.recommenders.completion.rcp_2.1.9.v20140917-1240.jar:na]
+	at org.eclipse.jdt.internal.ui.text.java.CompletionProposalComputerDescriptor.computeCompletionProposals(CompletionProposalComputerDescriptor.java:333) [org.eclipse.jdt.ui_3.10.1.v20140817-1500.jar:na]
+	at org.eclipse.jdt.internal.ui.text.java.CompletionProposalCategory.computeCompletionProposals(CompletionProposalCategory.java:337) [org.eclipse.jdt.ui_3.10.1.v20140817-1500.jar:na]
+	at org.eclipse.jdt.internal.ui.text.java.ContentAssistProcessor.collectProposals(ContentAssistProcessor.java:325) [org.eclipse.jdt.ui_3.10.1.v20140817-1500.jar:na]
+	at org.eclipse.jdt.internal.ui.text.java.ContentAssistProcessor.computeCompletionProposals(ContentAssistProcessor.java:282) [org.eclipse.jdt.ui_3.10.1.v20140817-1500.jar:na]
+	at org.eclipse.jface.text.contentassist.ContentAssistant.computeCompletionProposals(ContentAssistant.java:1861) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.jface.text.contentassist.CompletionProposalPopup.computeProposals(CompletionProposalPopup.java:573) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.jface.text.contentassist.CompletionProposalPopup.access$16(CompletionProposalPopup.java:570) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.jface.text.contentassist.CompletionProposalPopup$2.run(CompletionProposalPopup.java:505) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70) [org.eclipse.swt.win32.win32.x86_64_3.103.1.v20140903-1947.jar:na]
+	at org.eclipse.jface.text.contentassist.CompletionProposalPopup.showProposals(CompletionProposalPopup.java:499) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.jface.text.contentassist.ContentAssistant$2.run(ContentAssistant.java:378) [org.eclipse.jface.text_3.9.1.v20140827-1810.jar:na]
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35) [org.eclipse.swt.win32.win32.x86_64_3.103.1.v20140903-1947.jar:na]
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:136) [org.eclipse.swt.win32.win32.x86_64_3.103.1.v20140903-1947.jar:na]
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4147) [org.eclipse.swt.win32.win32.x86_64_3.103.1.v20140903-1947.jar:na]
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3764) [org.eclipse.swt.win32.win32.x86_64_3.103.1.v20140903-1947.jar:na]
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:1151) [org.eclipse.e4.ui.workbench.swt_0.12.100.v20140530-1436.jar:na]
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332) [org.eclipse.core.databinding.observable_1.4.1.v20140210-1835.jar:na]
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1032) [org.eclipse.e4.ui.workbench.swt_0.12.100.v20140530-1436.jar:na]
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:148) [org.eclipse.e4.ui.workbench_1.2.1.v20140901-1244.jar:na]
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:636) [org.eclipse.ui.workbench_3.106.1.v20140827-1737.jar:na]
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332) [org.eclipse.core.databinding.observable_1.4.1.v20140210-1835.jar:na]
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:579) [org.eclipse.ui.workbench_3.106.1.v20140827-1737.jar:na]
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150) [org.eclipse.ui.workbench_3.106.1.v20140827-1737.jar:na]
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:135) [org.eclipse.ui.ide.application_1.0.500.v20140514-2033.jar:na]
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196) [org.eclipse.equinox.app_1.3.200.v20130910-1609.jar:na]
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134) [org.eclipse.osgi_3.10.1.v20140909-1633.jar:na]
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104) [org.eclipse.osgi_3.10.1.v20140909-1633.jar:na]
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:380) [org.eclipse.osgi_3.10.1.v20140909-1633.jar:na]
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:235) [org.eclipse.osgi_3.10.1.v20140909-1633.jar:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_65]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:1.7.0_65]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:1.7.0_65]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[na:1.7.0_65]
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:648) [org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar:na]
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603) [org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar:na]
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465) [org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar:na]
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1438) [org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar:na]
+2014-12-02 00:18:40,642 [Worker-7] INFO  o.e.m.i.launch.MavenLaunchDelegate - C:\Users\Peter\Documents\GitHub\wikihistorybook_german
+2014-12-02 00:18:40,647 [Worker-7] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B 

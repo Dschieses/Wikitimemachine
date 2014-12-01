@@ -1,0 +1,16 @@
+package util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class CommonFunctions {
+	
+	private JSONObject getJSON(String input) throws JSONException {
+		return new JSONObject(input);
+	}
+
+	private JSONObject getSubJSON(JSONObject json, String subObject)
+			throws JSONException {
+		return json.getJSONObject(subObject);
+	}
+}

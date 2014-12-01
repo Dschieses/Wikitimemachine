@@ -1,0 +1,24 @@
+package entity;
+
+public class Category {
+	private String title;
+	private int ns;
+	private int pageId;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getNs() {
+		return ns;
+	}
+
+	public void setNs(int ns) {
+		this.ns = ns;
+	}
+
+}
