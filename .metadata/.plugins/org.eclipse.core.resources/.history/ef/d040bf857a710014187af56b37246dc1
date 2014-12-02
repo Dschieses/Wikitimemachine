@@ -1,7 +1,0 @@
-package entity;
-
-public class Page {
-	private String title;
-	private int ns;
-	private int pageid;
-}
