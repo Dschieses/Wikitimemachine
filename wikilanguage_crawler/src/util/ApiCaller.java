@@ -59,21 +59,22 @@ public class ApiCaller {
 		CategoryApi ca = new CategoryApi();
 		Category c = new Category();
 		c.setTitle("Mann");
-		String line = "";
-		fw = new FileWriter("C:/Users/Peter/Desktop/people_mann.csv");
-		do {
-			List<Page> list = ca.getCategoryMembers(c);
+		// String line = "";
+		// fw = new FileWriter("C:/Users/Peter/Desktop/people_mann.csv");
+		// do {
+		@SuppressWarnings("unused")
+		List<Page> list = ca.getCategoryMembers(c);
 
-			for (Page page : list) {
-
-				line = page.getPageid() + ";" + page.getTitle() + ";"
-						+ page.getNs();
-				fw.write(line + "\n");
-				fw.flush();
-
-			}
-
-		} while (ca.getCmContinue());
+		// for (Page page : list) {
+		//
+		// line = page.getPageid() + ";" + page.getTitle() + ";"
+		// + page.getNs();
+		// fw.write(line + "\n");
+		// fw.flush();
+		//
+		// }
+		//
+		// } while (ca.getCmContinue());
 		sdf = new SimpleDateFormat("HH:mm:ss.SSS");
 		uhrzeit = sdf.format(new Date());
 		System.out.println(uhrzeit);

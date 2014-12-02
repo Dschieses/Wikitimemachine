@@ -1,0 +1,21 @@
+package util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class LinkApi {
+	private String gplcontinue = "";
+	private final String LINKS = "http://de.wikipedia.org/w/api.php?action=query&format=json&pageids=%s&generator=links&gpllimit=max";
+	
+
+	public boolean getGPLcontinue(JSONObject json) throws JSONException {
+		if (!json.has("query-continue")) {
+			gplcontinue = "undefined";
+			return false;
+		}
+		gplcontinue = CommonFunctions.getSubJSON(json, "query-continue")
+				.getJSONObject("links").getString("gplcontinue");
+
+		return true;
+	}
+}

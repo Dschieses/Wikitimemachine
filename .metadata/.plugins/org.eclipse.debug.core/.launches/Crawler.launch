@@ -8,4 +8,5 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="Crawler"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="wikilanguage_crawler"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m"/>
 </launchConfiguration>

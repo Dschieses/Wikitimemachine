@@ -17,7 +17,6 @@ public class CategoryApi {
 	private final String CATMEMBERS = "http://de.wikipedia.org/w/api.php?action=query&cmlimit=500&format=json&list=categorymembers&cmtitle=Category:%s&cmcontinue=%s";
 	PageApi p;
 	private String cmcontinue = "";
-	private List<String> cmContinueList;
 	JSONObject json = null;
 
 	public CategoryApi() {
@@ -26,7 +25,8 @@ public class CategoryApi {
 
 	public List<Category> getCategories(Page p) throws Exception {
 		String query = "http://de.wikipedia.org/w/api.php?format=json&action=query&prop=categories&cllimit=500&pageids=";
-		String result = HttpUtil.getInstance().sendGet(query + p.getPageid());
+		HttpUtil.getInstance();
+		String result = HttpUtil.sendGet(query + p.getPageid());
 		JSONObject json = CommonFunctions.getJSON(result);
 		JSONArray jsonArray = CommonFunctions.getSubJSON(
 				CommonFunctions.getSubJSON(
@@ -45,12 +45,19 @@ public class CategoryApi {
 	}
 
 	public List<Page> getCategoryMembers(Category c) throws Exception {
-		String query = String.format(CATMEMBERS, c.getTitle(),
-				CommonFunctions.getEncoded(cmcontinue));
-		String result = HttpUtil.getInstance().sendGet(query);
-		json = CommonFunctions.getJSON(result);
+		List<Page> list = new ArrayList<Page>();
+		Runtime rt = Runtime.getRuntime();
 
-		return p.getPageInfoFromCategoryList(json);
+		do {
+			String query = String.format(CATMEMBERS, c.getTitle(),
+					CommonFunctions.getEncoded(cmcontinue));
+			HttpUtil.getInstance();
+			String result = HttpUtil.sendGet(query);
+			json = CommonFunctions.getJSON(result);
+			list.addAll(p.getPageInfoFromCategoryList(json));
+			System.out.println(rt.totalMemory() - rt.freeMemory());
+		} while (getCmContinue());
+		return list;
 	}
 
 	public boolean getCmContinue() throws JSONException {

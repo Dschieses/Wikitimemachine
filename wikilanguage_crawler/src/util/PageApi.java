@@ -55,6 +55,26 @@ public class PageApi {
 		return returnList;
 	}
 
+	public List<Page> getPageInfoFromLinkList(JSONObject json)
+			throws JSONException {
+		if (!json.has("query")) {
+			return null;
+		}
+		JSONArray jsonArray = CommonFunctions.getSubJSON(json, "query")
+				.getJSONArray("pages");
+
+		List<Page> returnList = new ArrayList<>();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Gson gson = new Gson();
+			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
+					Page.class);
+
+			returnList.add(p);
+		}
+
+		return returnList;
+	}
+
 	public boolean getApContinue(JSONObject json) throws JSONException {
 		if (!json.has("query-continue")) {
 			apcontinue = "undefined";
