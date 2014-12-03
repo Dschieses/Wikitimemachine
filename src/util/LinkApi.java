@@ -1,5 +1,6 @@
 package util;
 
+import java.lang.management.GarbageCollectorMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import org.json.JSONObject;
 import entity.Page;
 
 public class LinkApi {
-	private String gplcontinue = "";
-	private final String LINKS = "http://de.wikipedia.org/w/api.php?action=query&format=json&pageids=%s&generator=links&gpllimit=500&%s";
+	private String plcontinue = "";
+	private final String LINKS = "http://de.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=500&pageids=%s&%s";
 	JSONObject json = null;
 	PageApi p = new PageApi();
 
@@ -18,37 +19,38 @@ public class LinkApi {
 
 	}
 
-	public boolean getGPLcontinue(JSONObject json) throws JSONException {
+	public boolean getPLcontinue(JSONObject json) throws JSONException {
 		if (!json.has("query-continue")) {
-			gplcontinue = "undefined";
+			plcontinue = "";
 			return false;
 		}
-		gplcontinue = CommonFunctions.getSubJSON(json, "query-continue")
-				.getJSONObject("links").getString("gplcontinue");
+		plcontinue = CommonFunctions.getSubJSON(json, "query-continue")
+				.getJSONObject("links").getString("plcontinue");
 
 		return true;
 	}
 
-	public List<Page> getOutgoingLinks(Page page) throws Exception {
+	public void getOutgoingLinks(Page page) throws Exception {
 		List<Page> list = new ArrayList<Page>();
 
 		do {
 			String query;
-			if (gplcontinue.equals("")) {
+			if (plcontinue.equals("")) {
 				query = String.format(LINKS, page.getPageid(), "");
 			} else {
-				query = String.format(LINKS, page.getPageid(), CommonFunctions
-						.getEncoded("gplcontinue=" + gplcontinue));
+				query = String.format(LINKS, page.getPageid(),"plcontinue="+ CommonFunctions
+						.getEncoded(plcontinue));
+				
 
 			}
-
-			HttpUtil.getInstance();
-			String result = HttpUtil.sendGet(query);
+			HttpUtil h = new HttpUtil();
+			String result = h.sendGet(query);
+			
 			json = CommonFunctions.getJSON(result);
-			list.addAll(p.getPageInfoFromLinkList(json));
+			list.addAll(p.getPageInfoFromLinkList(json,page));
 
-		} while (getGPLcontinue(json));
-		return list;
+		} while (getPLcontinue(json));
+		page.setLinkList(list);
 	}
 	
 }

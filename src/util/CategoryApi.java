@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import entity.Category;
 import entity.Page;
@@ -15,6 +16,7 @@ import entity.Page;
 public class CategoryApi {
 
 	private final String CATMEMBERS = "http://de.wikipedia.org/w/api.php?action=query&cmlimit=500&format=json&list=categorymembers&cmtitle=Category:%s&cmcontinue=%s";
+	private final String CATEGORIES ="http://de.wikipedia.org/w/api.php?format=json&action=query&prop=categories&cllimit=500&pageids=%s";
 	PageApi p;
 	private String cmcontinue = "";
 	JSONObject json = null;
@@ -23,24 +25,18 @@ public class CategoryApi {
 		p = new PageApi();
 	}
 
-	public List<Category> getCategories(Page p) throws Exception {
-		String query = "http://de.wikipedia.org/w/api.php?format=json&action=query&prop=categories&cllimit=500&pageids=";
-		HttpUtil.getInstance();
-		String result = HttpUtil.sendGet(query + p.getPageid());
+	@SuppressWarnings("unchecked")
+	public void getCategories(Page p) throws Exception {
+		HttpUtil h = new HttpUtil();
+		String result =h.sendGet(String.format(CATEGORIES,p.getPageid()));
+		
 		JSONObject json = CommonFunctions.getJSON(result);
 		JSONArray jsonArray = CommonFunctions.getSubJSON(
 				CommonFunctions.getSubJSON(
 						CommonFunctions.getSubJSON(json, "query"), "pages"),
 				String.valueOf(p.getPageid())).getJSONArray("categories");
-		List<Category> returnList = new ArrayList<>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Gson gson = new Gson();
-			Category c = gson.fromJson(jsonArray.getJSONObject(i).toString(),
-					Category.class);
-
-			returnList.add(c);
-		}
-		return returnList;
+		Gson gson = new Gson();
+		p.setCategoryList((List<Category>)gson.fromJson(jsonArray.toString(),new TypeToken<List<Category>>() {}.getType()));
 
 	}
 
@@ -51,8 +47,8 @@ public class CategoryApi {
 		do {
 			String query = String.format(CATMEMBERS, CommonFunctions.getEncoded(c.getTitle()),
 					CommonFunctions.getEncoded(cmcontinue));
-			HttpUtil.getInstance();
-			String result = HttpUtil.sendGet(query);
+			HttpUtil h = new HttpUtil();
+			String result = h.sendGet(query);
 			json = CommonFunctions.getJSON(result);
 			list.addAll(p.getPageInfoFromCategoryList(json));
 			
@@ -62,7 +58,7 @@ public class CategoryApi {
 
 	public boolean getCmContinue() throws JSONException {
 		if (!json.has("query-continue")) {
-			cmcontinue = "undefined";
+			cmcontinue = "";
 			return false;
 		}
 		cmcontinue = CommonFunctions.getSubJSON(json, "query-continue")

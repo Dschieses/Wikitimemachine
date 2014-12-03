@@ -1,6 +1,7 @@
 package util;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
@@ -9,114 +10,267 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import entity.Category;
 import entity.Page;
 
 public class ApiCaller {
 
-	private Connection c;
 	private PreparedStatement stmt;
 	private FileWriter fw;
+	List<Page> personList;
+	CategoryApi ca = new CategoryApi();
+	LinkApi la = new LinkApi();
+	Category category = new Category();
+	boolean isPeople = false;
+	Gson g = new Gson();
+	String line;
+	// String line = "";
+	private Object uhrzeit;
+	private SimpleDateFormat sdf;
 
-	public ApiCaller() {
-
+	public ApiCaller() throws IOException {
+		fw = new FileWriter("C:/Users/Peter/Desktop/people_frau_link.csv");
 	}
 
 	public void start(String startUrl) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
-		String uhrzeit = sdf.format(new Date());
-		System.out.println(uhrzeit);
-		// String startString = sendGet(startUrl);
-		// JSONObject startJson = getJSON(startString);
-		// getApContinue(startJson);
-		// String line = "";
-		// // fw = new FileWriter("C:/Users/Peter/Desktop/people.csv");
-		// do {
-		// // List<Page> list = getPageInfo(startJson);
-		// //
-		// // for (Page page : list) {
-		// // // getCategories(page);
-		// // // Prüfe ob kategorie zu Person gehört
-		// // line = page.getPageid() + ";" + page.getTitle() + ";"
-		// // + page.getNs();
-		// // fw.write(line + "\n");
-		// // fw.flush();
-		// //
-		// // }
-		//
-		// startString = sendGet(startUrl + getEncoded(apcontinue));
-		// startJson = getJSON(startString);
-		//
-		// } while (getApContinue(startJson));
-		//
-		// sdf = new SimpleDateFormat("HH:mm:ss.SSS");
-		// uhrzeit = sdf.format(new Date());
-		// System.out.println(uhrzeit);
-		// System.out.println(apContinueList.size());
-		// fw = new FileWriter("C:/Users/Peter/Desktop/apcontinue.csv");
-		// for (String string : apContinueList) {
-		// fw.write(string + "\n");
-		// fw.flush();
-		// }
-		CategoryApi ca = new CategoryApi();
-		Category c = new Category();
-		
-		
-		LinkApi la = new LinkApi();
-		boolean isPeople=false;
-		// String line = "";
-		// fw = new FileWriter("C:/Users/Peter/Desktop/people_mann.csv");
-		// do {
-	
-//		c.setTitle("Mann");
-//		List<Page> listMale = ca.getCategoryMembers(c);
-		c.setTitle("Bundeskanzler (Deutschland)");
-		List<Page> listFemale = ca.getCategoryMembers(c);
-		
-		List<Page> personList = new ArrayList<Page>();
-//		personList.addAll(listMale);
-		personList.addAll(listFemale);
-		
-		for (Iterator<Page> iterator = personList.iterator(); iterator.hasNext();) {
-		    Page p = iterator.next();
-		    List<Page> linkList = la.getOutgoingLinks(p);
-		    //Iteriere über alle Links die ausgehen
-		    for (Iterator<Page> linkIterator = linkList.iterator(); linkIterator.hasNext();) {
-		    	Page link = linkIterator.next();
-		    	//Iteriere über alle Personen die wir gefunden haben
-		    	for (Iterator<Page> personIterator = personList.iterator(); personIterator.hasNext();) {
-			    	Page person = personIterator.next();
-			    if(person.getPageid()==link.getPageid())
-			    {//Link entspricht einer Person die wir schon kennen
-			    	isPeople=true;
-			    	break;
-			    }
-		    	}
-		    	if(isPeople)
-		    	{		    		
-		    		isPeople=false;
-		    	}
-		    	else{
-		    		linkIterator.remove();
-		    	}
-		    }
-		    p.setLinkList(linkList);
-		}
-
-		// for (Page page : list) {
-		//
-		// line = page.getPageid() + ";" + page.getTitle() + ";"
-		// + page.getNs();
-		// fw.write(line + "\n");
-		// fw.flush();
-		//
-		// }
-		//
-		// } while (ca.getCmContinue());
 		sdf = new SimpleDateFormat("HH:mm:ss.SSS");
 		uhrzeit = sdf.format(new Date());
 		System.out.println(uhrzeit);
 
+		// category.setTitle("Mann");
+		// List<Page> listMale = ca.getCategoryMembers(c);
+		category.setTitle("Bundeskanzler_(Deutschland)");
+		List<Page> listFemale = ca.getCategoryMembers(category);
+		// todo: async
+		// dupletten evtl entfernen
+		personList = new ArrayList<Page>();
+		// personList.addAll(listMale);
+		personList.addAll(listFemale);
+
+		// Läuft asynchron
+		getCategories();
+		getLinks();
+		cleanLinks();
+
+	}
+
+	public void getCategories() {
+		final List<Page> personList1 = personList.subList(0,
+				personList.size() / 4);
+		final List<Page> personList2 = personList.subList(
+				personList.size() / 4, personList.size() / 3);
+		final List<Page> personList3 = personList.subList(
+				personList.size() / 3, personList.size() / 2);
+		final List<Page> personList4 = personList.subList(
+				personList.size() / 2, personList.size());
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList1.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						ca.getCategories(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList2.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						ca.getCategories(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList3.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						ca.getCategories(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList4.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						ca.getCategories(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+
+	}
+
+	public void getLinks() {
+		final List<Page> personList1 = personList.subList(0,
+				personList.size() / 4);
+		final List<Page> personList2 = personList.subList(
+				personList.size() / 4, personList.size() / 3);
+		final List<Page> personList3 = personList.subList(
+				personList.size() / 3, personList.size() / 2);
+		final List<Page> personList4 = personList.subList(
+				personList.size() / 2, personList.size());
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList1.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						la.getOutgoingLinks(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList2.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						la.getOutgoingLinks(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList3.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						la.getOutgoingLinks(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList4.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						la.getOutgoingLinks(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+
+	}
+
+	public void cleanLinks() {
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = personList.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					while (p.getLinkList() == null) {
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					// Iteriere über alle Links die ausgehen
+					for (Iterator<Page> linkIterator = p.getLinkList()
+							.iterator(); linkIterator.hasNext();) {
+						Page link = linkIterator.next();
+						// Iteriere über alle Personen die wir gefunden haben
+						for (Iterator<Page> personIterator = personList
+								.iterator(); personIterator.hasNext();) {
+							Page person = personIterator.next();
+							if (person.getTitle().equals(link.getTitle())) {// Link
+																			// entspricht
+																			// einer
+																			// Person
+																			// die
+																			// wir
+																			// schon
+																			// kennen
+								isPeople = true;
+								link.setPageid(person.getPageid());
+								break;
+							}
+						}
+						if (isPeople) { // Verknüpfe Personen
+							isPeople = false;
+						} else {
+							linkIterator.remove();
+						}
+					}
+					line = g.toJson(p);
+					try {
+						fw.write(line + "\n");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						fw.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+					uhrzeit = sdf.format(new Date());
+
+				}
+				System.out.println(uhrzeit);
+
+			}
+		}.start();
 	}
 
 }

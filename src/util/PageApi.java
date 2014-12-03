@@ -46,43 +46,30 @@ public class PageApi {
 		JSONArray jsonArray = CommonFunctions.getSubJSON(json, "query")
 				.getJSONArray("categorymembers");
 
-		List<Page> returnList = new ArrayList<>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Gson gson = new Gson();
-			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
-					Page.class);
-
-			returnList.add(p);
-		}
+		Gson gson = new Gson();
+		List<Page> returnList = gson.fromJson(jsonArray.toString(),new TypeToken<List<Page>>() {}.getType());
 
 		return returnList;
 	}
 
-	public List<Page> getPageInfoFromLinkList(JSONObject json)
+	public List<Page> getPageInfoFromLinkList(JSONObject json,Page page)
 			throws JSONException {
 		if (!json.has("query")) {
 			return null;
 		}
-		Gson gso = new Gson();
-		
-		JSONObject j = CommonFunctions.getSubJSON(json, "query");
-		JSONArray jsonArray = j.getJSONArray("pages");
+			
+		JSONObject j = CommonFunctions.getSubJSON(json, "query").getJSONObject("pages").getJSONObject(String.valueOf(page.getPageid()));
+		JSONArray jsonArray = j.getJSONArray("links");
+		Gson gson = new Gson();
+		List<Page> returnList = gson.fromJson(jsonArray.toString(),new TypeToken<List<Page>>() {}.getType());
 
-		List<Page> returnList = new ArrayList<>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Gson gson = new Gson();
-			Page p = gson.fromJson(jsonArray.getJSONObject(i).toString(),
-					Page.class);
-
-			returnList.add(p);
-		}
 
 		return returnList;
 	}
 
 	public boolean getApContinue(JSONObject json) throws JSONException {
 		if (!json.has("query-continue")) {
-			apcontinue = "undefined";
+			apcontinue = "";
 			return false;
 		}
 		apcontinue = CommonFunctions.getSubJSON(json, "query-continue")

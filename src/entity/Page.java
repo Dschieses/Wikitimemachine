@@ -7,6 +7,7 @@ public class Page {
 	private int ns;
 	private int pageid;
 	private List<Page> linkList;
+	private List<Category> categoryList;
 
 	public String getTitle() {
 		return title;
@@ -38,5 +39,13 @@ public class Page {
 
 	public void setLinkList(List<Page> linkList) {
 		this.linkList = linkList;
+	}
+
+	public List<Category> getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(List<Category> categoryList) {
+		this.categoryList = categoryList;
 	}
 }

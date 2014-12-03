@@ -11,17 +11,8 @@ public class HttpUtil {
 
 	private static HttpUtil instance;
 
-	private HttpUtil() {
-	}
-
-	public static HttpUtil getInstance() {
-		if (null == instance) {
-			instance = new HttpUtil();
-		}
-		return instance;
-	}
-
-	public static String sendGet(String url) throws Exception {
+	
+	public String sendGet(String url) throws Exception {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
