@@ -10,7 +10,7 @@ import entity.Page;
 
 public class LinkApi {
 	private String gplcontinue = "";
-	private final String LINKS = "http://de.wikipedia.org/w/api.php?action=query&format=json&pageids=%s&generator=links&gpllimit=max&%s";
+	private final String LINKS = "http://de.wikipedia.org/w/api.php?action=query&format=json&pageids=%s&generator=links&gpllimit=500&%s";
 	JSONObject json = null;
 	PageApi p = new PageApi();
 
@@ -29,7 +29,7 @@ public class LinkApi {
 		return true;
 	}
 
-	public List<Page> getCategoryMembers(Page page) throws Exception {
+	public List<Page> getOutgoingLinks(Page page) throws Exception {
 		List<Page> list = new ArrayList<Page>();
 
 		do {
@@ -50,4 +50,5 @@ public class LinkApi {
 		} while (getGPLcontinue(json));
 		return list;
 	}
+	
 }

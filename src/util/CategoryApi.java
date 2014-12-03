@@ -46,16 +46,16 @@ public class CategoryApi {
 
 	public List<Page> getCategoryMembers(Category c) throws Exception {
 		List<Page> list = new ArrayList<Page>();
-		Runtime rt = Runtime.getRuntime();
+		
 
 		do {
-			String query = String.format(CATMEMBERS, c.getTitle(),
+			String query = String.format(CATMEMBERS, CommonFunctions.getEncoded(c.getTitle()),
 					CommonFunctions.getEncoded(cmcontinue));
 			HttpUtil.getInstance();
 			String result = HttpUtil.sendGet(query);
 			json = CommonFunctions.getJSON(result);
 			list.addAll(p.getPageInfoFromCategoryList(json));
-			System.out.println(rt.totalMemory() - rt.freeMemory());
+			
 		} while (getCmContinue());
 		return list;
 	}

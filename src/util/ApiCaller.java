@@ -4,7 +4,9 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import entity.Category;
@@ -58,12 +60,48 @@ public class ApiCaller {
 		// }
 		CategoryApi ca = new CategoryApi();
 		Category c = new Category();
-		c.setTitle("Mann");
+		
+		
+		LinkApi la = new LinkApi();
+		boolean isPeople=false;
 		// String line = "";
 		// fw = new FileWriter("C:/Users/Peter/Desktop/people_mann.csv");
 		// do {
-		@SuppressWarnings("unused")
-		List<Page> list = ca.getCategoryMembers(c);
+	
+//		c.setTitle("Mann");
+//		List<Page> listMale = ca.getCategoryMembers(c);
+		c.setTitle("Bundeskanzler (Deutschland)");
+		List<Page> listFemale = ca.getCategoryMembers(c);
+		
+		List<Page> personList = new ArrayList<Page>();
+//		personList.addAll(listMale);
+		personList.addAll(listFemale);
+		
+		for (Iterator<Page> iterator = personList.iterator(); iterator.hasNext();) {
+		    Page p = iterator.next();
+		    List<Page> linkList = la.getOutgoingLinks(p);
+		    //Iteriere über alle Links die ausgehen
+		    for (Iterator<Page> linkIterator = linkList.iterator(); linkIterator.hasNext();) {
+		    	Page link = linkIterator.next();
+		    	//Iteriere über alle Personen die wir gefunden haben
+		    	for (Iterator<Page> personIterator = personList.iterator(); personIterator.hasNext();) {
+			    	Page person = personIterator.next();
+			    if(person.getPageid()==link.getPageid())
+			    {//Link entspricht einer Person die wir schon kennen
+			    	isPeople=true;
+			    	break;
+			    }
+		    	}
+		    	if(isPeople)
+		    	{		    		
+		    		isPeople=false;
+		    	}
+		    	else{
+		    		linkIterator.remove();
+		    	}
+		    }
+		    p.setLinkList(linkList);
+		}
 
 		// for (Page page : list) {
 		//
