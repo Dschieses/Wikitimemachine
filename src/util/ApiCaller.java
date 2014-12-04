@@ -21,7 +21,7 @@ public class ApiCaller {
 	private FileWriter fw;
 	List<Page> personList;
 	CategoryApi ca = new CategoryApi();
-	LinkApi la = new LinkApi();
+//	LinkApi la = new LinkApi();
 	Category category = new Category();
 	boolean isPeople = false;
 	Gson g = new Gson();
@@ -31,7 +31,7 @@ public class ApiCaller {
 	private SimpleDateFormat sdf;
 
 	public ApiCaller() throws IOException {
-		fw = new FileWriter("C:/Users/Peter/Desktop/people_frau_link.csv");
+		fw = new FileWriter("C:/Users/Peter/Desktop/people_bk_link.csv");
 	}
 
 	public void start(String startUrl) throws Exception {
@@ -42,6 +42,7 @@ public class ApiCaller {
 		// category.setTitle("Mann");
 		// List<Page> listMale = ca.getCategoryMembers(c);
 		category.setTitle("Bundeskanzler_(Deutschland)");
+//		category.setTitle("Frau");
 		List<Page> listFemale = ca.getCategoryMembers(category);
 		// todo: async
 		// dupletten evtl entfernen
@@ -65,72 +66,57 @@ public class ApiCaller {
 				personList.size() / 3, personList.size() / 2);
 		final List<Page> personList4 = personList.subList(
 				personList.size() / 2, personList.size());
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList1.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						ca.getCategories(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList2.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						ca.getCategories(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList3.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						ca.getCategories(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList4.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						ca.getCategories(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
+		final CategoryApi ca1 = new CategoryApi();
+		final CategoryApi ca2 = new CategoryApi();
+		final CategoryApi ca3 = new CategoryApi();
+		final CategoryApi ca4 = new CategoryApi();
+		
+		getCategories(personList1,ca1);
+		getCategories(personList2,ca2);
+		getCategories(personList3,ca3);
+		getCategories(personList4,ca4);
+	
 
 	}
+	public void getCategories(final List<Page> pl,final CategoryApi ca)
+	{
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = pl.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						ca.getCategories(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+	}
+	public void getLinks(final List<Page> pl,final LinkApi la)
+	{
+		new Thread() {
+			@Override
+			public void run() {
+				for (Iterator<Page> iterator = pl.iterator(); iterator
+						.hasNext();) {
+					Page p = iterator.next();
+					try {
+						la.getOutgoingLinks(p);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		}.start();
+	}
+	
 
 	public void getLinks() {
 		final List<Page> personList1 = personList.subList(0,
@@ -141,70 +127,16 @@ public class ApiCaller {
 				personList.size() / 3, personList.size() / 2);
 		final List<Page> personList4 = personList.subList(
 				personList.size() / 2, personList.size());
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList1.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						la.getOutgoingLinks(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList2.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						la.getOutgoingLinks(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList3.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						la.getOutgoingLinks(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				for (Iterator<Page> iterator = personList4.iterator(); iterator
-						.hasNext();) {
-					Page p = iterator.next();
-					try {
-						la.getOutgoingLinks(p);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-			}
-		}.start();
+		final LinkApi la1 = new LinkApi();
+		final LinkApi la2 = new LinkApi();
+		final LinkApi la3 = new LinkApi();
+		final LinkApi la4 = new LinkApi();
+		
+		getLinks(personList1,la4);
+		getLinks(personList2,la4);
+		getLinks(personList3,la4);
+		getLinks(personList4,la4);
+		
 
 	}
 
