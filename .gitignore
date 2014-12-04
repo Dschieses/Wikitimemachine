@@ -6,7 +6,6 @@
 .recommenders/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
