@@ -17,9 +17,9 @@ import entity.Person;
 public class IO {
 	private FileWriter fw;
 
-	public List<Person> readFromJsonFile() throws FileNotFoundException {
+	public List<Person> readFromJsonFile(String path) throws FileNotFoundException {
 		Scanner testScanner = new Scanner(new BufferedReader(new FileReader(
-				"C:\\people_frau_link.csv")));
+				path)));
 		Gson g = new Gson();
 		List<Person> pageList = new ArrayList<>();
 		while (testScanner.hasNext()) {
@@ -29,9 +29,9 @@ public class IO {
 		return pageList;
 	}
 
-	public void writeToJsonFile(List<Person> personList) throws IOException {
+	public void writeToJsonFile(List<Person> personList,String path) throws IOException {
 		Gson g = new Gson();
-		fw = new FileWriter("C:/Users/Peter/Desktop/people_bk_link.csv");
+		fw = new FileWriter(path);
 
 		for (Iterator<Person> iterator = personList.iterator(); iterator
 				.hasNext();) {			

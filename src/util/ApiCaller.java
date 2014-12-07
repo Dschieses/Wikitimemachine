@@ -17,7 +17,9 @@ public class ApiCaller {
 
 	Category category = new Category();
 	boolean isPeople = false;
+	boolean cleanLinksFinished=false;
 	Gson g = new Gson();
+	private String path;
 
 	public ApiCaller() throws IOException {
 
@@ -38,6 +40,14 @@ public class ApiCaller {
 		getCategories();
 		getLinks();
 		cleanLinks();
+		
+		while(!cleanLinksFinished)
+		{
+			Thread.sleep(1);
+		}
+		IO io = new IO();
+		io.writeToJsonFile(personList, "");
+		
 	}
 
 	public void getCategories() {
@@ -166,6 +176,14 @@ public class ApiCaller {
 				CommonFunctions.printCurrentTimestamp();
 			}
 		}.start();
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }
