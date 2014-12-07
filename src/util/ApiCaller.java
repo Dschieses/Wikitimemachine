@@ -13,13 +13,13 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import entity.Category;
-import entity.Page;
+import entity.Person;
 
 public class ApiCaller {
 
 	private PreparedStatement stmt;
 	private FileWriter fw;
-	List<Page> personList;
+	List<Person> personList;
 	CategoryApi ca = new CategoryApi();
 //	LinkApi la = new LinkApi();
 	Category category = new Category();
@@ -43,10 +43,10 @@ public class ApiCaller {
 		// List<Page> listMale = ca.getCategoryMembers(c);
 		category.setTitle("Bundeskanzler_(Deutschland)");
 //		category.setTitle("Frau");
-		List<Page> listFemale = ca.getCategoryMembers(category);
+		List<Person> listFemale = ca.getCategoryMembers(category);
 		// todo: async
 		// dupletten evtl entfernen
-		personList = new ArrayList<Page>();
+		personList = new ArrayList<Person>();
 		// personList.addAll(listMale);
 		personList.addAll(listFemale);
 
@@ -58,13 +58,13 @@ public class ApiCaller {
 	}
 
 	public void getCategories() {
-		final List<Page> personList1 = personList.subList(0,
+		final List<Person> personList1 = personList.subList(0,
 				personList.size() / 4);
-		final List<Page> personList2 = personList.subList(
+		final List<Person> personList2 = personList.subList(
 				personList.size() / 4, personList.size() / 3);
-		final List<Page> personList3 = personList.subList(
+		final List<Person> personList3 = personList.subList(
 				personList.size() / 3, personList.size() / 2);
-		final List<Page> personList4 = personList.subList(
+		final List<Person> personList4 = personList.subList(
 				personList.size() / 2, personList.size());
 		final CategoryApi ca1 = new CategoryApi();
 		final CategoryApi ca2 = new CategoryApi();
@@ -78,14 +78,14 @@ public class ApiCaller {
 	
 
 	}
-	public void getCategories(final List<Page> pl,final CategoryApi ca)
+	public void getCategories(final List<Person> pl,final CategoryApi ca)
 	{
 		new Thread() {
 			@Override
 			public void run() {
-				for (Iterator<Page> iterator = pl.iterator(); iterator
+				for (Iterator<Person> iterator = pl.iterator(); iterator
 						.hasNext();) {
-					Page p = iterator.next();
+					Person p = iterator.next();
 					try {
 						ca.getCategories(p);
 					} catch (Exception e1) {
@@ -97,14 +97,14 @@ public class ApiCaller {
 			}
 		}.start();
 	}
-	public void getLinks(final List<Page> pl,final LinkApi la)
+	public void getLinks(final List<Person> pl,final LinkApi la)
 	{
 		new Thread() {
 			@Override
 			public void run() {
-				for (Iterator<Page> iterator = pl.iterator(); iterator
+				for (Iterator<Person> iterator = pl.iterator(); iterator
 						.hasNext();) {
-					Page p = iterator.next();
+					Person p = iterator.next();
 					try {
 						la.getOutgoingLinks(p);
 					} catch (Exception e1) {
@@ -119,13 +119,13 @@ public class ApiCaller {
 	
 
 	public void getLinks() {
-		final List<Page> personList1 = personList.subList(0,
+		final List<Person> personList1 = personList.subList(0,
 				personList.size() / 4);
-		final List<Page> personList2 = personList.subList(
+		final List<Person> personList2 = personList.subList(
 				personList.size() / 4, personList.size() / 3);
-		final List<Page> personList3 = personList.subList(
+		final List<Person> personList3 = personList.subList(
 				personList.size() / 3, personList.size() / 2);
-		final List<Page> personList4 = personList.subList(
+		final List<Person> personList4 = personList.subList(
 				personList.size() / 2, personList.size());
 		final LinkApi la1 = new LinkApi();
 		final LinkApi la2 = new LinkApi();
@@ -144,9 +144,9 @@ public class ApiCaller {
 		new Thread() {
 			@Override
 			public void run() {
-				for (Iterator<Page> iterator = personList.iterator(); iterator
+				for (Iterator<Person> iterator = personList.iterator(); iterator
 						.hasNext();) {
-					Page p = iterator.next();
+					Person p = iterator.next();
 					while (p.getLinkList() == null) {
 						try {
 							Thread.sleep(1);
@@ -156,13 +156,13 @@ public class ApiCaller {
 						}
 					}
 					// Iteriere über alle Links die ausgehen
-					for (Iterator<Page> linkIterator = p.getLinkList()
+					for (Iterator<Person> linkIterator = p.getLinkList()
 							.iterator(); linkIterator.hasNext();) {
-						Page link = linkIterator.next();
+						Person link = linkIterator.next();
 						// Iteriere über alle Personen die wir gefunden haben
-						for (Iterator<Page> personIterator = personList
+						for (Iterator<Person> personIterator = personList
 								.iterator(); personIterator.hasNext();) {
-							Page person = personIterator.next();
+							Person person = personIterator.next();
 							if (person.getTitle().equals(link.getTitle())) {// Link
 																			// entspricht
 																			// einer

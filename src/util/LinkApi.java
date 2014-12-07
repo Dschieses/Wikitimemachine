@@ -7,7 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Page;
+import entity.Person;
 
 public class LinkApi {
 	private String plcontinue = "";
@@ -30,8 +30,8 @@ public class LinkApi {
 		return true;
 	}
 
-	public void getOutgoingLinks(Page page) throws Exception {
-		List<Page> list = new ArrayList<Page>();
+	public void getOutgoingLinks(Person page) throws Exception {
+		List<Person> list = new ArrayList<Person>();
 
 		do {
 			String query;

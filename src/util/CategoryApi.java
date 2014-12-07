@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import entity.Category;
-import entity.Page;
+import entity.Person;
 
 public class CategoryApi {
 
@@ -26,7 +26,7 @@ public class CategoryApi {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void getCategories(Page p) throws Exception {
+	public void getCategories(Person p) throws Exception {
 		HttpUtil h = new HttpUtil();
 		String result =h.sendGet(String.format(CATEGORIES,p.getPageid()));
 		
@@ -40,8 +40,8 @@ public class CategoryApi {
 
 	}
 
-	public List<Page> getCategoryMembers(Category c) throws Exception {
-		List<Page> list = new ArrayList<Page>();
+	public List<Person> getCategoryMembers(Category c) throws Exception {
+		List<Person> list = new ArrayList<Person>();
 		
 
 		do {
