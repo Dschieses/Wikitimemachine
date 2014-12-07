@@ -1,12 +1,7 @@
 package util;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,44 +12,32 @@ import entity.Person;
 
 public class ApiCaller {
 
-	private PreparedStatement stmt;
-	private FileWriter fw;
 	List<Person> personList;
 	CategoryApi ca = new CategoryApi();
-//	LinkApi la = new LinkApi();
+
 	Category category = new Category();
 	boolean isPeople = false;
 	Gson g = new Gson();
-	String line;
-	// String line = "";
-	private Object uhrzeit;
-	private SimpleDateFormat sdf;
 
 	public ApiCaller() throws IOException {
-		fw = new FileWriter("C:/Users/Peter/Desktop/people_bk_link.csv");
+
 	}
 
-	public void start(String startUrl) throws Exception {
-		sdf = new SimpleDateFormat("HH:mm:ss.SSS");
-		uhrzeit = sdf.format(new Date());
-		System.out.println(uhrzeit);
-
-		// category.setTitle("Mann");
-		// List<Page> listMale = ca.getCategoryMembers(c);
+	public void start() throws Exception {
+		CommonFunctions.printCurrentTimestamp();
+		
 		category.setTitle("Bundeskanzler_(Deutschland)");
-//		category.setTitle("Frau");
-		List<Person> listFemale = ca.getCategoryMembers(category);
+		List<Person> list = ca.getCategoryMembers(category);
 		// todo: async
 		// dupletten evtl entfernen
 		personList = new ArrayList<Person>();
 		// personList.addAll(listMale);
-		personList.addAll(listFemale);
+		personList.addAll(list);
 
 		// Läuft asynchron
 		getCategories();
 		getLinks();
 		cleanLinks();
-
 	}
 
 	public void getCategories() {
@@ -70,16 +53,15 @@ public class ApiCaller {
 		final CategoryApi ca2 = new CategoryApi();
 		final CategoryApi ca3 = new CategoryApi();
 		final CategoryApi ca4 = new CategoryApi();
-		
-		getCategories(personList1,ca1);
-		getCategories(personList2,ca2);
-		getCategories(personList3,ca3);
-		getCategories(personList4,ca4);
-	
+
+		getCategories(personList1, ca1);
+		getCategories(personList2, ca2);
+		getCategories(personList3, ca3);
+		getCategories(personList4, ca4);
 
 	}
-	public void getCategories(final List<Person> pl,final CategoryApi ca)
-	{
+
+	public void getCategories(final List<Person> pl, final CategoryApi ca) {
 		new Thread() {
 			@Override
 			public void run() {
@@ -97,8 +79,8 @@ public class ApiCaller {
 			}
 		}.start();
 	}
-	public void getLinks(final List<Person> pl,final LinkApi la)
-	{
+
+	public void getLinks(final List<Person> pl, final LinkApi la) {
 		new Thread() {
 			@Override
 			public void run() {
@@ -116,7 +98,6 @@ public class ApiCaller {
 			}
 		}.start();
 	}
-	
 
 	public void getLinks() {
 		final List<Person> personList1 = personList.subList(0,
@@ -131,12 +112,11 @@ public class ApiCaller {
 		final LinkApi la2 = new LinkApi();
 		final LinkApi la3 = new LinkApi();
 		final LinkApi la4 = new LinkApi();
-		
-		getLinks(personList1,la4);
-		getLinks(personList2,la4);
-		getLinks(personList3,la4);
-		getLinks(personList4,la4);
-		
+
+		getLinks(personList1, la1);
+		getLinks(personList2, la2);
+		getLinks(personList3, la3);
+		getLinks(personList4, la4);
 
 	}
 
@@ -182,25 +162,8 @@ public class ApiCaller {
 							linkIterator.remove();
 						}
 					}
-					line = g.toJson(p);
-					try {
-						fw.write(line + "\n");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					try {
-						fw.flush();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					sdf = new SimpleDateFormat("HH:mm:ss.SSS");
-					uhrzeit = sdf.format(new Date());
-
 				}
-				System.out.println(uhrzeit);
-
+				CommonFunctions.printCurrentTimestamp();
 			}
 		}.start();
 	}

@@ -12,19 +12,16 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JRadioButton;
 
-import com.google.gson.Gson;
-
-import entity.Person;
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+
+import javax.swing.JButton;
+
+import util.ApiCaller;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainGui {
 
@@ -79,14 +76,14 @@ public class MainGui {
 		menuBar.add(mnHelp);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		frmWikitimemachineCrawlerV.getContentPane().setLayout(gridBagLayout);
 		
 		JRadioButton rdbtnCrawl = new JRadioButton("Crawl");
 		GridBagConstraints gbc_rdbtnCrawl = new GridBagConstraints();
-		gbc_rdbtnCrawl.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnCrawl.insets = new Insets(0, 0, 5, 5);
 		gbc_rdbtnCrawl.gridx = 0;
 		gbc_rdbtnCrawl.gridy = 0;
 		frmWikitimemachineCrawlerV.getContentPane().add(rdbtnCrawl, gbc_rdbtnCrawl);
@@ -94,11 +91,34 @@ public class MainGui {
 		
 		JRadioButton rdbtnProcessData = new JRadioButton("Process Data");
 		GridBagConstraints gbc_rdbtnProcessData = new GridBagConstraints();
+		gbc_rdbtnProcessData.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnProcessData.gridx = 1;
 		gbc_rdbtnProcessData.gridy = 0;
 		frmWikitimemachineCrawlerV.getContentPane().add(rdbtnProcessData, gbc_rdbtnProcessData);
 		
 		bg.add(rdbtnProcessData);
+		
+		JButton btnRun = new JButton("Run");
+		btnRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ApiCaller api;
+				try {
+					api = new ApiCaller();
+					api.start();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		GridBagConstraints gbc_btnRun = new GridBagConstraints();
+		gbc_btnRun.gridx = 1;
+		gbc_btnRun.gridy = 2;
+		frmWikitimemachineCrawlerV.getContentPane().add(btnRun, gbc_btnRun);
 	}
 
 }
