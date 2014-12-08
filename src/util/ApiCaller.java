@@ -21,14 +21,14 @@ public class ApiCaller {
 	Gson g = new Gson();
 	private String path;
 
-	public ApiCaller() throws IOException {
-
+	public ApiCaller(String path,String category) throws IOException {
+		this.path=path;
+		this.category.setTitle(category);
 	}
 
 	public void start() throws Exception {
 		CommonFunctions.printCurrentTimestamp();
 		
-		category.setTitle("Bundeskanzler_(Deutschland)");
 		List<Person> list = ca.getCategoryMembers(category);
 		// todo: async
 		// dupletten evtl entfernen
@@ -46,7 +46,7 @@ public class ApiCaller {
 			Thread.sleep(1);
 		}
 		IO io = new IO();
-		io.writeToJsonFile(personList, "");
+		io.writeToJsonFile(personList, path);
 		
 	}
 
@@ -174,6 +174,7 @@ public class ApiCaller {
 					}
 				}
 				CommonFunctions.printCurrentTimestamp();
+				cleanLinksFinished=true;
 			}
 		}.start();
 	}

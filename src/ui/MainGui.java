@@ -9,26 +9,43 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.UIManager;
 
+import java.awt.Button;
 import java.awt.GridBagLayout;
-
-import javax.swing.JRadioButton;
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import util.ApiCaller;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JLabel;
 
 public class MainGui {
 
+	private static final String LAST_USED_FOLDER = "WIKITIMEMACHINE_LAST_USED_FOLDER";
 	private JFrame frmWikitimemachineCrawlerV;
+	private String path;
+	private String category;
+	private JFormattedTextField formattedTextField;
+	private JButton btnSaveAs;
+	private JFormattedTextField formattedTextField_1;
 
 	/**
 	 * Launch the application.
@@ -59,6 +76,7 @@ public class MainGui {
 	 */
 	public MainGui() throws IOException {
 		initialize();
+		addMenu();
 
 	}
 
@@ -66,70 +84,137 @@ public class MainGui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ButtonGroup bg = new ButtonGroup();
-
 		frmWikitimemachineCrawlerV = new JFrame();
 		frmWikitimemachineCrawlerV.setTitle("WikiTimeMachine Crawler v 0.5");
 		frmWikitimemachineCrawlerV.setBounds(100, 100, 450, 300);
 		frmWikitimemachineCrawlerV
 				.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+	}
+
+	private void addMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		frmWikitimemachineCrawlerV.setJMenuBar(menuBar);
 
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0,
-				Double.MIN_VALUE };
-		frmWikitimemachineCrawlerV.getContentPane().setLayout(gridBagLayout);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
 
-		JRadioButton rdbtnCrawl = new JRadioButton("Crawl");
-		GridBagConstraints gbc_rdbtnCrawl = new GridBagConstraints();
-		gbc_rdbtnCrawl.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnCrawl.gridx = 0;
-		gbc_rdbtnCrawl.gridy = 0;
-		frmWikitimemachineCrawlerV.getContentPane().add(rdbtnCrawl,
-				gbc_rdbtnCrawl);
-		bg.add(rdbtnCrawl);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(8, 5, 264, 33);
+		frmWikitimemachineCrawlerV.getContentPane().add(panel_1);
+		btnSaveAs = new JButton("Save as...");
+		panel_1.add(btnSaveAs);
+		formattedTextField = new JFormattedTextField();
+		formattedTextField.setColumns(20);
+		panel_1.add(formattedTextField);
+		btnSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveAs();
+			}
+		});
 
-		JRadioButton rdbtnProcessData = new JRadioButton("Process Data");
-		GridBagConstraints gbc_rdbtnProcessData = new GridBagConstraints();
-		gbc_rdbtnProcessData.insets = new Insets(0, 0, 5, 0);
-		gbc_rdbtnProcessData.gridx = 1;
-		gbc_rdbtnProcessData.gridy = 0;
-		frmWikitimemachineCrawlerV.getContentPane().add(rdbtnProcessData,
-				gbc_rdbtnProcessData);
+		ButtonGroup bg = new ButtonGroup();
 
-		bg.add(rdbtnProcessData);
+		JPanel panel = new JPanel();
+		panel.setBounds(277, 5, 149, 33);
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		frmWikitimemachineCrawlerV.getContentPane().add(panel);
 
-		JButton btnRun = new JButton("Run");
-		btnRun.addActionListener(new ActionListener() {
+		final JRadioButton rdbtnCrawl = new JRadioButton("Crawl");
+		rdbtnCrawl.addItemListener(new ItemListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveAs(null);
-				//runPerformed();
-				
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					btnSaveAs.setText("Open...");
+				} else {
+					btnSaveAs.setText("Save as...");
+				}
+
 			}
-			
 		});
-		GridBagConstraints gbc_btnRun = new GridBagConstraints();
-		gbc_btnRun.gridx = 1;
-		gbc_btnRun.gridy = 2;
-		frmWikitimemachineCrawlerV.getContentPane().add(btnRun, gbc_btnRun);
+		rdbtnCrawl.setSelected(true);
+		panel.add(rdbtnCrawl);
+		bg.add(rdbtnCrawl);
+
+		JRadioButton rdbtnReadDates = new JRadioButton("Read Dates");
+		panel.add(rdbtnReadDates);
+		bg.add(rdbtnReadDates);
+
+		JButton btnNewButton = new JButton("Run");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (path == null) {
+					return;
+				}
+				if (formattedTextField_1.getText() == null) {
+					return;
+				}
+				category = formattedTextField_1.getText();
+				runPerformed();
+
+			}
+		});
+		btnNewButton.setBounds(8, 206, 418, 23);
+		frmWikitimemachineCrawlerV.getContentPane().add(btnNewButton);
+
+		formattedTextField_1 = new JFormattedTextField();
+		formattedTextField_1.setBounds(101, 42, 171, 20);
+		frmWikitimemachineCrawlerV.getContentPane().add(formattedTextField_1);
+
+		JLabel lblCategory = new JLabel("Category");
+		lblCategory.setBounds(18, 45, 46, 14);
+		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory);
+
+	}
+
+	boolean saveAs() {
+
+		Preferences prefs = Preferences.userRoot().node(getClass().getName());
+		JFileChooser chooser;
+
+		if (path == null)
+			path = System.getProperty("user.home");
+		File file = new File(path.trim());
+
+		chooser = new JFileChooser(prefs.get(LAST_USED_FOLDER,
+				new File(".").getAbsolutePath()));
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"JSON FILES", "json");
+
+		chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
+
+		chooser.setFileFilter(filter);
+		chooser.setDialogTitle("Save as...");
+		chooser.setVisible(true);
+
+		int result = chooser.showSaveDialog(frmWikitimemachineCrawlerV);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+
+			path = chooser.getSelectedFile().toString();
+			file = new File(path);
+			if (!filter.accept(file)) {
+				path += ".json";
+			}
+			prefs.put(LAST_USED_FOLDER, file.getParent());
+			chooser.setVisible(false);
+			formattedTextField.setText(path);
+			return true;
+		}
+		chooser.setVisible(false);
+		return false;
 	}
 
 	public void runPerformed() {
 		ApiCaller api;
 		try {
-			api = new ApiCaller();
+			api = new ApiCaller(path, category);
 			api.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -140,42 +225,4 @@ public class MainGui {
 		}
 
 	}
-
-	boolean saveAs(String pfad) { 
-
-        JFileChooser chooser; 
-        if (pfad == null) 
-            pfad = System.getProperty("user.home"); 
-        File file = new File(pfad.trim()); 
-
-        chooser = new JFileChooser(pfad); 
-        chooser.setDialogType(JFileChooser.SAVE_DIALOG); 
-        FileNameExtensionFilter plainFilter = new FileNameExtensionFilter( 
-                "Plaintext: txt, csv", "txt", "csv"); 
-        FileNameExtensionFilter markUpFilter = new FileNameExtensionFilter( 
-                "Markup: xml, htm, html", "xml", "html", "htm"); 
-        chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter()); 
-        chooser.setFileFilter(plainFilter); 
-        chooser.setFileFilter(markUpFilter); 
-        chooser.setDialogTitle("Speichern unter..."); 
-        chooser.setVisible(true); 
-
-        int result = chooser.showSaveDialog(frmWikitimemachineCrawlerV); 
-
-        if (result == JFileChooser.APPROVE_OPTION) { 
-
-            pfad = chooser.getSelectedFile().toString(); 
-            file = new File(pfad); 
-            if (plainFilter.accept(file) || markUpFilter.accept(file)) 
-                System.out.println(pfad + " kann gespeichert werden."); 
-            else 
-                System.out.println(pfad + " ist der falsche Dateityp."); 
-
-            chooser.setVisible(false); 
-            return true; 
-        } 
-        chooser.setVisible(false); 
-        return false; 
-    } 
-
 }

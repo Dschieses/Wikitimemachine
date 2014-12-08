@@ -37,7 +37,8 @@ public class IO {
 				.hasNext();) {			
 			fw.write(g.toJson(iterator.next()) + "\n");
 			fw.flush();			
-		}		
+		}	
+		fw.close();
 	}
 
 }
