@@ -9,10 +9,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.UIManager;
 
-import java.awt.Button;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
@@ -30,11 +26,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-
-import java.awt.FlowLayout;
-
 import javax.swing.JLabel;
 
 public class MainGui {
@@ -120,7 +111,6 @@ public class MainGui {
 
 		JPanel panel = new JPanel();
 		panel.setBounds(277, 5, 149, 33);
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		frmWikitimemachineCrawlerV.getContentPane().add(panel);
 
 		final JRadioButton rdbtnCrawl = new JRadioButton("Crawl");

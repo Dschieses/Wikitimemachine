@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 
 import entity.Category;
@@ -28,6 +30,7 @@ public class ApiCaller {
 
 	public void start() throws Exception {
 		CommonFunctions.printCurrentTimestamp();
+		JOptionPane.showMessageDialog(null, CommonFunctions.returnCurrentTimestamp(), "Done!", JOptionPane.YES_OPTION);
 		
 		List<Person> list = ca.getCategoryMembers(category);
 		// todo: async
@@ -175,6 +178,7 @@ public class ApiCaller {
 				}
 				CommonFunctions.printCurrentTimestamp();
 				cleanLinksFinished=true;
+				JOptionPane.showMessageDialog(null, CommonFunctions.returnCurrentTimestamp(), "Done!", JOptionPane.YES_OPTION);
 			}
 		}.start();
 	}

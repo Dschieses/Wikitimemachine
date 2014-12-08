@@ -28,4 +28,8 @@ public class CommonFunctions {
 		System.out.println(new SimpleDateFormat("HH:mm:ss.SSS")
 				.format(new Date()));
 	}
+	public static String returnCurrentTimestamp() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+				.format(new Date());
+	}
 }
