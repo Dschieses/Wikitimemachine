@@ -3,6 +3,10 @@ package entity;
 public class Category {
 	private String title;
 
+	public Category(String title) {
+		setTitle(title);
+	}
+
 	public String getTitle() {
 		return title;
 	}

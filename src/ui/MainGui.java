@@ -7,10 +7,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
@@ -33,12 +36,11 @@ public class MainGui {
 	private static final String LAST_USED_FOLDER = "WIKITIMEMACHINE_LAST_USED_FOLDER";
 	private JFrame frmWikitimemachineCrawlerV;
 	private String path;
-	private String category;
+	private List<String> category;
 	protected String category2;
 	private JButton btnSaveAs;
 	private JFormattedTextField formattedTextField;	
-	private JFormattedTextField formattedTextField_1;
-	private JFormattedTextField formattedTextField_2;
+	private JTextArea formattedTextField_1;
 
 	/**
 	 * Launch the application.
@@ -135,9 +137,6 @@ public class MainGui {
 		JRadioButton rdbtnReadDates = new JRadioButton("Read Dates");
 		panel.add(rdbtnReadDates);
 		bg.add(rdbtnReadDates);
-		formattedTextField_2 = new JFormattedTextField();
-		formattedTextField_2.setBounds(101, 73, 171, 20);
-		frmWikitimemachineCrawlerV.getContentPane().add(formattedTextField_2);
 
 		JButton btnNewButton = new JButton("Run");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -150,8 +149,8 @@ public class MainGui {
 				if (formattedTextField_1.getText() == null) {
 					return;
 				}
-				category = formattedTextField_1.getText();
-				category2 = formattedTextField_2.getText();
+				category = Arrays.asList(formattedTextField_1.getText().split("\n"));
+				
 				runPerformed();
 
 			}
@@ -159,17 +158,14 @@ public class MainGui {
 		btnNewButton.setBounds(8, 206, 418, 23);
 		frmWikitimemachineCrawlerV.getContentPane().add(btnNewButton);
 
-		formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setBounds(101, 42, 171, 20);
+		formattedTextField_1 = new JTextArea();
+		formattedTextField_1.setRows(5);
+		formattedTextField_1.setBounds(101, 42, 171, 94);
 		frmWikitimemachineCrawlerV.getContentPane().add(formattedTextField_1);
 
-		JLabel lblCategory = new JLabel("Category");
-		lblCategory.setBounds(18, 45, 46, 14);
+		JLabel lblCategory = new JLabel("Categories");
+		lblCategory.setBounds(18, 45, 79, 14);
 		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory);
-		
-		JLabel lblCategory_1 = new JLabel("Category 2");
-		lblCategory_1.setBounds(18, 76, 46, 14);
-		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory_1);
 		
 		
 
@@ -218,7 +214,7 @@ public class MainGui {
 	public void runPerformed() {
 		ApiCaller api;
 		try {
-			api = new ApiCaller(path, category,category2);
+			api = new ApiCaller(path, category);
 			api.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
