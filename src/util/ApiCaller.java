@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import entity.Category;
 import entity.Person;
 
-
 /**
  * The Class ApiCaller.
  */
@@ -25,28 +24,28 @@ public class ApiCaller {
 
 	/** The category list. */
 	List<Category> categoryList = new ArrayList<>();
-	
+
 	/** The category finished list. */
 	List<Boolean> categoryFinishedList = new ArrayList<>();
-	
-	/** The is people. */
-	boolean isPeople = false;
-	
+
 	/** The clean links finished. */
 	boolean cleanLinksFinished = false;
-	
+
 	/** The g. */
 	Gson g = new Gson();
-	
+
 	/** The path. */
 	private String path;
 
 	/**
 	 * Instantiates a new api caller.
 	 *
-	 * @param path the path
-	 * @param categoryTitleList the category title list
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @param path
+	 *            the path
+	 * @param categoryTitleList
+	 *            the category title list
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public ApiCaller(String path, List<String> categoryTitleList)
 			throws IOException {
@@ -63,11 +62,11 @@ public class ApiCaller {
 	/**
 	 * Start.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void start() throws Exception {
 		CommonFunctions.printCurrentTimestamp();
-		
 
 		personList = new ArrayList<Person>();
 
@@ -82,37 +81,37 @@ public class ApiCaller {
 						personList.addAll(ca.getCategoryMembers(c));
 						categoryFinishedList.add(true);
 					} catch (Exception e) {
-						
+
 						e.printStackTrace();
 					}
 					System.out.println("Category '" + c.getTitle() + "' done");
 					CommonFunctions.printCurrentTimestamp();
 				}
 			}.start();
-			
+
 		}
 		waitForLinks();
-		
-		// Läuft asynchron
-		getCategories();
-		getLinks();
-		cleanLinks();
+
+		//runs async
+		getCategoriesLinksAndClean();
 
 		while (!cleanLinksFinished) {
 			Thread.sleep(1);
 		}
 		IO io = new IO();
 		io.writeToJsonFile(personList, path);
+		
+		System.out.println("Finally done");
+		CommonFunctions.printCurrentTimestamp();
 
-	}	
-	
+	}
+
 	/**
-	 *This function sets the main process to sleep while the initial fetching of categorymembers hasn't finished.
+	 * This function sets the main process to sleep while the initial fetching
+	 * of categorymembers hasn't finished.
 	 */
-	private void waitForLinks()
-	{
-		while(categoryFinishedList.size()!=categoryList.size())
-		{
+	private void waitForLinks() {
+		while (categoryFinishedList.size() != categoryList.size()) {
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -122,38 +121,24 @@ public class ApiCaller {
 		}
 	}
 
-	/**
-	 * Gets the categories.
-	 *
-	 * @return the categories
-	 */
-	public void getCategories() {
-		final List<Person> personList1 = personList.subList(0,
-				personList.size() / 4);
-		final List<Person> personList2 = personList.subList(
-				personList.size() / 4, personList.size() / 3);
-		final List<Person> personList3 = personList.subList(
-				personList.size() / 3, personList.size() / 2);
-		final List<Person> personList4 = personList.subList(
-				personList.size() / 2, personList.size());
-		final CategoryApi ca1 = new CategoryApi();
-		final CategoryApi ca2 = new CategoryApi();
-		final CategoryApi ca3 = new CategoryApi();
-		final CategoryApi ca4 = new CategoryApi();
-
-		getCategories(personList1, ca1);
-		getCategories(personList2, ca2);
-		getCategories(personList3, ca3);
-		getCategories(personList4, ca4);
-
-	}
+	public void getCategoriesLinksAndClean() {
+		for (Iterator<List<Person>> iterator = CommonFunctions.split(personList, 10).iterator(); iterator
+				.hasNext();) {
+			List<Person> list = iterator.next();
+			getCategories(list, new CategoryApi());
+			getLinks(list, new LinkApi());
+			cleanLinks(list);
+		}
+	}	
 
 	/**
 	 * Gets the categories.
 	 *
-	 * @param pl the pl
-	 * @param ca the ca
-	 * @return the categories
+	 * @param pl
+	 *            Part of the whole personList
+	 * @param ca
+	 *            A new CategoryApi for every task
+	 * @return All categories to which a person belong
 	 */
 	public void getCategories(final List<Person> pl, final CategoryApi ca) {
 		new Thread() {
@@ -165,7 +150,7 @@ public class ApiCaller {
 					try {
 						ca.getCategories(p);
 					} catch (Exception e1) {
-						
+
 						e1.printStackTrace();
 					}
 				}
@@ -177,9 +162,11 @@ public class ApiCaller {
 	/**
 	 * Gets the links.
 	 *
-	 * @param pl the pl
-	 * @param la the la
-	 * @return the links
+	 * @param pl
+	 *            Part of the whole personList
+	 * @param la
+	 *            A new LinkApi for every task
+	 * @return Outgoing links to each person
 	 */
 	public void getLinks(final List<Person> pl, final LinkApi la) {
 		new Thread() {
@@ -191,7 +178,7 @@ public class ApiCaller {
 					try {
 						la.getOutgoingLinks(p);
 					} catch (Exception e1) {
-						
+
 						e1.printStackTrace();
 					}
 				}
@@ -201,101 +188,48 @@ public class ApiCaller {
 	}
 
 	/**
-	 * Gets the links.
-	 *
-	 * @return the links
+	 * This function compare the outgoing links to all known persons. If link is not "known" reference is deleted
 	 */
-	public void getLinks() {
-		final List<Person> personList1 = personList.subList(0,
-				personList.size() / 4);
-		final List<Person> personList2 = personList.subList(
-				personList.size() / 4, personList.size() / 3);
-		final List<Person> personList3 = personList.subList(
-				personList.size() / 3, personList.size() / 2);
-		final List<Person> personList4 = personList.subList(
-				personList.size() / 2, personList.size());
-		final LinkApi la1 = new LinkApi();
-		final LinkApi la2 = new LinkApi();
-		final LinkApi la3 = new LinkApi();
-		final LinkApi la4 = new LinkApi();
-
-		getLinks(personList1, la1);
-		getLinks(personList2, la2);
-		getLinks(personList3, la3);
-		getLinks(personList4, la4);
-
-	}
-
-	/**
-	 * Clean links.
-	 */
-	public void cleanLinks() {
+	public void cleanLinks(final List<Person> pl) {
 		new Thread() {
 			@Override
 			public void run() {
-				for (Iterator<Person> iterator = personList.iterator(); iterator
-						.hasNext();) {
+				for (Iterator<Person> iterator = pl.iterator(); iterator.hasNext();) {
 					Person p = iterator.next();
 					while (p.getLinkList() == null) {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							
 							e.printStackTrace();
 						}
 					}
-					// Iteriere über alle Links die ausgehen
+					//Iterate over all links for this page
 					for (Iterator<Person> linkIterator = p.getLinkList()
 							.iterator(); linkIterator.hasNext();) {
 						Person link = linkIterator.next();
-						// Iteriere über alle Personen die wir gefunden haben
+						boolean isPeople = false;
+						//Check if link is in our person list
 						for (Iterator<Person> personIterator = personList
 								.iterator(); personIterator.hasNext();) {
 							Person person = personIterator.next();
-							
-							if (person.getTitle().equals(link.getTitle())) {// Link
-																			// entspricht
-																			// einer
-																			// Person
-																			// die
-																			// wir
-																			// schon
-																			// kennen
+							//Link is a Person we know
+							if (person.getTitle().equals(link.getTitle())) {																			
 								isPeople = true;
 								link.setPageid(person.getPageid());
 								break;
 							}
 						}
-						if (isPeople) { // Verknüpfe Personen
+						if (isPeople) { 
+							//TODO: Connect People
 							isPeople = false;
 						} else {
 							linkIterator.remove();
 						}
 					}
-				}
-				CommonFunctions.printCurrentTimestamp();
+				}				
 				cleanLinksFinished = true;
-				
+
 			}
 		}.start();
 	}
-
-	/**
-	 * Gets the path.
-	 *
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * Sets the path.
-	 *
-	 * @param path the new path
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-
 }
