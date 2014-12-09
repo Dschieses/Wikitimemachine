@@ -29,13 +29,17 @@ public class ApiCaller {
 	List<Boolean> categoryFinishedList = new ArrayList<>();
 
 	/** The clean links finished. */
-	boolean cleanLinksFinished = false;
+	List<Boolean> cleanLinksFinished = new ArrayList<>();
 
 	/** The g. */
 	Gson g = new Gson();
 
 	/** The path. */
 	private String path;
+
+	protected boolean watchDogFinished;
+
+	private int splitListSize=0;
 
 	/**
 	 * Instantiates a new api caller.
@@ -90,46 +94,84 @@ public class ApiCaller {
 			}.start();
 
 		}
-		waitForLinks();
+		waitForCategoryMembers();
+		startWatchDog();
 
-		//runs async
-		getCategoriesLinksAndClean();
+		// runs async
+		getCategoriesLinksAndClean(10);
 
-		while (!cleanLinksFinished) {
-			Thread.sleep(1);
-		}
+		waitForCleanedLinks();
+
 		IO io = new IO();
 		io.writeToJsonFile(personList, path);
-		
+		watchDogFinished = true;
 		System.out.println("Finally done");
 		CommonFunctions.printCurrentTimestamp();
 
+	}
+	public void startWatchDog() {
+		new Thread() {
+			public void run() {
+				while (!watchDogFinished) {
+//					for (Iterator<Person> iterator = personList.iterator(); iterator
+//							.hasNext();) {
+//						Person p = iterator.next();
+//						if (p.getCategoryList() == null||p.getLinkList() == null) {
+//							break;
+//						}						
+//						if (!iterator.hasNext()) {
+//							watchDogFinished = true;
+//						}
+//					}		
+					System.out.println("WatchDog: Still Alive");
+					CommonFunctions.printCurrentTimestamp();
+					try {
+						Thread.sleep(300*1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 	}
 
 	/**
 	 * This function sets the main process to sleep while the initial fetching
 	 * of categorymembers hasn't finished.
 	 */
-	private void waitForLinks() {
+	private void waitForCategoryMembers() {
 		while (categoryFinishedList.size() != categoryList.size()) {
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				System.out.println("Wait for links error:");
+				System.out.println("Wait for category members error:");
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void getCategoriesLinksAndClean() {
-		for (Iterator<List<Person>> iterator = CommonFunctions.split(personList, 10).iterator(); iterator
-				.hasNext();) {
+	private void waitForCleanedLinks() {
+		while (cleanLinksFinished.size() != splitListSize) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				System.out.println("Wait for cleaned links error:");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void getCategoriesLinksAndClean(int listSplit) {
+		for (Iterator<List<Person>> iterator = CommonFunctions.split(
+				personList, listSplit).iterator(); iterator.hasNext();) {
+			splitListSize++;
 			List<Person> list = iterator.next();
 			getCategories(list, new CategoryApi());
 			getLinks(list, new LinkApi());
 			cleanLinks(list);
 		}
-	}	
+	}
 
 	/**
 	 * Gets the categories.
@@ -154,8 +196,9 @@ public class ApiCaller {
 						e1.printStackTrace();
 					}
 				}
-
+				
 			}
+
 		}.start();
 	}
 
@@ -188,13 +231,16 @@ public class ApiCaller {
 	}
 
 	/**
-	 * This function compare the outgoing links to all known persons. If link is not "known" reference is deleted
+	 * This function compare the outgoing links to all known persons. If link is
+	 * not "known" reference is deleted
 	 */
 	public void cleanLinks(final List<Person> pl) {
 		new Thread() {
+
 			@Override
 			public void run() {
-				for (Iterator<Person> iterator = pl.iterator(); iterator.hasNext();) {
+				for (Iterator<Person> iterator = pl.iterator(); iterator
+						.hasNext();) {
 					Person p = iterator.next();
 					while (p.getLinkList() == null) {
 						try {
@@ -203,31 +249,32 @@ public class ApiCaller {
 							e.printStackTrace();
 						}
 					}
-					//Iterate over all links for this page
+					// Iterate over all links for this page
 					for (Iterator<Person> linkIterator = p.getLinkList()
 							.iterator(); linkIterator.hasNext();) {
 						Person link = linkIterator.next();
 						boolean isPeople = false;
-						//Check if link is in our person list
+						// Check if link is in our person list
 						for (Iterator<Person> personIterator = personList
 								.iterator(); personIterator.hasNext();) {
 							Person person = personIterator.next();
-							//Link is a Person we know
-							if (person.getTitle().equals(link.getTitle())) {																			
+							// Link is a Person we know
+							if (person.getTitle().equals(link.getTitle())) {
 								isPeople = true;
 								link.setPageid(person.getPageid());
 								break;
 							}
 						}
-						if (isPeople) { 
-							//TODO: Connect People
+						if (isPeople) {
+							// TODO: Connect People
 							isPeople = false;
 						} else {
 							linkIterator.remove();
 						}
 					}
-				}				
-				cleanLinksFinished = true;
+				}
+
+				cleanLinksFinished.add(true);
 
 			}
 		}.start();

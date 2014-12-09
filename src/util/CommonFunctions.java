@@ -27,7 +27,7 @@ public class CommonFunctions {
 	}
 
 	public static void printCurrentTimestamp() {
-		System.out.println(new SimpleDateFormat("HH:mm:ss.SSS")
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 				.format(new Date()));
 	}
 
