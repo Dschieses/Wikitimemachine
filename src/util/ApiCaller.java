@@ -18,26 +18,36 @@ public class ApiCaller {
 	CategoryApi ca = new CategoryApi();
 
 	Category category = new Category();
+	Category category2 = new Category();
 	boolean isPeople = false;
 	boolean cleanLinksFinished=false;
 	Gson g = new Gson();
 	private String path;
 
-	public ApiCaller(String path,String category) throws IOException {
+	public ApiCaller(String path,String category1,String category2) throws IOException {
 		this.path=path;
-		this.category.setTitle(category);
+		this.category.setTitle(category1);
+		this.category2.setTitle(category2);
 	}
-
+	
 	public void start() throws Exception {
 		CommonFunctions.printCurrentTimestamp();
 		JOptionPane.showMessageDialog(null, CommonFunctions.returnCurrentTimestamp(), "Done!", JOptionPane.YES_OPTION);
 		
 		List<Person> list = ca.getCategoryMembers(category);
+		System.out.println("Category 1 done");
+		CommonFunctions.printCurrentTimestamp();
+		
+		ca = new CategoryApi();
+		List<Person> list2 = ca.getCategoryMembers(category2);
+		System.out.println("Category 2 done");
+		CommonFunctions.printCurrentTimestamp();
 		// todo: async
 		// dupletten evtl entfernen
 		personList = new ArrayList<Person>();
 		// personList.addAll(listMale);
 		personList.addAll(list);
+		personList.addAll(list2);
 
 		// Läuft asynchron
 		getCategories();

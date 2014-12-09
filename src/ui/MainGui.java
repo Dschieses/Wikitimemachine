@@ -34,9 +34,11 @@ public class MainGui {
 	private JFrame frmWikitimemachineCrawlerV;
 	private String path;
 	private String category;
-	private JFormattedTextField formattedTextField;
+	protected String category2;
 	private JButton btnSaveAs;
+	private JFormattedTextField formattedTextField;	
 	private JFormattedTextField formattedTextField_1;
+	private JFormattedTextField formattedTextField_2;
 
 	/**
 	 * Launch the application.
@@ -133,9 +135,14 @@ public class MainGui {
 		JRadioButton rdbtnReadDates = new JRadioButton("Read Dates");
 		panel.add(rdbtnReadDates);
 		bg.add(rdbtnReadDates);
+		formattedTextField_2 = new JFormattedTextField();
+		formattedTextField_2.setBounds(101, 73, 171, 20);
+		frmWikitimemachineCrawlerV.getContentPane().add(formattedTextField_2);
 
 		JButton btnNewButton = new JButton("Run");
 		btnNewButton.addActionListener(new ActionListener() {
+			
+
 			public void actionPerformed(ActionEvent e) {
 				if (path == null) {
 					return;
@@ -144,6 +151,7 @@ public class MainGui {
 					return;
 				}
 				category = formattedTextField_1.getText();
+				category2 = formattedTextField_2.getText();
 				runPerformed();
 
 			}
@@ -158,6 +166,12 @@ public class MainGui {
 		JLabel lblCategory = new JLabel("Category");
 		lblCategory.setBounds(18, 45, 46, 14);
 		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory);
+		
+		JLabel lblCategory_1 = new JLabel("Category 2");
+		lblCategory_1.setBounds(18, 76, 46, 14);
+		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory_1);
+		
+		
 
 	}
 
@@ -204,7 +218,7 @@ public class MainGui {
 	public void runPerformed() {
 		ApiCaller api;
 		try {
-			api = new ApiCaller(path, category);
+			api = new ApiCaller(path, category,category2);
 			api.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
