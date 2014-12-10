@@ -11,7 +11,9 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -19,6 +21,8 @@ import java.util.prefs.Preferences;
 import javax.swing.JButton;
 
 import util.ApiCaller;
+import util.IO;
+import util.SqlUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,6 +35,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
 
+import entity.Person;
+
 public class MainGui {
 
 	private static final String LAST_USED_FOLDER = "WIKITIMEMACHINE_LAST_USED_FOLDER";
@@ -39,8 +45,18 @@ public class MainGui {
 	private List<String> category;
 	protected String category2;
 	private JButton btnSaveAs;
-	private JFormattedTextField formattedTextField;	
+	private JFormattedTextField formattedTextField;
 	private JTextArea formattedTextField_1;
+	private JButton btnNewButton;
+	private JLabel lblCategory;
+	private JRadioButton rdbtnCrawl;
+	private JPanel panel;
+	private ButtonGroup bg;
+	private JRadioButton rdbtnReadDates;
+	private JMenuBar menuBar;
+	private JMenu mnHelp;
+	private JMenu mnFile;
+	private JPanel panel_1;
 
 	/**
 	 * Launch the application.
@@ -72,6 +88,7 @@ public class MainGui {
 	public MainGui() throws IOException {
 		initialize();
 		addMenu();
+		addActionListeners();
 
 	}
 
@@ -84,20 +101,7 @@ public class MainGui {
 		frmWikitimemachineCrawlerV.setBounds(100, 100, 450, 300);
 		frmWikitimemachineCrawlerV
 				.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	}
-
-	private void addMenu() {
-		JMenuBar menuBar = new JMenuBar();
-		frmWikitimemachineCrawlerV.setJMenuBar(menuBar);
-
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
-
-		JPanel panel_1 = new JPanel();
+		panel_1 = new JPanel();
 		panel_1.setBounds(8, 5, 264, 33);
 		frmWikitimemachineCrawlerV.getContentPane().add(panel_1);
 		btnSaveAs = new JButton("Save as...");
@@ -105,56 +109,26 @@ public class MainGui {
 		formattedTextField = new JFormattedTextField();
 		formattedTextField.setColumns(20);
 		panel_1.add(formattedTextField);
-		btnSaveAs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveAs();
-			}
-		});
+		
 
-		ButtonGroup bg = new ButtonGroup();
+		bg = new ButtonGroup();
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(277, 5, 149, 33);
 		frmWikitimemachineCrawlerV.getContentPane().add(panel);
 
-		final JRadioButton rdbtnCrawl = new JRadioButton("Crawl");
-		rdbtnCrawl.addItemListener(new ItemListener() {
+		rdbtnCrawl = new JRadioButton("Crawl");
 
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.DESELECTED) {
-					btnSaveAs.setText("Open...");
-				} else {
-					btnSaveAs.setText("Save as...");
-				}
-
-			}
-		});
 		rdbtnCrawl.setSelected(true);
 		panel.add(rdbtnCrawl);
 		bg.add(rdbtnCrawl);
 
-		JRadioButton rdbtnReadDates = new JRadioButton("Read Dates");
+		rdbtnReadDates = new JRadioButton("Read Dates");
 		panel.add(rdbtnReadDates);
 		bg.add(rdbtnReadDates);
 
-		JButton btnNewButton = new JButton("Run");
-		btnNewButton.addActionListener(new ActionListener() {
-			
+		btnNewButton = new JButton("Run");
 
-			public void actionPerformed(ActionEvent e) {
-				if (path == null) {
-					return;
-				}
-				if (formattedTextField_1.getText() == null) {
-					return;
-				}
-				category = Arrays.asList(formattedTextField_1.getText().split("\n"));
-				
-				runPerformed();
-
-			}
-		});
 		btnNewButton.setBounds(8, 206, 418, 23);
 		frmWikitimemachineCrawlerV.getContentPane().add(btnNewButton);
 
@@ -163,15 +137,81 @@ public class MainGui {
 		formattedTextField_1.setBounds(101, 42, 171, 94);
 		frmWikitimemachineCrawlerV.getContentPane().add(formattedTextField_1);
 
-		JLabel lblCategory = new JLabel("Categories");
+		lblCategory = new JLabel("Categories");
 		lblCategory.setBounds(18, 45, 79, 14);
 		frmWikitimemachineCrawlerV.getContentPane().add(lblCategory);
-		
-		
 
 	}
 
-	boolean saveAs() {
+	private void addMenu() {
+		menuBar = new JMenuBar();
+		frmWikitimemachineCrawlerV.setJMenuBar(menuBar);
+
+		mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
+
+	}
+
+	public void addActionListeners() {
+		rdbtnCrawl.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					btnSaveAs.setText("Open...");
+					visibility = false;
+				} else {
+					btnSaveAs.setText("Save as...");
+					lblCategory.setVisible(true);
+					visibility = true;
+				}
+				formattedTextField_1.setVisible(visibility);
+				lblCategory.setVisible(visibility);
+
+			}
+		});
+		btnNewButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				
+				if (path == null) {
+					return;
+				}
+				if (formattedTextField_1.getText() == null) {
+					return;
+				}
+				category = Arrays.asList(formattedTextField_1.getText().split(
+						"\n"));
+
+				try {
+					runPerformed();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		btnSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(rdbtnCrawl.isSelected())
+				{
+					openOrSave(true);	
+				}
+				else
+				{
+					openOrSave(false);	
+				}
+				
+			}
+		});
+	}
+
+	boolean openOrSave(boolean save) {
 
 		Preferences prefs = Preferences.userRoot().node(getClass().getName());
 		JFileChooser chooser;
@@ -182,7 +222,7 @@ public class MainGui {
 
 		chooser = new JFileChooser(prefs.get(LAST_USED_FOLDER,
 				new File(".").getAbsolutePath()));
-		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		chooser.setDialogType(save? JFileChooser.SAVE_DIALOG:JFileChooser.OPEN_DIALOG);
 
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"JSON FILES", "json");
@@ -190,7 +230,7 @@ public class MainGui {
 		chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
 
 		chooser.setFileFilter(filter);
-		chooser.setDialogTitle("Save as...");
+		chooser.setDialogTitle(save? "Save as...":"Open...");
 		chooser.setVisible(true);
 
 		int result = chooser.showSaveDialog(frmWikitimemachineCrawlerV);
@@ -211,18 +251,35 @@ public class MainGui {
 		return false;
 	}
 
-	public void runPerformed() {
-		ApiCaller api;
-		try {
-			api = new ApiCaller(path, category);
-			api.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void runPerformed() throws ClassNotFoundException, SQLException {
+		if(rdbtnCrawl.isSelected())
+		{
+			ApiCaller api;
+			try {
+				api = new ApiCaller(path, category);
+				api.start();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		else
+		{
+			IO io = new IO();
+			List<Person> pList = null;
+			try {
+				pList= io.readFromJsonFile(path);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			SqlUtil sq = new SqlUtil();
+			sq.storePersons(pList);
+		}
+		
 
 	}
 }

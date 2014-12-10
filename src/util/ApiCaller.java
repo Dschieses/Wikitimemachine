@@ -70,8 +70,7 @@ public class ApiCaller {
 	 *             the exception
 	 */
 	public void start() throws Exception {
-		CommonFunctions.printCurrentTimestamp();
-
+		startWatchDog();
 		personList = new ArrayList<Person>();
 
 		for (Iterator<Category> iterator = categoryList.iterator(); iterator
@@ -95,7 +94,7 @@ public class ApiCaller {
 
 		}
 		waitForCategoryMembers();
-		startWatchDog();
+		
 
 		// runs async
 		getCategoriesLinksAndClean(10);
