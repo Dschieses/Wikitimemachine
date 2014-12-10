@@ -9,16 +9,15 @@ package entity;
  * The Class Page.
  */
 public class Page {
-	
+
 	/** The title. */
 	private String title;
-	
+
 	/** The ns. */
 	private int ns;
-	
+
 	/** The pageid. */
 	private int pageid;
-	
 
 	/**
 	 * Gets the title.
@@ -32,7 +31,8 @@ public class Page {
 	/**
 	 * Sets the title.
 	 *
-	 * @param title the new title
+	 * @param title
+	 *            the new title
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -50,7 +50,8 @@ public class Page {
 	/**
 	 * Sets the ns.
 	 *
-	 * @param ns the new ns
+	 * @param ns
+	 *            the new ns
 	 */
 	public void setNs(int ns) {
 		this.ns = ns;
@@ -68,7 +69,8 @@ public class Page {
 	/**
 	 * Sets the pageid.
 	 *
-	 * @param pageid the new pageid
+	 * @param pageid
+	 *            the new pageid
 	 */
 	public void setPageid(int pageid) {
 		this.pageid = pageid;

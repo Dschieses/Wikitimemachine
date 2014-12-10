@@ -20,6 +20,7 @@ public class SqlUtil {
 	private String getCategory = "SELECT id FROM category WHERE categoryTitle=?";
 	private String personToCategory = "INSERT INTO pagetocategory VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
+	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
 
 	public void storePersons(List<Person> pList) throws SQLException, ClassNotFoundException {
 		if (pList == null) {
@@ -27,9 +28,9 @@ public class SqlUtil {
 		}
 		for (Iterator<List<Person>> iterator = CommonFunctions.split(pList, listSplit).iterator(); iterator.hasNext();) {
 			List<Person> list = iterator.next();
-			// storePages(list, "DE");
+			storePages(list, "DE");
 			storeCategories(list, "DE");
-
+			storeLinks(list, "DE");
 		}
 	}
 
@@ -117,6 +118,54 @@ public class SqlUtil {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+		}.start();
+
+	}
+
+	private void storeLinks(final List<Person> pList, final String lang) {
+		new Thread() {
+
+			@Override
+			public void run() {
+
+				DbConnector db = new DbConnector();
+				Connection c = null;
+
+				Person p;
+				String id = "";
+				try {
+					c = db.getDbConnection();
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
+					p = iterator.next();
+					if (p.getLinkList() == null) {
+						continue;
+					}
+					for (Iterator<Person> linkIterator = p.getLinkList().iterator(); linkIterator.hasNext();) {
+						id = String.valueOf(linkIterator.next().getPageid());
+
+						try {
+							db.executeUpdate(c, linkUpdate, Arrays.asList(String.valueOf(p.getPageid()), id, lang));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+
+				}
+				try {
+					db.close();
+					c.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		}.start();
