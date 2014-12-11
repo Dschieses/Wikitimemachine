@@ -14,7 +14,7 @@ public class SqlUtil {
 
 	int i = 0;
 	Connection c;
-	private int listSplit = 50;
+	private int listSplit = 20;
 	private String personUpdate = "INSERT INTO pages (pageId,title,ns,lang) VALUES (?,?,?,?);";
 	private String categoryUpdate = "INSERT INTO category (categoryTitle,lang) VALUES (?,?);";
 	private String getCategory = "SELECT id FROM category WHERE categoryTitle=?";
@@ -37,15 +37,12 @@ public class SqlUtil {
 	private void storeCategories(final List<Person> pList, final String lang) {
 		new Thread() {
 
+			private String id;
+
 			@Override
 			public void run() {
-
-				String title;
 				DbConnector db = new DbConnector();
 				Connection c = null;
-
-				Person p;
-				String id = "";
 				try {
 					c = db.getDbConnection();
 				} catch (ClassNotFoundException | SQLException e1) {
@@ -54,12 +51,12 @@ public class SqlUtil {
 				}
 
 				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					p = iterator.next();
+					Person p = iterator.next();
 					if (p.getCategoryList() == null) {
 						continue;
 					}
 					for (Iterator<Category> catIterator = p.getCategoryList().iterator(); catIterator.hasNext();) {
-						title = catIterator.next().getTitle();
+						String title = catIterator.next().getTitle();
 
 						try {
 							ResultSet r = db.executeQuery(c, getCategory, Arrays.asList(title));
@@ -109,11 +106,11 @@ public class SqlUtil {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
 					}
 
 				}
 				try {
+					db.close();
 					c.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -132,9 +129,6 @@ public class SqlUtil {
 
 				DbConnector db = new DbConnector();
 				Connection c = null;
-
-				Person p;
-				String id = "";
 				try {
 					c = db.getDbConnection();
 				} catch (ClassNotFoundException | SQLException e1) {
@@ -143,12 +137,12 @@ public class SqlUtil {
 				}
 
 				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					p = iterator.next();
+					Person p = iterator.next();
 					if (p.getLinkList() == null) {
 						continue;
 					}
 					for (Iterator<Person> linkIterator = p.getLinkList().iterator(); linkIterator.hasNext();) {
-						id = String.valueOf(linkIterator.next().getPageid());
+						String id = String.valueOf(linkIterator.next().getPageid());
 
 						try {
 							db.executeUpdate(c, linkUpdate, Arrays.asList(String.valueOf(p.getPageid()), id, lang));
@@ -156,9 +150,7 @@ public class SqlUtil {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
 					}
-
 				}
 				try {
 					db.close();
@@ -176,11 +168,6 @@ public class SqlUtil {
 		new Thread() {
 			@Override
 			public void run() {
-
-				int pageId;
-				String title;
-				int ns;
-				Person p;
 				DbConnector db = new DbConnector();
 				Connection c = null;
 				try {
@@ -191,22 +178,22 @@ public class SqlUtil {
 				}
 
 				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					p = iterator.next();
-					pageId = p.getPageid();
-					title = p.getTitle();
-					ns = p.getNs();
+					Person p = iterator.next();
+					int pageId = p.getPageid();
+					String title = p.getTitle();
+					int ns = p.getNs();
 					try {
 						db.executeUpdate(c, personUpdate,
 								Arrays.asList(String.valueOf(pageId), title, String.valueOf(ns), lang));
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
-
 						e.printStackTrace();
 					}
 
 				}
 				try {
+					db.close();
 					c.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
