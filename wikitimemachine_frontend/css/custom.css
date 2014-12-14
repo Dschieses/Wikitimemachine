@@ -1,0 +1,24 @@
+/* GENERAL */
+body {
+  padding-top: 50px;
+}
+
+/* BOOTSTRAP */
+.row{
+  padding: 40px 15px;
+}
+
+#graph {
+	height: 500px;
+}
+
+/* D3.JS */
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.link {
+   	stroke: #999;
+    stroke-opacity: .6;
+}

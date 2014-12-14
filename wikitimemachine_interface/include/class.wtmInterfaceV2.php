@@ -34,23 +34,23 @@ class wtmInterface {
 
    	//SETTER
    	public function setLang($lang) {
-   		$this->lang = $lang;
+      if($lang) { $this->lang = $lang; }
    	}
 
    	public function setYear($year) {
-   		$this->year = $year;
+      if($year) { $this->year = $year; }
    	}
 
    	public function setCat($cat) {
-   		$this->cat = $cat;
+      if($cat) { $this->cat = $cat; }
    	}
 
    	public function setLimit($limit) {
-   		$this->limit = $limit;
+      if($limit) { $this->limit = $limit; }
    	}
 
    	public function setOrder($order) {
-   		$this->order = $order;
+      if($order) { $this->order = $order; }
    	}
 
    	//MAIN FUNCTIONS
