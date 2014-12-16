@@ -63,6 +63,10 @@ public class DbConnector {
 		return rs;
 	}
 
+	public ResultSet executeQuery(Connection con, String statement) throws SQLException {
+		return executeQuery(con, statement, null);
+	}
+
 	public void close(ResultSet rs) throws SQLException {
 		if (!rs.isClosed()) {
 			rs.close();

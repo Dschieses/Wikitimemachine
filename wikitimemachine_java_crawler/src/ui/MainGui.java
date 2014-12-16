@@ -47,11 +47,12 @@ public class MainGui {
 	private JRadioButton rdbtnCrawl;
 	private JPanel panel;
 	private ButtonGroup bg;
-	private JRadioButton rdbtnReadDates;
+	private JRadioButton rdbtnStoreSQL;
 	private JMenuBar menuBar;
 	private JMenu mnHelp;
 	private JMenu mnFile;
 	private JPanel panel_1;
+	private JRadioButton rdbtnDetermineDates;
 
 	/**
 	 * Launch the application.
@@ -93,7 +94,7 @@ public class MainGui {
 	private void initialize() {
 		frmWikitimemachineCrawlerV = new JFrame();
 		frmWikitimemachineCrawlerV.setTitle("WikiTimeMachine Crawler v 0.5");
-		frmWikitimemachineCrawlerV.setBounds(100, 100, 450, 300);
+		frmWikitimemachineCrawlerV.setBounds(100, 100, 519, 300);
 		frmWikitimemachineCrawlerV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel_1 = new JPanel();
 		panel_1.setBounds(8, 5, 264, 33);
@@ -107,7 +108,7 @@ public class MainGui {
 		bg = new ButtonGroup();
 
 		panel = new JPanel();
-		panel.setBounds(277, 5, 149, 33);
+		panel.setBounds(277, 5, 216, 72);
 		frmWikitimemachineCrawlerV.getContentPane().add(panel);
 
 		rdbtnCrawl = new JRadioButton("Crawl");
@@ -116,10 +117,13 @@ public class MainGui {
 		panel.add(rdbtnCrawl);
 		bg.add(rdbtnCrawl);
 
-		rdbtnReadDates = new JRadioButton("Read Dates");
-		panel.add(rdbtnReadDates);
-		bg.add(rdbtnReadDates);
+		rdbtnStoreSQL = new JRadioButton("Store to SQL");
+		panel.add(rdbtnStoreSQL);
+		bg.add(rdbtnStoreSQL);
 
+		rdbtnDetermineDates = new JRadioButton("Determine Dates");
+		panel.add(rdbtnDetermineDates);
+		bg.add(rdbtnDetermineDates);
 		btnNewButton = new JButton("Run");
 
 		btnNewButton.setBounds(8, 206, 418, 23);
@@ -154,31 +158,56 @@ public class MainGui {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				boolean visibility = true;
-				if (e.getStateChange() == ItemEvent.DESELECTED) {
-					btnSaveAs.setText("Open...");
-					visibility = false;
-				} else {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					btnSaveAs.setText("Save as...");
 					lblCategory.setVisible(true);
 					visibility = true;
+					btnSaveAs.setVisible(true);
+					formattedTextField.setVisible(true);
+
+				} else {
+
 				}
 				formattedTextField_1.setVisible(visibility);
 				lblCategory.setVisible(visibility);
 
 			}
 		});
+		rdbtnStoreSQL.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					btnSaveAs.setText("Open...");
+					visibility = false;
+					btnSaveAs.setVisible(true);
+					formattedTextField.setVisible(true);
+				}
+				formattedTextField_1.setVisible(visibility);
+				lblCategory.setVisible(visibility);
+
+			}
+		});
+		rdbtnDetermineDates.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					btnSaveAs.setVisible(false);
+					visibility = false;
+					formattedTextField.setVisible(false);
+				}
+				formattedTextField_1.setVisible(visibility);
+				lblCategory.setVisible(visibility);
+			}
+		});
+
 		btnNewButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				if (path == null) {
-					return;
-				}
-				if (formattedTextField_1.getText() == null) {
-					return;
-				}
-				category = Arrays.asList(formattedTextField_1.getText().split("\n"));
 
 				try {
 					runPerformed();
@@ -244,6 +273,13 @@ public class MainGui {
 
 	public void runPerformed() throws ClassNotFoundException, SQLException {
 		if (rdbtnCrawl.isSelected()) {
+			if (path == null) {
+				return;
+			}
+			if (formattedTextField_1.getText() == null) {
+				return;
+			}
+			category = Arrays.asList(formattedTextField_1.getText().split("\n"));
 			ApiCaller api;
 			try {
 				api = new ApiCaller(path, category);
@@ -255,7 +291,10 @@ public class MainGui {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
+		} else if (rdbtnStoreSQL.isSelected()) {
+			if (path == null) {
+				return;
+			}
 			IO io = new IO();
 			List<Person> pList = null;
 			try {
@@ -266,6 +305,11 @@ public class MainGui {
 			}
 			SqlUtil sq = new SqlUtil();
 			sq.storePersons(pList);
+		} else if (rdbtnDetermineDates.isSelected()) {
+			SqlUtil sq = new SqlUtil();
+			sq.determineDates();
+		} else {
+			System.out.println("Nothing defined");
 		}
 
 	}

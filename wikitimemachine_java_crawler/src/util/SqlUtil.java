@@ -21,6 +21,11 @@ public class SqlUtil {
 	private String personToCategory = "INSERT INTO pagetocategory VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
+	private String selectAllCategories = "SELECT * FROM category";
+	private String selectCategoryPeople = "SELECT pageId FROM pagetocategory WHERE categoryId=?";
+	private String updateIndegree = "UPDATE pages a SET indegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE toPageId=a.pageid)";
+	private String updateOutdegree = "UPDATE pages a SET outdegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE fromPageId=a.pageid)";
+	private String updateDate = "UPDATE pages SET ?=? WHERE pageId IN (?);";
 
 	public void storePersons(List<Person> pList) throws SQLException, ClassNotFoundException {
 		if (pList == null) {
@@ -31,6 +36,31 @@ public class SqlUtil {
 			storePages(list, "DE");
 			storeCategories(list, "DE");
 			storeLinks(list, "DE");
+		}
+	}
+
+	public void determineDates() {
+		DbConnector db = new DbConnector();
+		Connection c = null;
+		try {
+			c = db.getDbConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			ResultSet r = db.executeQuery(c, selectAllCategories);
+			while (r.next()) {
+				String category = r.getString("categoryTitle");
+				int catId = r.getInt("categoryId");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
