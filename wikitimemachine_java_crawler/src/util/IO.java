@@ -18,27 +18,24 @@ import com.google.gson.Gson;
 import entity.Person;
 
 public class IO {
-	public List<Person> readFromJsonFile(String path)
-			throws FileNotFoundException {
-		Scanner testScanner = new Scanner(new BufferedReader(new FileReader(
-				path)));
+	public List<Person> readFromJsonFile(String path) throws FileNotFoundException {
+		Scanner testScanner = new Scanner(new BufferedReader(new FileReader(path)));
 		Gson g = new Gson();
 		List<Person> pageList = new ArrayList<>();
 		while (testScanner.hasNext()) {
 			pageList.add(g.fromJson(testScanner.nextLine(), Person.class));
 		}
+		g = null;
 		testScanner.close();
+		path = null;
 		return pageList;
 	}
 
-	public void writeToJsonFile(List<Person> personList, String path)
-			throws IOException {
+	public void writeToJsonFile(List<Person> personList, String path) throws IOException {
 		Gson g = new Gson();
-		Writer out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(path), "UTF-8"));
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
 
-		for (Iterator<Person> iterator = personList.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Person> iterator = personList.iterator(); iterator.hasNext();) {
 			out.write(g.toJson(iterator.next()) + "\n");
 		}
 		out.close();

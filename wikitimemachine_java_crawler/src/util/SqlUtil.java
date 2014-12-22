@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import entity.Category;
@@ -14,10 +13,10 @@ public class SqlUtil {
 
 	int i = 0;
 	Connection c;
-	private int listSplit = 20;
+	private int listSplit = 50;
 	private String personUpdate = "INSERT INTO pages (pageId,title,ns,lang) VALUES (?,?,?,?);";
 	private String categoryUpdate = "INSERT INTO category (categoryTitle,lang) VALUES (?,?);";
-	private String getCategory = "SELECT id FROM category WHERE categoryTitle=?";
+	private String getCategory = "SELECT categoryId FROM category WHERE categoryTitle=?";
 	private String personToCategory = "INSERT INTO pagetocategory VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
@@ -31,11 +30,10 @@ public class SqlUtil {
 		if (pList == null) {
 			return;
 		}
-		for (Iterator<List<Person>> iterator = CommonFunctions.split(pList, listSplit).iterator(); iterator.hasNext();) {
-			List<Person> list = iterator.next();
-			storePages(list, "DE");
+		for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+			// storePages(list, "DE");
 			storeCategories(list, "DE");
-			storeLinks(list, "DE");
+			// storeConnections(list, "DE");
 		}
 	}
 
@@ -76,22 +74,24 @@ public class SqlUtil {
 				try {
 					c = db.getDbConnection();
 				} catch (ClassNotFoundException | SQLException e1) {
-					// TODO Auto-generated catch block
+
 					e1.printStackTrace();
 				}
 
-				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					Person p = iterator.next();
+				for (Person p : pList) {
+					// TODO muss wieder weg
+					// LinkListe löschen
+					p.setLinkList(null);
 					if (p.getCategoryList() == null) {
 						continue;
 					}
-					for (Iterator<Category> catIterator = p.getCategoryList().iterator(); catIterator.hasNext();) {
-						String title = catIterator.next().getTitle();
+					for (Category cat : p.getCategoryList()) {
+						String title = cat.getTitle();
 
 						try {
 							ResultSet r = db.executeQuery(c, getCategory, Arrays.asList(title));
 							if (r.first()) {
-								id = r.getString("id");
+								id = r.getString("categoryId");
 							} else {
 								db.executeUpdate(c, categoryUpdate, Arrays.asList(title, lang));
 
@@ -101,6 +101,7 @@ public class SqlUtil {
 
 								}
 							}
+							db.close(r);
 							// db.close();
 
 						} catch (SQLException e) {
@@ -110,7 +111,7 @@ public class SqlUtil {
 								try {
 									ResultSet r = db.executeQuery(c, getCategory, Arrays.asList(title));
 									if (r.first()) {
-										id = r.getString("id");
+										id = r.getString("categoryId");
 									}
 									db.close(r);
 								} catch (SQLException e1) {
@@ -137,11 +138,12 @@ public class SqlUtil {
 							e.printStackTrace();
 						}
 					}
+					p.setCategoryList(null);
 
 				}
 				try {
 					db.close();
-					c.close();
+					db.close(c);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -151,43 +153,41 @@ public class SqlUtil {
 
 	}
 
-	private void storeLinks(final List<Person> pList, final String lang) {
+	private void storeConnections(final List<Person> pList, final String lang) {
 		new Thread() {
 
 			@Override
 			public void run() {
+				for (Person p : pList) {
+					DbConnector db = new DbConnector();
+					Connection c = null;
+					try {
+						c = db.getDbConnection();
+					} catch (ClassNotFoundException | SQLException e1) {
+						// TODO Auto-generated catch block
+						// e1.printStackTrace();
+					}
 
-				DbConnector db = new DbConnector();
-				Connection c = null;
-				try {
-					c = db.getDbConnection();
-				} catch (ClassNotFoundException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					Person p = iterator.next();
 					if (p.getLinkList() == null) {
 						continue;
 					}
-					for (Iterator<Person> linkIterator = p.getLinkList().iterator(); linkIterator.hasNext();) {
-						String id = String.valueOf(linkIterator.next().getPageid());
-
+					for (Person linkPerson : p.getLinkList()) {
 						try {
-							db.executeUpdate(c, linkUpdate, Arrays.asList(String.valueOf(p.getPageid()), id, lang));
+							db.executeUpdate(c, linkUpdate, Arrays.asList(String.valueOf(p.getPageid()),
+									String.valueOf(linkPerson.getPageid()), lang));
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							// e.printStackTrace();
 						}
 					}
-				}
-				try {
-					db.close();
-					c.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+
+					try {
+						db.close();
+						db.close(c);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						// e1.printStackTrace();
+					}
 				}
 			}
 		}.start();
@@ -196,6 +196,7 @@ public class SqlUtil {
 
 	private void storePages(final List<Person> pList, final String lang) {
 		new Thread() {
+
 			@Override
 			public void run() {
 				DbConnector db = new DbConnector();
@@ -207,14 +208,10 @@ public class SqlUtil {
 					e1.printStackTrace();
 				}
 
-				for (Iterator<Person> iterator = pList.iterator(); iterator.hasNext();) {
-					Person p = iterator.next();
-					int pageId = p.getPageid();
-					String title = p.getTitle();
-					int ns = p.getNs();
+				for (Person p : pList) {
 					try {
-						db.executeUpdate(c, personUpdate,
-								Arrays.asList(String.valueOf(pageId), title, String.valueOf(ns), lang));
+						db.executeUpdate(c, personUpdate, Arrays.asList(String.valueOf(p.getPageid()), p.getTitle(),
+								String.valueOf(p.getNs()), lang));
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -224,7 +221,7 @@ public class SqlUtil {
 				}
 				try {
 					db.close();
-					c.close();
+					db.close(c);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
