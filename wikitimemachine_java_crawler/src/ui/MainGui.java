@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -53,6 +56,8 @@ public class MainGui {
 	private JMenu mnFile;
 	private JPanel panel_1;
 	private JRadioButton rdbtnDetermineDates;
+	private JComboBox langComboBox;
+	private JProgressBar progressBar;
 
 	/**
 	 * Launch the application.
@@ -140,6 +145,7 @@ public class MainGui {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void addMenu() {
 		menuBar = new JMenuBar();
 		frmWikitimemachineCrawlerV.setJMenuBar(menuBar);
@@ -149,6 +155,15 @@ public class MainGui {
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
+
+		langComboBox = new JComboBox();
+		langComboBox.setModel(new DefaultComboBoxModel(new String[] { "DE" }));
+		langComboBox.setBounds(277, 88, 171, 20);
+		frmWikitimemachineCrawlerV.getContentPane().add(langComboBox);
+
+		progressBar = new JProgressBar();
+		progressBar.setBounds(10, 181, 483, 14);
+		frmWikitimemachineCrawlerV.getContentPane().add(progressBar);
 
 	}
 
@@ -306,8 +321,14 @@ public class MainGui {
 			SqlUtil sq = new SqlUtil();
 			sq.storePersons(pList);
 		} else if (rdbtnDetermineDates.isSelected()) {
-			SqlUtil sq = new SqlUtil();
-			sq.determineDates();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					SqlUtil sq = new SqlUtil();
+					sq.determineDates(progressBar, langComboBox.getSelectedItem().toString());
+				}
+			}).start();
+
 		} else {
 			System.out.println("Nothing defined");
 		}

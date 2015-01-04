@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+
 import entity.Category;
 import entity.Person;
 
@@ -20,24 +24,25 @@ public class SqlUtil {
 	private String personToCategory = "INSERT INTO pagetocategory VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
-	private String selectAllCategories = "SELECT * FROM category";
+	private String selectAllCategories = "SELECT * FROM category WHERE categoryTitle LIKE '%Geboren%' OR categoryTitle LIKE '%gestorben%'";
 	private String selectCategoryPeople = "SELECT pageId FROM pagetocategory WHERE categoryId=?";
 	private String updateIndegree = "UPDATE pages a SET indegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE toPageId=a.pageid)";
 	private String updateOutdegree = "UPDATE pages a SET outdegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE fromPageId=a.pageid)";
 	private String updateDate = "UPDATE pages SET ?=? WHERE pageId IN (?);";
+	private int maxThreads = 15;
 
 	public void storePersons(List<Person> pList) throws SQLException, ClassNotFoundException {
 		if (pList == null) {
 			return;
 		}
 		for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-			// storePages(list, "DE");
+			storePages(list, "DE");
 			storeCategories(list, "DE");
-			// storeConnections(list, "DE");
+			storeConnections(list, "DE");
 		}
 	}
 
-	public void determineDates() {
+	public void determineDates(final JProgressBar progressBar, final String lang) {
 		DbConnector db = new DbConnector();
 		Connection c = null;
 		try {
@@ -51,11 +56,101 @@ public class SqlUtil {
 		}
 
 		try {
-			ResultSet r = db.executeQuery(c, selectAllCategories);
-			while (r.next()) {
-				String category = r.getString("categoryTitle");
-				int catId = r.getInt("categoryId");
+			// Determine number of categories
+			ResultSet r = db.executeQuery(c, "SELECT COUNT(*) as rows FROM category");
+			if (r.first()) {
+				int max = r.getInt("rows");
+				progressBar.setMaximum(max);
+			} else {
+				progressBar.setVisible(false);
 			}
+
+			r = db.executeQuery(c, selectAllCategories);
+			RegexParser rp = new RegexParser();
+			final String birthQuery = "UPDATE pages SET birthDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+			final String deathQuery = "UPDATE pages SET deathDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+			int progress = 0;
+			while (r.next()) {
+
+				final int prog = progress;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						progressBar.setValue(prog);
+					}
+				});
+
+				String category = r.getString("categoryTitle");
+				final int catId = r.getInt("categoryId");
+				final int yearBirth = rp.matchBirth(category);
+				final int yearDeath = rp.matchDeath(category);
+				if (yearBirth != -999) {
+					while (Thread.activeCount() > maxThreads) {
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					new Thread() {
+						@Override
+						public void run() {
+							DbConnector db = new DbConnector();
+							Connection c = null;
+							try {
+								c = db.getDbConnection();
+								db.executeUpdate(c, birthQuery,
+										Arrays.asList(String.valueOf(yearBirth), lang, lang, String.valueOf(catId)));
+							} catch (SQLException | ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							try {
+								db.close();
+								c.close();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				} else if (yearDeath != -999) {
+					while (Thread.activeCount() > maxThreads) {
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					new Thread() {
+						@Override
+						public void run() {
+							DbConnector db = new DbConnector();
+							Connection c = null;
+							try {
+								c = db.getDbConnection();
+								db.executeUpdate(c, deathQuery,
+										Arrays.asList(String.valueOf(yearDeath), lang, lang, String.valueOf(catId)));
+							} catch (SQLException | ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							try {
+								db.close();
+								c.close();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
+				progress++;
+			}
+			JOptionPane.showMessageDialog(null, "Finished");
+			progressBar.setValue(0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

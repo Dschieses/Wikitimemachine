@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.List;
 
 public class DbConnector {
@@ -30,12 +29,13 @@ public class DbConnector {
 		prepStmt = con.prepareStatement(statement);
 		int i = 1;
 		if (parameters != null) {
-			for (Iterator<String> iterator = parameters.iterator(); iterator.hasNext();) {
+			for (String iterator : parameters) {
 
-				prepStmt.setString(i, iterator.next());
+				prepStmt.setString(i, iterator);
 				i++;
 			}
 		}
+
 		prepStmt.executeUpdate();
 
 	}
@@ -52,9 +52,9 @@ public class DbConnector {
 		prepStmt = con.prepareStatement(statement);
 		int i = 1;
 		if (parameters != null) {
-			for (Iterator<String> iterator = parameters.iterator(); iterator.hasNext();) {
+			for (String iterator : parameters) {
 
-				prepStmt.setString(i, iterator.next());
+				prepStmt.setString(i, iterator);
 				i++;
 			}
 		}
