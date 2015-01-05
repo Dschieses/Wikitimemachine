@@ -14,7 +14,7 @@ public class RegexParser {
 	// is actually not used as there are no entries for this regEx
 	String gerBirthCenturyBC2 = "Kategorie:Geboren \\((\\d{1,4}). Jahrhundert\\) v. Chr.";
 
-	String gerBirthCenturyBCAD = "Kategorie:Geboren im (\\d{1,2}). Jahrhundert v. Chr. oder (\\d{1,2}) Jahrhundert ";
+	String gerBirthCenturyBCAD = "Kategorie:Geboren im (\\d{1,2}). Jahrhundert v. Chr. oder (\\d{1,2}). Jahrhundert";
 
 	// Century not exactly defined (Range)
 	String gerBirthCenturyRBC = "Kategorie:Geboren im (\\d{1,2}). oder (\\d{1,2}). Jahrhundert v. Chr.";
@@ -23,7 +23,7 @@ public class RegexParser {
 	String gerBirthMilleniumAD = "Kategorie:Geboren im (\\d{1,2}). Jahrtausend";
 	String gerBirthMilleniumBC = "Kategorie:Geboren im (\\d{1,2}). Jahrtausend v. Chr.";
 
-	String gerBirthMilleniumBCAD = "Kategorie:Geboren im (\\d{1,2}). Jahrtausend v. Chr. oder (\\d{1,2}) Jahrtausend ";
+	String gerBirthMilleniumBCAD = "Kategorie:Geboren im (\\d{1,2}). Jahrtausend v. Chr. oder (\\d{1,2}). Jahrtausend";
 	// Millenium not exactly defined (Range)
 	String gerBirthMilleniumRAD = "Kategorie:Geboren im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend";
 	String gerBirthMilleniumRBC = "Kategorie:Geboren im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
@@ -38,7 +38,7 @@ public class RegexParser {
 	// is actually not used as there are no entries for this regEx
 	String gerDeathCenturyBC2 = "Kategorie:Gestorben \\((\\d{1,4}). Jahrhundert\\) v. Chr.";
 
-	String gerDeathCenturyBCAD = "Kategorie:Gestorben im (\\d{1,2}). Jahrhundert v. Chr. oder (\\d{1,2}) Jahrhundert ";
+	String gerDeathCenturyBCAD = "Kategorie:Gestorben im (\\d{1,2}). Jahrhundert v. Chr. oder (\\d{1,2}). Jahrhundert";
 
 	// Century not exactly defined (Range)
 	String gerDeathCenturyRBC = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrhundert v. Chr.";
@@ -47,12 +47,12 @@ public class RegexParser {
 	String gerDeathMilleniumAD = "Kategorie:Gestorben im (\\d{1,2}). Jahrtausend";
 	String gerDeathMilleniumBC = "Kategorie:Gestorben im (\\d{1,2}). Jahrtausend v. Chr.";
 
-	String gerDeathMilleniumBCAD = "Kategorie:Gestorben im (\\d{1,2}). Jahrtausend v. Chr. oder (\\d{1,2}) Jahrtausend ";
+	String gerDeathMilleniumBCAD = "Kategorie:Gestorben im (\\d{1,2}). Jahrtausend v. Chr. oder (\\d{1,2}). Jahrtausend";
 	// Millenium not exactly defined (Range)
 	String gerDeathMilleniumRAD = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend";
 	String gerDeathMilleniumRBC = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
 
-	String gerDeath1 = "Kategorie:Gestorben (\\d{1,4})/";
+	String gerDeath1 = "Kategorie:Gestorben (\\d{1,4})";
 	String gerDeath2 = "Kategorie:Gestorben im (\\d{1,2}). Jahrhundert";
 	String gerDeath3 = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
 
@@ -113,22 +113,21 @@ public class RegexParser {
 					return Integer.parseInt(m.group(1));
 
 				}
-			}
-			// TODO: Check if correct
-			else if (input.matches(gerBirthCenturyRBC)) {
+			} else if (input.matches(gerBirthCenturyRBC)) {
 				r = Pattern.compile(gerBirthCenturyRBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return Integer.parseInt(m.group(1));
+					return -1 * ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50))
+							/ 2;
 
 				}
 			}
-			// TODO: Check if correct
+
 			else if (input.matches(gerBirthCenturyRAD)) {
 				r = Pattern.compile(gerBirthCenturyRAD);
 				m = r.matcher(input);
 				if (m.find()) {
-					return Integer.parseInt(m.group(1));
+					return ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50)) / 2;
 
 				}
 			}
@@ -239,14 +238,15 @@ public class RegexParser {
 				r = Pattern.compile(gerDeathCenturyRBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1));
+					return -1 * ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50))
+							/ 2;
 
 				}
 			} else if (input.matches(gerDeathCenturyRAD)) {
 				r = Pattern.compile(gerDeathCenturyRAD);
 				m = r.matcher(input);
 				if (m.find()) {
-					return Integer.parseInt(m.group(1));
+					return ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50)) / 2;
 
 				}
 			}

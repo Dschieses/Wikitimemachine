@@ -17,14 +17,14 @@ public class SqlUtil {
 
 	int i = 0;
 	Connection c;
-	private int listSplit = 50;
+	private int listSplit = 80;
 	private String personUpdate = "INSERT INTO pages (pageId,title,ns,lang) VALUES (?,?,?,?);";
 	private String categoryUpdate = "INSERT INTO category (categoryTitle,lang) VALUES (?,?);";
 	private String getCategory = "SELECT categoryId FROM category WHERE categoryTitle=?";
-	private String personToCategory = "INSERT INTO pagetocategory VALUES (?,?,?)";
+	private String personToCategory = "INSERT INTO pagetocategory (pageId,lang,categoryId) VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
-	private String selectAllCategories = "SELECT * FROM category WHERE categoryTitle LIKE '%Geboren%' OR categoryTitle LIKE '%gestorben%'";
+	private String selectAllCategories = "SELECT DISTINCT categoryTitle,a.categoryId FROM category a JOIN pagetocategory b ON a.categoryId=b.categoryId JOIN pages c ON b.pageId=c.pageid WHERE deathDate IS NULL AND categoryTitle LIKE '%gestorben%'";
 	private String selectCategoryPeople = "SELECT pageId FROM pagetocategory WHERE categoryId=?";
 	private String updateIndegree = "UPDATE pages a SET indegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE toPageId=a.pageid)";
 	private String updateOutdegree = "UPDATE pages a SET outdegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE fromPageId=a.pageid)";
@@ -36,9 +36,9 @@ public class SqlUtil {
 			return;
 		}
 		for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-			storePages(list, "DE");
+			// storePages(list, "DE");
 			storeCategories(list, "DE");
-			storeConnections(list, "DE");
+			// storeConnections(list, "DE");
 		}
 	}
 
@@ -157,6 +157,7 @@ public class SqlUtil {
 		}
 	}
 
+	// TODO: Check closing and connections
 	private void storeCategories(final List<Person> pList, final String lang) {
 		new Thread() {
 
@@ -164,19 +165,15 @@ public class SqlUtil {
 
 			@Override
 			public void run() {
-				DbConnector db = new DbConnector();
-				Connection c = null;
-				try {
-					c = db.getDbConnection();
-				} catch (ClassNotFoundException | SQLException e1) {
-
-					e1.printStackTrace();
-				}
-
 				for (Person p : pList) {
-					// TODO muss wieder weg
-					// LinkListe löschen
-					p.setLinkList(null);
+					DbConnector db = new DbConnector();
+					Connection c = null;
+					try {
+						c = db.getDbConnection();
+					} catch (ClassNotFoundException | SQLException e1) {
+
+						e1.printStackTrace();
+					}
 					if (p.getCategoryList() == null) {
 						continue;
 					}
@@ -220,12 +217,6 @@ public class SqlUtil {
 
 						}
 						try {
-							db.close();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
 							db.executeUpdate(c, personToCategory,
 									Arrays.asList(String.valueOf(p.getPageid()), lang, String.valueOf(id)));
 						} catch (SQLException e) {
@@ -234,15 +225,15 @@ public class SqlUtil {
 						}
 					}
 					p.setCategoryList(null);
+					try {
+						db.close();
+						db.close(c);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
-				}
-				try {
-					db.close();
-					db.close(c);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}.start();
 
