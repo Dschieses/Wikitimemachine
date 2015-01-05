@@ -18,13 +18,18 @@ public class DbConnector {
 	private PreparedStatement prepStmt;
 	private Statement st;
 	private ResultSet rs;
+	private Connection con;
 
-	public Connection getDbConnection() throws SQLException, ClassNotFoundException {
+	private Connection getDbConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
 		return DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, dbUsr, dbPwd);
 	}
 
-	public void executeUpdate(Connection con, String statement, List<String> parameters) throws SQLException {
+	public DbConnector() throws ClassNotFoundException, SQLException {
+		con = this.getDbConnection();
+	}
+
+	public void executeUpdate(String statement, List<String> parameters) throws SQLException {
 
 		prepStmt = con.prepareStatement(statement);
 		int i = 1;
@@ -35,19 +40,15 @@ public class DbConnector {
 				i++;
 			}
 		}
-
 		prepStmt.executeUpdate();
-
 	}
 
-	public void executeUpdate(Connection con, String query) throws SQLException {
-
+	public void executeUpdate(String query) throws SQLException {
 		st = con.createStatement();
 		st.executeUpdate(query);
-
 	}
 
-	public ResultSet executeQuery(Connection con, String statement, List<String> parameters) throws SQLException {
+	public ResultSet executeQuery(String statement, List<String> parameters) throws SQLException {
 
 		prepStmt = con.prepareStatement(statement);
 		int i = 1;
@@ -63,8 +64,8 @@ public class DbConnector {
 		return rs;
 	}
 
-	public ResultSet executeQuery(Connection con, String statement) throws SQLException {
-		return executeQuery(con, statement, null);
+	public ResultSet executeQuery(String statement) throws SQLException {
+		return executeQuery(statement, null);
 	}
 
 	public void close(ResultSet rs) throws SQLException {
@@ -74,23 +75,17 @@ public class DbConnector {
 	}
 
 	public void close() throws SQLException {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException ignore) {
-			}
+		if (con != null && !con.isClosed()) {
+			con.close();
 		}
-		if (prepStmt != null) {
-			try {
-				prepStmt.close();
-			} catch (SQLException ignore) {
-			}
+		if (rs != null && !rs.isClosed()) {
+			rs.close();
 		}
-		if (st != null) {
-			try {
-				st.close();
-			} catch (SQLException ignore) {
-			}
+		if (prepStmt != null && !prepStmt.isClosed()) {
+			prepStmt.close();
+		}
+		if (st != null && !st.isClosed()) {
+			st.close();
 		}
 
 	}

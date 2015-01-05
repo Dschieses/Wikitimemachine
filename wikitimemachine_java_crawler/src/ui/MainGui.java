@@ -24,7 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -56,8 +55,7 @@ public class MainGui {
 	private JMenu mnFile;
 	private JPanel panel_1;
 	private JRadioButton rdbtnDetermineDates;
-	private JComboBox langComboBox;
-	private JProgressBar progressBar;
+	private JComboBox<?> langComboBox;
 
 	/**
 	 * Launch the application.
@@ -160,11 +158,6 @@ public class MainGui {
 		langComboBox.setModel(new DefaultComboBoxModel(new String[] { "DE" }));
 		langComboBox.setBounds(277, 88, 171, 20);
 		frmWikitimemachineCrawlerV.getContentPane().add(langComboBox);
-
-		progressBar = new JProgressBar();
-		progressBar.setBounds(10, 181, 483, 14);
-		frmWikitimemachineCrawlerV.getContentPane().add(progressBar);
-
 	}
 
 	public void addActionListeners() {
@@ -325,7 +318,15 @@ public class MainGui {
 				@Override
 				public void run() {
 					SqlUtil sq = new SqlUtil();
-					sq.determineDates(progressBar, langComboBox.getSelectedItem().toString());
+					try {
+						sq.determineDates(langComboBox.getSelectedItem().toString());
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}).start();
 

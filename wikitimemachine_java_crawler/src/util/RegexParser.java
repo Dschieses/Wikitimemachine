@@ -55,11 +55,11 @@ public class RegexParser {
 	String gerDeath1 = "Kategorie:Gestorben (\\d{1,4})";
 	String gerDeath2 = "Kategorie:Gestorben im (\\d{1,2}). Jahrhundert";
 	String gerDeath3 = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
+	private Pattern r;
+	private Matcher m;
 
 	public int matchBirth(String input) {
 		try {
-			Pattern r;
-			Matcher m;
 			if (input.matches(gerBirthAD)) {
 				r = Pattern.compile(gerBirthAD);
 				m = r.matcher(input);
@@ -86,38 +86,39 @@ public class RegexParser {
 				r = Pattern.compile(gerBirthCenturyAD2);
 				m = r.matcher(input);
 				if (m.find()) {
-					return Integer.parseInt(m.group(1));
+					return Integer.parseInt(m.group(1)) * 100 - 50;
 
 				}
 			} else if (input.matches(gerBirthCenturyBC)) {
 				r = Pattern.compile(gerBirthCenturyBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1));
+					return -1 * Integer.parseInt(m.group(1)) * 100 + 50;
 
 				}
 			} else if (input.matches(gerBirthCenturyBC2)) {
 				r = Pattern.compile(gerBirthCenturyBC2);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1));
+					return -1 * Integer.parseInt(m.group(1)) * 100 + 50;
 
 				}
 
 			}
 			// TODO: Check if correct
 			else if (input.matches(gerBirthCenturyBCAD)) {
-				r = Pattern.compile(gerBirthCenturyBCAD);
-				m = r.matcher(input);
-				if (m.find()) {
-					return Integer.parseInt(m.group(1));
-
-				}
+				// r = Pattern.compile(gerBirthCenturyBCAD);
+				// m = r.matcher(input);
+				// if (m.find()) {
+				// return Integer.parseInt(m.group(1));
+				//
+				// }
+				return 0;
 			} else if (input.matches(gerBirthCenturyRBC)) {
 				r = Pattern.compile(gerBirthCenturyRBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50))
+					return -1 * ((Integer.parseInt(m.group(1)) * 100 + 50) + (Integer.parseInt(m.group(2)) * 100 + 50))
 							/ 2;
 
 				}
@@ -158,7 +159,7 @@ public class RegexParser {
 				r = Pattern.compile(gerBirthMilleniumRAD);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * (Integer.parseInt(m.group(1)) + Integer.parseInt(m.group(2))) / 2 * 1000;
+					return (Integer.parseInt(m.group(1)) + Integer.parseInt(m.group(2))) / 2 * 1000;
 
 				}
 			} else if (input.matches(gerBirthMilleniumRBC)) {
@@ -180,8 +181,6 @@ public class RegexParser {
 
 	public int matchDeath(String input) {
 		try {
-			Pattern r;
-			Matcher m;
 			if (input.matches(gerDeathAD)) {
 				r = Pattern.compile(gerDeathAD);
 				m = r.matcher(input);
@@ -208,41 +207,45 @@ public class RegexParser {
 				r = Pattern.compile(gerDeathCenturyAD2);
 				m = r.matcher(input);
 				if (m.find()) {
-					return Integer.parseInt(m.group(1));
+					return Integer.parseInt(m.group(1)) * 100 - 50;
 
 				}
 			} else if (input.matches(gerDeathCenturyBC)) {
 				r = Pattern.compile(gerDeathCenturyBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1));
+					return -1 * Integer.parseInt(m.group(1)) * 100 + 50;
 
 				}
 			} else if (input.matches(gerDeathCenturyBC2)) {
 				r = Pattern.compile(gerDeathCenturyBC2);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1));
+					return -1 * Integer.parseInt(m.group(1)) * 100 + 50;
 
 				}
+
 			}
 			// TODO: Check if correct
 			else if (input.matches(gerDeathCenturyBCAD)) {
-				r = Pattern.compile(gerDeathCenturyBCAD);
-				m = r.matcher(input);
-				if (m.find()) {
-					return Integer.parseInt(m.group(1));
-
-				}
+				// r = Pattern.compile(gerDeathCenturyBCAD);
+				// m = r.matcher(input);
+				// if (m.find()) {
+				// return Integer.parseInt(m.group(1));
+				//
+				// }
+				return 0;
 			} else if (input.matches(gerDeathCenturyRBC)) {
 				r = Pattern.compile(gerDeathCenturyRBC);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * ((Integer.parseInt(m.group(1)) * 100 - 50) + (Integer.parseInt(m.group(2)) * 100 - 50))
+					return -1 * ((Integer.parseInt(m.group(1)) * 100 + 50) + (Integer.parseInt(m.group(2)) * 100 + 50))
 							/ 2;
 
 				}
-			} else if (input.matches(gerDeathCenturyRAD)) {
+			}
+
+			else if (input.matches(gerDeathCenturyRAD)) {
 				r = Pattern.compile(gerDeathCenturyRAD);
 				m = r.matcher(input);
 				if (m.find()) {
@@ -255,12 +258,13 @@ public class RegexParser {
 				r = Pattern.compile(gerDeathMilleniumAD);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * Integer.parseInt(m.group(1)) * 1000;
+					return -1 * (Integer.parseInt(m.group(1))) * 1000;
 
 				}
 			} else if (input.matches(gerDeathMilleniumBC)) {
 				r = Pattern.compile(gerDeathMilleniumBC);
 				m = r.matcher(input);
+
 				if (m.find()) {
 					return -1 * Integer.parseInt(m.group(1)) * 1000;
 
@@ -276,7 +280,7 @@ public class RegexParser {
 				r = Pattern.compile(gerDeathMilleniumRAD);
 				m = r.matcher(input);
 				if (m.find()) {
-					return -1 * (Integer.parseInt(m.group(1)) + Integer.parseInt(m.group(2))) / 2 * 1000;
+					return (Integer.parseInt(m.group(1)) + Integer.parseInt(m.group(2))) / 2 * 1000;
 
 				}
 			} else if (input.matches(gerDeathMilleniumRBC)) {
@@ -288,7 +292,7 @@ public class RegexParser {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println(input);
 			e.printStackTrace();
 		}
 
