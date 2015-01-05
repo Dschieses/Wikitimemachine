@@ -94,6 +94,31 @@ public class SqlUtil {
 						e.printStackTrace();
 					}
 				}
+				new Thread() {
+					@Override
+					public void run() {
+						DbConnector db = null;
+						try {
+							db = new DbConnector();
+						} catch (ClassNotFoundException | SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						try {
+							db.executeUpdate(deathQuery,
+									Arrays.asList(String.valueOf(yearDeath), lang, lang, String.valueOf(catId)));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							db.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}.start();
 			}
 		}
 		JOptionPane.showMessageDialog(null, "Finished");
@@ -142,7 +167,7 @@ public class SqlUtil {
 				}
 
 				try {
-					db.executeUpdate(updateIndegree);
+					db.executeUpdate(updateOutdegree);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
