@@ -52,9 +52,6 @@ public class RegexParser {
 	String gerDeathMilleniumRAD = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend";
 	String gerDeathMilleniumRBC = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
 
-	String gerDeath1 = "Kategorie:Gestorben (\\d{1,4})";
-	String gerDeath2 = "Kategorie:Gestorben im (\\d{1,2}). Jahrhundert";
-	String gerDeath3 = "Kategorie:Gestorben im (\\d{1,2}). oder (\\d{1,2}). Jahrtausend v. Chr.";
 	private Pattern r;
 	private Matcher m;
 

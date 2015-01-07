@@ -1,0 +1,36 @@
+<?xml version="1.0"?><config>
+<ger>
+<birth>
+	<item1>Kategorie:Geboren (\d{1,4})</item1>
+	<item2>Kategorie:Geboren (\d{1,4}) v. Chr.</item2>
+	<item3>Kategorie:Geboren im (\d{1,2}). Jahrhundert</item3>
+	<item4>Kategorie:Geboren \((\d{1,4}). Jahrhundert\)</item4>
+	<item5>Kategorie:Geboren im (\d{1,2}). Jahrhundert v. Chr.</item5>
+	<item6>Kategorie:Geboren \((\d{1,4}). Jahrhundert\) v. Chr.</item6>
+	<item7>Kategorie:Geboren im (\d{1,2}). Jahrhundert v. Chr. oder (\d{1,2}). Jahrhundert</item7>
+	<item8>Kategorie:Geboren im (\d{1,2}). oder (\d{1,2}). Jahrhundert v. Chr.</item8>
+	<item9>Kategorie:Geboren im (\d{1,2}). oder (\d{1,2}). Jahrhundert</item9>
+	<item10>Kategorie:Geboren im (\d{1,2}). Jahrtausend</item10>
+	<item11>Kategorie:Geboren im (\d{1,2}). Jahrtausend v. Chr.</item11>
+	<item12>Kategorie:Geboren im (\d{1,2}). Jahrtausend v. Chr. oder (\d{1,2}). Jahrtausend</item12>
+	<item13>Kategorie:Geboren im (\d{1,2}). oder (\d{1,2}). Jahrtausend</item13>
+	<item14>Kategorie:Geboren im (\d{1,2}). oder (\d{1,2}). Jahrtausend v. Chr.</item14>
+</birth>
+<death>
+	<item15>Kategorie:Gestorben (\d{1,4})</item15>
+	<item16>Kategorie:Gestorben (\d{1,4}) v. Chr.</item16>
+	<item17>Kategorie:Gestorben im (\d{1,2}). Jahrhundert</item17>
+	<item18>Kategorie:Gestorben \((\d{1,4}). Jahrhundert\)</item18>
+	<item19>Kategorie:Gestorben im (\d{1,2}). Jahrhundert v. Chr.</item19>
+	<item20>Kategorie:Gestorben \((\d{1,4}). Jahrhundert\) v. Chr.</item20>
+	<item21>Kategorie:Gestorben im (\d{1,2}). Jahrhundert v. Chr. oder (\d{1,2}). Jahrhundert</item21>
+	<item22>Kategorie:Gestorben im (\d{1,2}). oder (\d{1,2}). Jahrhundert v. Chr.</item22>
+	<item23>Kategorie:Gestorben im (\d{1,2}). oder (\d{1,2}). Jahrhundert</item23>
+	<item24>Kategorie:Gestorben im (\d{1,2}). Jahrtausend</item24>
+	<item25>Kategorie:Gestorben im (\d{1,2}). Jahrtausend v. Chr.</item25>
+	<item26>Kategorie:Gestorben im (\d{1,2}). Jahrtausend v. Chr. oder (\d{1,2}). Jahrtausend</item26>
+	<item27>Kategorie:Gestorben im (\d{1,2}). oder (\d{1,2}). Jahrtausend</item27>
+	<item28>Kategorie:Gestorben im (\d{1,2}). oder (\d{1,2}). Jahrtausend v. Chr.</item28>
+	</death>
+</ger>
+</config>
