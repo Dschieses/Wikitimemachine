@@ -21,8 +21,8 @@ public class SqlUtil {
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
 	private String selectAllCategories = "SELECT DISTINCT categoryTitle,categoryId FROM category WHERE categoryTitle  LIKE '%geboren%' OR categoryTitle  LIKE '%gestorben%'";
-	private String updateIndegree = "UPDATE pages a SET indegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE toPageId=a.pageid)";
-	private String updateOutdegree = "UPDATE pages a SET outdegree = (SELECT COUNT(*) AS Anzahl FROM `connection` WHERE fromPageId=a.pageid)";
+	private String updateIndegree = "SELECT COUNT(*) as indegree,toPageId FROM `connection` GROUP BY toPageId";
+	private String updateOutdegree = "SELECT COUNT(*) as outdegree,fromPageId FROM `connection` GROUP BY fromPageId";
 	private int maxThreads = 15;
 	private ResultSet r;
 
@@ -47,83 +47,86 @@ public class SqlUtil {
 
 		while (r.next()) {
 
-			String category = r.getString("categoryTitle");
-			final int catId = r.getInt("categoryId");
-			final int yearBirth = rp.matchBirth(category);
-			final int yearDeath = rp.matchDeath(category);
-			if (yearBirth != -999) {
-				while (Thread.activeCount() > maxThreads) {
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				new Thread() {
-					@Override
-					public void run() {
-						DbConnector db = null;
-						try {
-							db = new DbConnector();
-						} catch (ClassNotFoundException | SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							db.executeUpdate(birthQuery,
-									Arrays.asList(String.valueOf(yearBirth), lang, lang, String.valueOf(catId)));
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						try {
-							db.close();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}.start();
-			} else if (yearDeath != -999) {
-				while (Thread.activeCount() > maxThreads) {
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				new Thread() {
-					@Override
-					public void run() {
-						DbConnector db = null;
-						try {
-							db = new DbConnector();
-						} catch (ClassNotFoundException | SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							db.executeUpdate(deathQuery,
-									Arrays.asList(String.valueOf(yearDeath), lang, lang, String.valueOf(catId)));
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						try {
-							db.close();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}.start();
-			}
+			// String category = r.getString("categoryTitle");
+			// final int catId = r.getInt("categoryId");
+			// final int yearBirth = rp.matchBirth(category);
+			// final int yearDeath = rp.matchDeath(category);
+			// if (yearBirth != -999) {
+			// while (Thread.activeCount() > maxThreads) {
+			// try {
+			// Thread.sleep(1);
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// new Thread() {
+			// @Override
+			// public void run() {
+			// DbConnector db = null;
+			// try {
+			// db = new DbConnector();
+			// } catch (ClassNotFoundException | SQLException e1) {
+			// // TODO Auto-generated catch block
+			// e1.printStackTrace();
+			// }
+			// try {
+			// db.executeUpdate(birthQuery,
+			// Arrays.asList(String.valueOf(yearBirth), lang, lang,
+			// String.valueOf(catId)));
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// try {
+			// db.close();
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// }.start();
+			// } else if (yearDeath != -999) {
+			// while (Thread.activeCount() > maxThreads) {
+			// try {
+			// Thread.sleep(1);
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// new Thread() {
+			// @Override
+			// public void run() {
+			// DbConnector db = null;
+			// try {
+			// db = new DbConnector();
+			// } catch (ClassNotFoundException | SQLException e1) {
+			// // TODO Auto-generated catch block
+			// e1.printStackTrace();
+			// }
+			// try {
+			// db.executeUpdate(deathQuery,
+			// Arrays.asList(String.valueOf(yearDeath), lang, lang,
+			// String.valueOf(catId)));
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// try {
+			// db.close();
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// }.start();
+			// }
 		}
-		JOptionPane.showMessageDialog(null, "Finished");
-		setIndegree();
+		// JOptionPane.showMessageDialog(null, "Finished");
+		// setIndegree();
 		setOutdegree();
+
 	}
 
 	private void setIndegree() {
@@ -140,13 +143,31 @@ public class SqlUtil {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				ResultSet r = null;
 				try {
-					db.executeUpdate(updateIndegree);
+					r = db.executeQuery(updateIndegree);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				try {
+					while (r.next()) {
+						db.executeUpdate("UPDATE pages SET indegree=? WHERE pageid=?",
+								Arrays.asList(r.getString("indegree"), r.getString("toPageId")));
+					}
+					JOptionPane.showMessageDialog(null, "Finished");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					db.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}.start();
 	}
@@ -165,13 +186,31 @@ public class SqlUtil {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				ResultSet r = null;
 				try {
-					db.executeUpdate(updateOutdegree);
+					r = db.executeQuery(updateOutdegree);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				try {
+					while (r.next()) {
+						db.executeUpdate("UPDATE pages SET outdegree=? WHERE pageid=?",
+								Arrays.asList(r.getString("outdegree"), r.getString("fromPageId")));
+					}
+					JOptionPane.showMessageDialog(null, "Finished");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					db.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}.start();
 	}
