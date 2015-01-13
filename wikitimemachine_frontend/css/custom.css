@@ -1,24 +1,41 @@
-/* GENERAL */
+/* General */
 body {
   padding-top: 50px;
 }
 
-/* BOOTSTRAP */
+/* Bootstrap */
 .row{
   padding: 40px 15px;
 }
 
+/* Container for Graph/Table */
 #graph {
-	height: 500px;
+	min-height: 500px;
 }
 
-/* D3.JS */
+/* Graph */
 .node {
-    stroke: #fff;
-    stroke-width: 1.5px;
+    stroke: #000;
+    stroke-width: 1px;
+    opacity: .7;
+    cursor: pointer;
 }
 
 .link {
-   	stroke: #999;
-    stroke-opacity: .6;
+   	stroke: #ddd;
+    stroke-opacity: .9;
+}
+
+text {
+  font: 9px sans-serif;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+/* Loader */
+.loader {
+  width: 50px;
+  height: 50px;
+  background: url(../img/loader.gif);
+  background-size: 100%;
+  margin: 200px auto;
 }

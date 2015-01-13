@@ -1,76 +1,234 @@
-  $(document).ready(function() {
-    initGraph(1900);
+(function($, window, document) {
 
-    $("#slider").slider({
-      min: 1900,
-      max: 2030,
+  //Define Values for Parameters
+  var options = {
+    type: "year",
+    visualization: "graph",
+    year: 0,
+    person: 0,
+    language: "en",
+    category: "%",
+    order: "indegree",
+    limit: 25
+  }
+
+  $(function() {
+   
+    //Configure Routes
+    routie({
+      '': function() {
+        window.location.href = "#about";
+      },  
+      'graph': function() {
+
+          //Set Parameters
+          options.type = "year";
+
+          //Load HTML Template for Year to Wrapper
+          $('#wrapper').html($('#year').html());
+
+          //Initialize Graph
+          $('#graph').wtmGraph(options);
+
+          //Initialize Controls for Year
+          initControls();
+          initYearControls();
+      },  
+      'person/:id': function(id) {
+
+          //Set Parameters
+          options.type = "person";
+          options.visualization = "graph";
+          options.person = id;
+
+          //Load HTML Template for Person to Wrapper
+          $('#wrapper').html($('#person').html());
+
+          //Initialize Graph
+          $('#graph').wtmGraph(options);
+
+          //Initialize Controls for Person
+          initControls();
+          initPersonControls();
+      },   
+      'about': function() {
+
+        //Load HTML Template for About to Wrapper
+        $('#wrapper').html($('#about').html());
+      },   
+      'imprint': function() {
+
+        //Load HTML Template for Imprint to Wrapper
+        $('#wrapper').html($('#imprint').html());
+      }
+    });
+  });
+
+
+  function initControls() {
+
+    //Load Languages
+    $.getJSON("http://localhost/wiki/wtmInterface/index.php?function=language", function(data) {
+      var langSelect = $("#langSelect");
+      var elementsArr = new Array();
+
+      //Add Languages to Array
+      $.each(data, function(key,value) {
+        elementsArr.push("<option value='"+value.lg_short+"' data-version='"+value.version+"'>"+value.lg_name+"</option>");
+      });
+
+      //Add Languages to Selectbox
+      langSelect.html(elementsArr.join(""));
+    });
+  }
+
+  function initCategories(version) {
+
+    var select = $("#categorySelect");
+    var elementsArr = new Array();
+
+    //Clear Selectbox
+    select.html("");
+
+    if(version > 1) {
+
+      //Enable Selectbox
+      select.html("").removeAttr("disabled");
+      elementsArr.push("<option value='%'>All</option>");
+
+      $.getJSON("http://localhost/wiki/wtmInterface/index.php?function=categories&language="+options.language, function(data) {
+
+        //Add Categories to Array
+        $.each(data, function(key,value) {
+          console.log(value);
+          elementsArr.push("<option value='"+value.categoryTitle+"'>"+value.categoryTitle+"</option>");
+        });
+
+        //Add Categories to Selectbox
+        select.html(elementsArr.join("")); 
+      });
+    } 
+    else {
+
+      //Disable Selectbox
+      select.attr("disabled","disable");
+    }
+  }
+
+  function initYearControls() {
+    
+    //Initialize Control for Language
+    $("#langSelect").change(function() {
+        options.language = this.value;
+        version = $("option:selected", this).attr("data-version");
+
+        //Initialize Categories
+        initCategories(version);
+
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
+
+    //Initialize Control for Categories  
+    $("#categorySelect").change(function() {
+        options.category = this.value;
+
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
+
+    //Initialize Control for Years  
+    $("#yearSlider").slider({
+      min: -2000,
+      max: 2000,
+      value: 0,
       slide: function(event, ui) {
-        $("#yearLabel").html(ui.value);
+
+        //Set Year to Badge
+        $("#yearBadge").html(ui.value);
       },
       stop: function(event, ui) {
-        removeGraph();
+        options.year = ui.value;
 
-        initGraph(ui.value);
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
       }
     });
 
-    var force, svg, link, node;
+    //Initialize Control for Visualization  
+    $("#visualizationSelect").change(function() {
+        options.visualization = this.value;
 
-    function initGraph(year) {
-      var width = 700,
-          height = 500;
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
 
-      var color = d3.scale.category20();
+    //Initialize Control for Limit  
+    $("#limitSlider").slider({
+      min: 1,
+      max: 100,
+      value: 25,
+      slide: function(event, ui) {
 
-      force = d3.layout.force()
-          .charge(-120)
-          .linkDistance(30)
-          .size([width, height]);
+        //Set Limit to Badge
+        $("#nodeBadge").html(ui.value);
+      },
+      stop: function(event, ui) {
+        options.limit = ui.value;
 
-      svg = d3.select("#graph").append("svg")
-          .attr("width", width)
-          .attr("height", height);
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+      }
+    });
 
-      d3.json("http://localhost/wiki/wtmInterface/index.php?year=" + year, function(error, graph) {
-        force
-            .nodes(graph.nodes)
-            .links(graph.links)
-            .start();
+    //Initialize Control for Order 
+    $("#orderSelect").change(function() {
+        options.order = this.value;
 
-        link = svg.selectAll(".link")
-            .data(graph.links)
-          .enter().append("line")
-            .attr("class", "link")
-            .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
+  }
 
-        node = svg.selectAll(".node")
-            .data(graph.nodes)
-          .enter().append("circle")
-            .attr("class", "node")
-            .attr("r", 5)
-            .style("fill", function(d) { return color(d.group); })
-            .call(force.drag);
+  function initPersonControls() {
 
-        node.append("title")
-            .text(function(d) { return d.name; });
+    $("#testit").click(function() {
+      routie('year');
+    });
 
-        force.on("tick", function() {
-          link.attr("x1", function(d) { return d.source.x; })
-              .attr("y1", function(d) { return d.source.y; })
-              .attr("x2", function(d) { return d.target.x; })
-              .attr("y2", function(d) { return d.target.y; });
+    //Initialize Control for Limit 
+    $("#limitSlider").slider({
+      min: 1,
+      max: 100,
+      value: 25,
+      slide: function(event, ui) {
 
-          node.attr("cx", function(d) { return d.x; })
-              .attr("cy", function(d) { return d.y; });
-        });
-      });
-    }
+        //Set Limit to Badge
+        $("#nodeBadge").html(ui.value);
+      },
+      stop: function(event, ui) {
+        options.limit = ui.value;
 
-    function removeGraph() {
-      node.remove();
-      link.remove();
-      svg.remove();
-      nodes = [];
-      links = [];     
-    }
-  });
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+      }
+    });
+
+    //Initialize Control for Order 
+    $("#orderSelect").change(function() {
+        options.order = this.value;
+
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
+
+    //Initialize Control for Visualization 
+    $("#visualizationSelect").change(function() {
+        options.visualization = this.value;
+
+        //Initialize Graph
+        $('#graph').wtmGraph(options);
+    });
+  }
+
+}(window.jQuery, window, document));

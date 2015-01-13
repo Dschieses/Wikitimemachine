@@ -1,28 +1,56 @@
 <?php
+	error_reporting(0);
 
-	require_once "include/class.wtmInterfaceV1.php";
-	require_once "include/class.wtmInterfaceV2.php";
+	require_once "include/class.wtmLanguages.php";
+	require_once "include/class.wtmGraph.php";
 
-	if($_GET["v"] == "1") {
-		$interface = new wtmInterfaceV1();
-
-		if(isset($_GET["year"])) { $interface->setYear($_GET["year"]); }
-		if(isset($_GET["lang"])) { $interface->setLang($_GET["lang"]); }
-		if(isset($_GET["limit"])) { $interface->setLimit($_GET["limit"]); }
-		if(isset($_GET["order"])) { $interface->setOrder($_GET["order"]); }
-
-		$interface->printJson();
+	if(EMPTY($_GET)) {
+		echo "ERROR: FUNTION REQUIRED";
 	}
 	else {
-		$interface = new wtmInterfaceV2();
+		if($_GET["function"] == "language") {
+			$languages = new wtmLanguages();
 
-		if(isset($_GET["year"])) { $interface->setYear($_GET["year"]); }
-		if(isset($_GET["lang"])) { $interface->setLang($_GET["lang"]); }
-		if(isset($_GET["cat"])) { $interface->setCat($_GET["cat"]); }
-		if(isset($_GET["limit"])) { $interface->setLimit($_GET["limit"]); }
-		if(isset($_GET["order"])) { $interface->setOrder($_GET["order"]); }
+			$languages->printLanguages();
+			unset($languages);
+		}
+		elseif($_GET["function"] == "person" || $_GET["function"] == "year") {
+			$languages = new wtmLanguages();
+			$languages->setDatabase($_GET["language"]);
 
-		$interface->printJson();
+			$interface = new wtmGraph();
+			$interface->setDbHost($languages->lg_host);
+			$interface->setDbUser($languages->lg_user);
+			$interface->setDbPass($languages->lg_pass);
+			$interface->setDbName($languages->lg_name);
+			$interface->setVersion($languages->version);
+
+			if(isset($_GET["function"])) { $interface->setFunction($_GET["function"]); }
+			if(isset($_GET["year"])) { $interface->setYear($_GET["year"]); }
+			if(isset($_GET["person"])) { $interface->setPerson($_GET["person"]); }
+			if(isset($_GET["category"])) { $interface->setCategory($_GET["category"]); }
+			if(isset($_GET["nodes"])) { $interface->setNodes($_GET["nodes"]); }
+			if(isset($_GET["order"])) { $interface->setOrder($_GET["order"]); }
+
+			$interface->printGraph();	
+			unset($interface);	
+		}	
+		elseif($_GET["function"] == "categories") {
+			$languages = new wtmLanguages();
+			$languages->setDatabase($_GET["language"]);
+
+			$interface = new wtmGraph();
+			$interface->setDbHost($languages->lg_host);
+			$interface->setDbUser($languages->lg_user);
+			$interface->setDbPass($languages->lg_pass);
+			$interface->setDbName($languages->lg_name);
+			$interface->setVersion($languages->version);
+
+			if(isset($_GET["function"])) { $interface->setFunction($_GET["function"]); }
+			if(isset($_GET["version"])) { $interface->setVersion($_GET["version"]); }
+
+			$interface->printCategories();	
+			unset($interface);	
+		}
 	}
-
 ?>
