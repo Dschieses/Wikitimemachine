@@ -7,16 +7,20 @@
 	<item>Kategorie:Gestorben (\d{1,4})</item>
 	<item>Kategorie:Gestorben (\d{1,4}) v. Chr.</item>
 	</year>
-	<century>
+	<centuryAD>
 	<item>Kategorie:Geboren im (\d{1,2}). Jahrhundert</item>
 	<item>Kategorie:Geboren \((\d{1,4}). Jahrhundert\)</item>
-	<item>Kategorie:Geboren im (\d{1,2}). Jahrhundert v. Chr.</item>
-	<item>Kategorie:Geboren \((\d{1,4}). Jahrhundert\) v. Chr.</item>
+	
 	<item>Kategorie:Gestorben im (\d{1,2}). Jahrhundert</item>
 	<item>Kategorie:Gestorben \((\d{1,4}). Jahrhundert\)</item>
+	
+	</centuryAD>
+	<centuryBC>
+	<item>Kategorie:Geboren im (\d{1,2}). Jahrhundert v. Chr.</item>
+	<item>Kategorie:Geboren \((\d{1,4}). Jahrhundert\) v. Chr.</item>
 	<item>Kategorie:Gestorben im (\d{1,2}). Jahrhundert v. Chr.</item>
 	<item>Kategorie:Gestorben \((\d{1,4}). Jahrhundert\) v. Chr.</item>
-	</century>
+	<centuryBC>
 	<centuryRange>
 	<item>Kategorie:Geboren im (\d{1,2}). Jahrhundert v. Chr. oder (\d{1,2}). Jahrhundert</item>
 	<item>Kategorie:Geboren im (\d{1,2}). oder (\d{1,2}). Jahrhundert v. Chr.</item>
