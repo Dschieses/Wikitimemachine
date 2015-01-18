@@ -15,7 +15,7 @@ public class RegexParser {
 
 	public RegexParser(){
 		//TODO create regEx file path and make languages changeable
-		XMLReader read = new XMLReader("regEx.xml",regExCategoryName);
+		XMLReader read = new XMLReader("src/util/regEx.xml",regExCategoryName);
 		regExCategory= read.readXML("de_DE");
 	}
 	
