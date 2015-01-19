@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -32,6 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import util.ApiCaller;
 import util.IO;
 import util.SqlUtil;
+import util.StoreMethods;
 import entity.Person;
 
 public class MainGui {
@@ -49,18 +52,24 @@ public class MainGui {
 	private JRadioButton rdbtnCrawl;
 	private JPanel panel;
 	private ButtonGroup bg;
-	private JRadioButton rdbtnStoreSQL;
+	private JRadioButton rdbtnLoad;
 	private JMenuBar menuBar;
 	private JMenu mnHelp;
 	private JMenu mnFile;
 	private JPanel panel_1;
-	private JRadioButton rdbtnDetermineDates;
+	private JRadioButton rdbtnStorePersons;
 	private JComboBox<?> langComboBox;
+	private JRadioButton radioButton;
+	private List<Person> pList;
+	private SqlUtil sq;
+	private JRadioButton rdbtnStoreCategories;
+	private JRadioButton rdbtnStoreConnections;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -85,9 +94,11 @@ public class MainGui {
 	 * @throws IOException
 	 */
 	public MainGui() throws IOException {
+
 		initialize();
 		addMenu();
 		addActionListeners();
+		sq = new SqlUtil();
 
 	}
 
@@ -111,7 +122,7 @@ public class MainGui {
 		bg = new ButtonGroup();
 
 		panel = new JPanel();
-		panel.setBounds(277, 5, 216, 72);
+		panel.setBounds(277, 5, 216, 159);
 		frmWikitimemachineCrawlerV.getContentPane().add(panel);
 
 		rdbtnCrawl = new JRadioButton("Crawl");
@@ -120,13 +131,22 @@ public class MainGui {
 		panel.add(rdbtnCrawl);
 		bg.add(rdbtnCrawl);
 
-		rdbtnStoreSQL = new JRadioButton("Store to SQL");
-		panel.add(rdbtnStoreSQL);
-		bg.add(rdbtnStoreSQL);
+		rdbtnLoad = new JRadioButton("Load File to Memory");
+		panel.add(rdbtnLoad);
+		bg.add(rdbtnLoad);
 
-		rdbtnDetermineDates = new JRadioButton("Determine Dates");
-		panel.add(rdbtnDetermineDates);
-		bg.add(rdbtnDetermineDates);
+		rdbtnStorePersons = new JRadioButton("Store Persons");
+		panel.add(rdbtnStorePersons);
+		bg.add(rdbtnStorePersons);
+
+		rdbtnStoreCategories = new JRadioButton("Store Categories");
+		panel.add(rdbtnStoreCategories);
+
+		rdbtnStoreConnections = new JRadioButton("Store Connections");
+		panel.add(rdbtnStoreConnections);
+
+		radioButton = new JRadioButton("Determine Dates");
+		panel.add(radioButton);
 		btnNewButton = new JButton("Run");
 
 		btnNewButton.setBounds(8, 206, 418, 23);
@@ -156,7 +176,7 @@ public class MainGui {
 
 		langComboBox = new JComboBox();
 		langComboBox.setModel(new DefaultComboBoxModel(new String[] { "DE" }));
-		langComboBox.setBounds(277, 88, 171, 20);
+		langComboBox.setBounds(277, 175, 171, 20);
 		frmWikitimemachineCrawlerV.getContentPane().add(langComboBox);
 	}
 
@@ -181,7 +201,7 @@ public class MainGui {
 
 			}
 		});
-		rdbtnStoreSQL.addItemListener(new ItemListener() {
+		rdbtnLoad.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -197,7 +217,7 @@ public class MainGui {
 
 			}
 		});
-		rdbtnDetermineDates.addItemListener(new ItemListener() {
+		rdbtnStorePersons.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -299,21 +319,30 @@ public class MainGui {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (rdbtnStoreSQL.isSelected()) {
+		} else if (rdbtnLoad.isSelected()) {
 			if (path == null) {
 				return;
 			}
+			frmWikitimemachineCrawlerV.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			IO io = new IO();
-			List<Person> pList = null;
+			pList = null;
 			try {
 				pList = io.readFromJsonFile(path);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			SqlUtil sq = new SqlUtil();
-			sq.storePersons(pList);
-		} else if (rdbtnDetermineDates.isSelected()) {
+			frmWikitimemachineCrawlerV.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			JOptionPane.showOptionDialog(null, "All persons loaded.", "Done!", JOptionPane.OK_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, new String[] { "OK" }, "OK");
+
+		} else if (rdbtnStorePersons.isSelected()) {
+			sq.store(pList, StoreMethods.Pages, langComboBox.getSelectedItem().toString());
+		} else if (rdbtnStoreCategories.isSelected()) {
+			sq.store(pList, StoreMethods.Categories, langComboBox.getSelectedItem().toString());
+		} else if (rdbtnStoreConnections.isSelected()) {
+			sq.store(pList, StoreMethods.Connections, langComboBox.getSelectedItem().toString());
+		} else if (rdbtnStorePersons.isSelected()) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

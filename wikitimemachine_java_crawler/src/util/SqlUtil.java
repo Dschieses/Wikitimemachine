@@ -25,16 +25,102 @@ public class SqlUtil {
 	private String updateOutdegree = "SELECT COUNT(*) as outdegree,fromPageId FROM `connection` GROUP BY fromPageId";
 	private int maxThreads = 15;
 	private ResultSet r;
+	protected boolean watchDogFinished = false;
+	int categoriesFinished = 0;
+	int personsFinished = 0;
+	int connectionsFinished = 0;
 
-	public void storePersons(List<Person> pList) throws SQLException, ClassNotFoundException {
+	public void store(List<Person> pList, StoreMethods method, String language) throws SQLException,
+			ClassNotFoundException {
 		if (pList == null) {
 			return;
 		}
-		for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-			storePages(list, "DE");
-			storeCategories(list, "DE");
-			storeConnections(list, "DE");
+		switch (method) {
+		case Pages:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storePages(list, language);
+			}
+			break;
+		case Connections:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storeConnections(list, language);
+			}
+			break;
+		case Categories:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storeCategories(list, language);
+			}
+			break;
+
 		}
+
+	}
+
+	public void startWatchDog(final StoreMethods method) {
+		new Thread() {
+			@Override
+			public void run() {
+
+				switch (method) {
+				case Pages:
+					while (personsFinished != listSplit) {
+						System.out.println("WatchDog: " + method.toString() + " Still Alive");
+
+						CommonFunctions.printCurrentTimestamp();
+						try {
+							Thread.sleep(300 * 1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					break;
+				case Connections:
+					while (connectionsFinished != listSplit) {
+						System.out.println("WatchDog: " + method.toString() + " Still Alive");
+
+						CommonFunctions.printCurrentTimestamp();
+						try {
+							Thread.sleep(300 * 1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					break;
+				case Categories:
+					while (categoriesFinished != listSplit) {
+						System.out.println("WatchDog: " + method.toString() + " Still Alive");
+
+						CommonFunctions.printCurrentTimestamp();
+						try {
+							Thread.sleep(300 * 1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					break;
+
+				}
+
+				switch (method) {
+				case Pages:
+					JOptionPane.showOptionDialog(null, "All Persons stored.", "Done!", JOptionPane.OK_OPTION,
+							JOptionPane.INFORMATION_MESSAGE, null, new String[] { "OK" }, "OK");
+					break;
+				case Connections:
+					JOptionPane.showOptionDialog(null, "All Connections stored.", "Done!", JOptionPane.OK_OPTION,
+							JOptionPane.INFORMATION_MESSAGE, null, new String[] { "OK" }, "OK");
+					break;
+				case Categories:
+					JOptionPane.showOptionDialog(null, "All Categories stored.", "Done!", JOptionPane.OK_OPTION,
+							JOptionPane.INFORMATION_MESSAGE, null, new String[] { "OK" }, "OK");
+					break;
+
+				}
+			}
+		}.start();
 	}
 
 	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {
@@ -291,7 +377,9 @@ public class SqlUtil {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
 				}
+				categoriesFinished++;
 
 			}
 		}.start();
@@ -333,7 +421,9 @@ public class SqlUtil {
 						// TODO Auto-generated catch block
 						// e1.printStackTrace();
 					}
+
 				}
+				connectionsFinished++;
 			}
 		}.start();
 
@@ -360,6 +450,7 @@ public class SqlUtil {
 						e.printStackTrace();
 					}
 				}
+				personsFinished++;
 				try {
 					db.close();
 				} catch (SQLException e) {
