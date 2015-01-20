@@ -59,7 +59,7 @@ public class MainGui {
 	private JPanel panel_1;
 	private JRadioButton rdbtnStorePersons;
 	private JComboBox<?> langComboBox;
-	private JRadioButton radioButton;
+	private JRadioButton rdbtnDetermineDates;
 	private List<Person> pList;
 	private SqlUtil sq;
 	private JRadioButton rdbtnStoreCategories;
@@ -145,8 +145,8 @@ public class MainGui {
 		rdbtnStoreConnections = new JRadioButton("Store Connections");
 		panel.add(rdbtnStoreConnections);
 
-		radioButton = new JRadioButton("Determine Dates");
-		panel.add(radioButton);
+		rdbtnDetermineDates = new JRadioButton("Determine Dates");
+		panel.add(rdbtnDetermineDates);
 		btnNewButton = new JButton("Run");
 
 		btnNewButton.setBounds(8, 206, 418, 23);
@@ -342,7 +342,7 @@ public class MainGui {
 			sq.store(pList, StoreMethods.Categories, langComboBox.getSelectedItem().toString());
 		} else if (rdbtnStoreConnections.isSelected()) {
 			sq.store(pList, StoreMethods.Connections, langComboBox.getSelectedItem().toString());
-		} else if (rdbtnStorePersons.isSelected()) {
+		} else if (rdbtnDetermineDates.isSelected()) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

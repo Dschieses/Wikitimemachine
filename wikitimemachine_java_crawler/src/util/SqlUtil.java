@@ -21,8 +21,12 @@ public class SqlUtil {
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
 	private String selectAllCategories = "SELECT DISTINCT categoryTitle,categoryId FROM category WHERE categoryTitle  LIKE '%geboren%' OR categoryTitle  LIKE '%gestorben%'";
-	private String updateIndegree = "SELECT COUNT(*) as indegree,toPageId FROM `connection` GROUP BY toPageId";
-	private String updateOutdegree = "SELECT COUNT(*) as outdegree,fromPageId FROM `connection` GROUP BY fromPageId";
+	private String indegreeQuery = "SELECT COUNT(*) as indegree,toPageId FROM `connection` GROUP BY toPageId";
+	private String outdegreeQuery = "SELECT COUNT(*) as outdegree,fromPageId FROM `connection` GROUP BY fromPageId";
+	private final String birthQuery = "UPDATE pages SET birthDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+	private final String deathQuery = "UPDATE pages SET deathDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+	private String updateIndegreeQuery = "UPDATE pages SET indegree=? WHERE pageid=?";
+	private String updateOutdegreeQuery = "UPDATE pages SET outdegree=? WHERE pageid=?";
 	private int maxThreads = 15;
 	private ResultSet r;
 	protected boolean watchDogFinished = false;
@@ -30,30 +34,178 @@ public class SqlUtil {
 	int personsFinished = 0;
 	int connectionsFinished = 0;
 
-	public void store(List<Person> pList, StoreMethods method, String language) throws SQLException,
-			ClassNotFoundException {
-		if (pList == null) {
-			return;
-		}
-		switch (method) {
-		case Pages:
-			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-				storePages(list, language);
-			}
-			break;
-		case Connections:
-			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-				storeConnections(list, language);
-			}
-			break;
-		case Categories:
-			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
-				storeCategories(list, language);
-			}
-			break;
+	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {
+		DbConnector db = new DbConnector();
 
-		}
+		r = db.executeQuery(selectAllCategories);
+		RegexParser rp = new RegexParser();
 
+		while (r.next()) {
+			String category = r.getString("categoryTitle");
+			final int catId = r.getInt("categoryId");
+			final int yearBirth = rp.matchDate(category);
+			final int yearDeath = rp.matchDate(category);
+			if (yearBirth != -9999) {
+				while (Thread.activeCount() > maxThreads) {
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				new Thread() {
+					@Override
+					public void run() {
+						DbConnector db = null;
+						try {
+							db = new DbConnector();
+						} catch (ClassNotFoundException | SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						try {
+							db.executeUpdate(birthQuery,
+									Arrays.asList(String.valueOf(yearBirth), lang, lang, String.valueOf(catId)));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							db.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}.start();
+			} else if (yearDeath != -9999) {
+				while (Thread.activeCount() > maxThreads) {
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				new Thread() {
+					@Override
+					public void run() {
+						DbConnector db = null;
+						try {
+							db = new DbConnector();
+						} catch (ClassNotFoundException | SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						try {
+							db.executeUpdate(deathQuery,
+									Arrays.asList(String.valueOf(yearDeath), lang, lang, String.valueOf(catId)));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							db.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}.start();
+			}
+		}
+		JOptionPane.showMessageDialog(null, "Finished");
+		setIndegree();
+		setOutdegree();
+
+	}
+
+	private void setIndegree() {
+		new Thread() {
+
+			@Override
+			public void run() {
+				DbConnector db = null;
+				try {
+					db = new DbConnector();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ResultSet r = null;
+				try {
+					r = db.executeQuery(indegreeQuery);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				try {
+					while (r.next()) {
+						db.executeUpdate(updateIndegreeQuery,
+								Arrays.asList(r.getString("indegree"), r.getString("toPageId")));
+					}
+					JOptionPane.showMessageDialog(null, "Finished");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					db.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}.start();
+	}
+
+	private void setOutdegree() {
+		new Thread() {
+			@Override
+			public void run() {
+				DbConnector db = null;
+				try {
+					db = new DbConnector();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ResultSet r = null;
+				try {
+					r = db.executeQuery(outdegreeQuery);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				try {
+					while (r.next()) {
+						db.executeUpdate(updateOutdegreeQuery,
+								Arrays.asList(r.getString("outdegree"), r.getString("fromPageId")));
+					}
+					JOptionPane.showMessageDialog(null, "Finished");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					db.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}.start();
 	}
 
 	public void startWatchDog(final StoreMethods method) {
@@ -123,182 +275,30 @@ public class SqlUtil {
 		}.start();
 	}
 
-	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {
-		DbConnector db = new DbConnector();
-
-		r = db.executeQuery(selectAllCategories);
-		RegexParser rp = new RegexParser();
-		final String birthQuery = "UPDATE pages SET birthDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
-		final String deathQuery = "UPDATE pages SET deathDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
-
-		while (r.next()) {
-
-			// String category = r.getString("categoryTitle");
-			// final int catId = r.getInt("categoryId");
-			// final int yearBirth = rp.matchBirth(category);
-			// final int yearDeath = rp.matchDeath(category);
-			// if (yearBirth != -999) {
-			// while (Thread.activeCount() > maxThreads) {
-			// try {
-			// Thread.sleep(1);
-			// } catch (InterruptedException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			// new Thread() {
-			// @Override
-			// public void run() {
-			// DbConnector db = null;
-			// try {
-			// db = new DbConnector();
-			// } catch (ClassNotFoundException | SQLException e1) {
-			// // TODO Auto-generated catch block
-			// e1.printStackTrace();
-			// }
-			// try {
-			// db.executeUpdate(birthQuery,
-			// Arrays.asList(String.valueOf(yearBirth), lang, lang,
-			// String.valueOf(catId)));
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// try {
-			// db.close();
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			// }.start();
-			// } else if (yearDeath != -999) {
-			// while (Thread.activeCount() > maxThreads) {
-			// try {
-			// Thread.sleep(1);
-			// } catch (InterruptedException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			// new Thread() {
-			// @Override
-			// public void run() {
-			// DbConnector db = null;
-			// try {
-			// db = new DbConnector();
-			// } catch (ClassNotFoundException | SQLException e1) {
-			// // TODO Auto-generated catch block
-			// e1.printStackTrace();
-			// }
-			// try {
-			// db.executeUpdate(deathQuery,
-			// Arrays.asList(String.valueOf(yearDeath), lang, lang,
-			// String.valueOf(catId)));
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// try {
-			// db.close();
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			// }.start();
-			// }
+	public void store(List<Person> pList, StoreMethods method, String language) throws SQLException,
+			ClassNotFoundException {
+		if (pList == null) {
+			return;
 		}
-		// JOptionPane.showMessageDialog(null, "Finished");
-		// setIndegree();
-		setOutdegree();
-
-	}
-
-	private void setIndegree() {
-		new Thread() {
-			@Override
-			public void run() {
-				DbConnector db = null;
-				try {
-					db = new DbConnector();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				ResultSet r = null;
-				try {
-					r = db.executeQuery(updateIndegree);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				try {
-					while (r.next()) {
-						db.executeUpdate("UPDATE pages SET indegree=? WHERE pageid=?",
-								Arrays.asList(r.getString("indegree"), r.getString("toPageId")));
-					}
-					JOptionPane.showMessageDialog(null, "Finished");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
-					db.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+		switch (method) {
+		case Pages:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storePages(list, language);
 			}
-		}.start();
-	}
-
-	private void setOutdegree() {
-		new Thread() {
-			@Override
-			public void run() {
-				DbConnector db = null;
-				try {
-					db = new DbConnector();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				ResultSet r = null;
-				try {
-					r = db.executeQuery(updateOutdegree);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				try {
-					while (r.next()) {
-						db.executeUpdate("UPDATE pages SET outdegree=? WHERE pageid=?",
-								Arrays.asList(r.getString("outdegree"), r.getString("fromPageId")));
-					}
-					JOptionPane.showMessageDialog(null, "Finished");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
-					db.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+			break;
+		case Connections:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storeConnections(list, language);
 			}
-		}.start();
+			break;
+		case Categories:
+			for (List<Person> list : CommonFunctions.split(pList, listSplit)) {
+				storeCategories(list, language);
+			}
+			break;
+
+		}
+
 	}
 
 	// TODO: Check closing and connections
