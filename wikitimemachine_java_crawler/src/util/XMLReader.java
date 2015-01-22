@@ -32,6 +32,7 @@ public class XMLReader {
 			in = new FileInputStream(FileName);
 			eventReader = inputFactory.createXMLEventReader(in);
 			regExCategory = new ArrayList<ArrayList<String>>();
+			//for every category name add an arraylist
 			for (String element : regExCategoryName) {
 				regExCategory.add(new ArrayList<String>());
 			}
