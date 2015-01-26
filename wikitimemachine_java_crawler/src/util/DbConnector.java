@@ -10,11 +10,11 @@ import java.util.List;
 
 public class DbConnector {
 
-	private String db = "wikitimemachine";
-	private String port = "3307";
-	private String host = "localhost";
-	private String dbUsr = "root";
-	private String dbPwd = "derpate";
+	private String db = DbConnectionStrings.getInstance().getDb();
+	private String port = DbConnectionStrings.getInstance().getPort();
+	private String host = DbConnectionStrings.getInstance().getHost();
+	private String dbUsr = DbConnectionStrings.getInstance().getDbUsr();
+	private String dbPwd = DbConnectionStrings.getInstance().getDbPwd();
 	private PreparedStatement prepStmt;
 	private Statement st;
 	private ResultSet rs;

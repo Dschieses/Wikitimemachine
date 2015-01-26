@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -64,6 +65,8 @@ public class MainGui {
 	private SqlUtil sq;
 	private JRadioButton rdbtnStoreCategories;
 	private JRadioButton rdbtnStoreConnections;
+	private JRadioButton rdbtnComputePagerank;
+	private JMenuItem mntmDatabase;
 
 	/**
 	 * Launch the application.
@@ -141,12 +144,16 @@ public class MainGui {
 
 		rdbtnStoreCategories = new JRadioButton("Store Categories");
 		panel.add(rdbtnStoreCategories);
-
+		bg.add(rdbtnStoreCategories);
 		rdbtnStoreConnections = new JRadioButton("Store Connections");
 		panel.add(rdbtnStoreConnections);
-
+		bg.add(rdbtnStoreConnections);
+		rdbtnComputePagerank = new JRadioButton("Compute Pagerank");
+		panel.add(rdbtnComputePagerank);
+		bg.add(rdbtnComputePagerank);
 		rdbtnDetermineDates = new JRadioButton("Determine Dates");
 		panel.add(rdbtnDetermineDates);
+		bg.add(rdbtnDetermineDates);
 		btnNewButton = new JButton("Run");
 
 		btnNewButton.setBounds(8, 206, 418, 23);
@@ -170,8 +177,19 @@ public class MainGui {
 
 		mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
-		mnFile = new JMenu("File");
+		mnFile = new JMenu("Settings");
 		menuBar.add(mnFile);
+
+		mntmDatabase = new JMenuItem("Database");
+		mntmDatabase.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DbSettings dbS = new DbSettings();
+				dbS.setVisible(true);
+			}
+		});
+
+		mnFile.add(mntmDatabase);
 		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
 
 		langComboBox = new JComboBox();
@@ -223,13 +241,59 @@ public class MainGui {
 			public void itemStateChanged(ItemEvent e) {
 				boolean visibility = true;
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					btnSaveAs.setVisible(false);
-					visibility = false;
-					formattedTextField.setVisible(false);
+					setInvisible();
 				}
-				formattedTextField_1.setVisible(visibility);
-				lblCategory.setVisible(visibility);
+
 			}
+
+		});
+		rdbtnStoreCategories.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setInvisible();
+				}
+
+			}
+
+		});
+		rdbtnStoreConnections.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setInvisible();
+				}
+
+			}
+
+		});
+		rdbtnComputePagerank.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setInvisible();
+				}
+
+			}
+
+		});
+		rdbtnDetermineDates.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean visibility = true;
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setInvisible();
+				}
+
+			}
+
 		});
 
 		btnNewButton.addActionListener(new ActionListener() {
@@ -257,6 +321,13 @@ public class MainGui {
 
 			}
 		});
+	}
+
+	private void setInvisible() {
+		btnSaveAs.setVisible(false);
+		formattedTextField.setVisible(false);
+		formattedTextField_1.setVisible(false);
+		lblCategory.setVisible(false);
 	}
 
 	boolean openOrSave(boolean save) {
@@ -342,6 +413,8 @@ public class MainGui {
 			sq.store(pList, StoreMethods.Categories, langComboBox.getSelectedItem().toString());
 		} else if (rdbtnStoreConnections.isSelected()) {
 			sq.store(pList, StoreMethods.Connections, langComboBox.getSelectedItem().toString());
+		} else if (rdbtnComputePagerank.isSelected()) {
+			sq.computePagerank(langComboBox.getSelectedItem().toString());
 		} else if (rdbtnDetermineDates.isSelected()) {
 			new Thread(new Runnable() {
 				@Override
