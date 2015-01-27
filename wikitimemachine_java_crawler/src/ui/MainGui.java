@@ -1,7 +1,10 @@
 package ui;
 
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -9,6 +12,8 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +23,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -29,7 +35,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import util.ApiCaller;
@@ -174,9 +185,6 @@ public class MainGui {
 	private void addMenu() {
 		menuBar = new JMenuBar();
 		frmWikitimemachineCrawlerV.setJMenuBar(menuBar);
-
-		mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
 		mnFile = new JMenu("Settings");
 		menuBar.add(mnFile);
 
@@ -190,6 +198,82 @@ public class MainGui {
 		});
 
 		mnFile.add(mntmDatabase);
+
+		mnHelp = new JMenu("Help");
+		mnHelp.addMenuListener(new MenuListener() {
+			@Override
+			public void menuCanceled(MenuEvent arg0) {
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent arg0) {
+			}
+
+			@Override
+			public void menuSelected(MenuEvent arg0) {
+				// for copying style
+				JLabel label = new JLabel();
+				Font font = label.getFont();
+
+				// create some css from the label's font
+				StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+				style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+				style.append("font-size:" + font.getSize() + "pt;");
+
+				// html content
+				final JEditorPane ep = new JEditorPane(
+						"text/html",
+						"<html><body style=\""
+								+ style
+								+ "\">" //
+								+ "This interface is part of the COINS-Course 2014. For further information write an e-mail to<br/>"
+								+ "<center><a href='mailto:praederp@smail.uni-koeln.de'>Peter Praeder</a><br/>"
+								+ "<a href='mailto:mkoettin@smail.uni-koeln.de'>Michael Kötting</a><br/>"
+								+ "<a href='mailto:a103555@smail.uni-koeln.de'>Vladimir Trajt</a>" //
+								+ "</center></body></html>");
+
+				// handle link events
+				ep.addHyperlinkListener(new HyperlinkListener() {
+					@Override
+					public void hyperlinkUpdate(HyperlinkEvent e) {
+						if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+							// ProcessHandler.launchUrl(e.getURL().toString());
+							try {
+
+								Desktop.getDesktop().mail(new URI(e.getURL().toString()));
+								Window win = SwingUtilities.getWindowAncestor(ep);
+								win.setVisible(false);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (URISyntaxException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					}
+				});
+				ep.setEditable(false);
+				ep.setBackground(label.getBackground());
+
+				// show
+				JOptionPane.showMessageDialog(null, ep);
+				// JOptionPane
+				// .showOptionDialog(
+				// null,
+				// "For further information write a mail to praederp@smail.uni-koeln.de, mkoettin@smail.uni-koeln.de or a103555@smail.uni-koeln.de",
+				// "About.", JOptionPane.OK_OPTION,
+				// JOptionPane.INFORMATION_MESSAGE, null,
+				// new String[] { "OK" }, "OK");
+			}
+		});
+		mnHelp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		menuBar.add(mnHelp);
 		frmWikitimemachineCrawlerV.getContentPane().setLayout(null);
 
 		langComboBox = new JComboBox();
