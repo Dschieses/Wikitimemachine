@@ -90,13 +90,10 @@ class wtmGraph {
   }
 
   private function constructQueries() {
-    $this->nodesQuery["year"][2] = "SELECT pa.pageId, pa.title, pa.birthDate, pa.deathDate, pa.".$this->order." FROM category ca INNER JOIN pagetocategory pc ON ca.categoryId = pc.categoryId INNER JOIN pages pa ON pc.pageId = pa.pageId WHERE ca.categoryTitle LIKE '".$this->category."' AND pa.birthDate < ".$this->year." AND pa.deathDate > ".$this->year." GROUP BY pa.pageId ORDER BY pa.".$this->order." DESC LIMIT ".$this->nodes;
+    $this->nodesQuery["year"][2] = "SELECT pa.pageId, pa.title, pa.birthDate, pa.deathDate, pa.".$this->order." FROM category ca INNER JOIN pagetocategory pc ON ca.categoryId = pc.categoryId INNER JOIN pages pa ON pc.pageId = pa.pageId WHERE ca.categoryTitle LIKE '".utf8_decode($this->category)."' AND pa.birthDate < ".$this->year." AND pa.deathDate > ".$this->year." GROUP BY pa.pageId ORDER BY pa.".$this->order." DESC LIMIT ".$this->nodes;
     $this->nodesQuery["year"][1] = "SELECT pe.id AS pageId, pe.name AS title, pe.year_from AS birthDate, pe.year_to AS deathDate, au.".$this->order." FROM people pe INNER JOIN people_aux au ON pe.id = au.id WHERE pe.year_from < ".$this->year." AND pe.year_to > ".$this->year." ORDER BY au.".$this->order." DESC LIMIT ".$this->nodes;
 
-    $this->nodesQuery["person"][1] = "(SELECT pe.id AS pageId, pa.indegree, pe.name AS title, pe.year_from AS birthDate, pe.year_to AS deathDate FROM people pe INNER JOIN people_aux pa ON pe.id = pa.id WHERE pe.id = ".$this->person.") UNION ALL (SELECT personId AS pageId, ".$this->order.", name AS title, year_from AS birthDate, year_to AS deathDate FROM (SELECT cn.person_to AS personId, pa.indegree, pa.outdegree FROM connections_norm cn INNER JOIN people_aux pa ON cn.person_to = pa.id WHERE cn.person_from = ".$this->person." UNION ALL SELECT cn.person_from AS personId, pa.indegree, pa.outdegree FROM connections_norm cn INNER JOIN people_aux pa ON cn.person_from = pa.id WHERE cn.person_to = ".$this->person.") AS groupedLinks INNER JOIN people ON personId = id WHERE personID != ".$this->person." GROUP BY personId ORDER BY ".$this->order." DESC LIMIT ".$this->nodes.")";
-    $this->nodesQuery["person"][2] = "";
-
-    $this->categoriesQuery[2] = "SELECT categoryTitle,shortTitle,count FROM (SELECT categoryId, COUNT(categoryId) AS count FROM pagetocategory GROUP BY categoryId LIMIT 100) AS pagecategory INNER JOIN category ca ON pagecategory.categoryId = ca.categoryId ORDER BY categoryTitle";
+    $this->categoriesQuery[2] = "SELECT ca.categoryTitle, ca.shortTitle, count FROM (SELECT pc.categoryId, COUNT(pc.categoryId) AS count FROM pages pa INNER JOIN pagetocategory pc ON pa.pageId = pc.pageId WHERE pa.birthDate < ".$this->year." AND pa.deathDate > ".$this->year." GROUP BY pc.categoryId ORDER BY count DESC LIMIT 50) AS categorySelection INNER JOIN category ca ON ca.categoryId = categorySelection.categoryId ORDER BY ca.shortTitle";
 
     $this->linksQuery[2] = "SELECT fromPageId, toPageId FROM connection WHERE fromPageId IN (".implode(",", $this->pageIds).") AND toPageId IN (".implode(",", $this->pageIds).")";
     $this->linksQuery[1] = "SELECT person_from AS fromPageId, person_to AS toPageId FROM connections_norm WHERE person_from IN (".implode(",", $this->pageIds).") AND person_to IN (".implode(",", $this->pageIds).")";
@@ -144,6 +141,8 @@ class wtmGraph {
       $this->linksArr[$counter]["target"] = intval($this->mapIds[$row["toPageId"]]); 
       $counter++;
     }
+
+    $this->calcLinkValue();
   }
 
   private function getCategories() {
@@ -154,7 +153,7 @@ class wtmGraph {
   
     while($row = $result->fetch_array(MYSQLI_ASSOC)) {
       $this->categoriesArr[$counter]["categoryTitle"] = utf8_encode($row["categoryTitle"]);
-      //$this->categoriesArr[$counter]["shortTitle"] = $row["shortTitle"]; 
+      $this->categoriesArr[$counter]["shortTitle"] = utf8_encode($row["shortTitle"]); 
       $counter++;
     }    
   }
@@ -184,6 +183,21 @@ class wtmGraph {
     for($i = 0; $i < count($this->nodesArr); $i++) {
       $this->nodesArr[$i]["group"] = round(($this->nodesArr[$i]["group"] / $this->highOrder) * 10);
     }
+  }
+
+  private function calcLinkValue() {
+    for($i = 0; $i < count($this->linksArr); $i++) {
+      $tempValue = round(($this->nodesArr[$this->linksArr[$i]["target"]]["value"] + $this->nodesArr[$this->linksArr[$i]["source"]]["value"]) / 2);
+      if($tempValue > $highValue) {
+        $highValue = $tempValue;
+      }
+    }   
+
+    for($i = 0; $i < count($this->linksArr); $i++) {
+      $value = round(($this->nodesArr[$this->linksArr[$i]["target"]]["value"] + $this->nodesArr[$this->linksArr[$i]["source"]]["value"]) / 2);
+      $normValue = round(($value / $highValue) * 100);
+      $this->linksArr[$i]["value"] = $normValue;
+    }  
   }
 }
 

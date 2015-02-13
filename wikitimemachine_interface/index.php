@@ -1,5 +1,5 @@
 <?php
-	error_reporting(0);
+	header('Content-Type: text/html; charset=utf-8');
 
 	require_once "include/class.wtmLanguages.php";
 	require_once "include/class.wtmGraph.php";
@@ -15,6 +15,7 @@
 			unset($languages);
 		}
 		elseif($_GET["function"] == "person" || $_GET["function"] == "year") {
+
 			$languages = new wtmLanguages();
 			$languages->setDatabase($_GET["language"]);
 
@@ -48,6 +49,7 @@
 
 			if(isset($_GET["function"])) { $interface->setFunction($_GET["function"]); }
 			if(isset($_GET["version"])) { $interface->setVersion($_GET["version"]); }
+			if(isset($_GET["year"])) { $interface->setYear($_GET["year"]); }
 
 			$interface->printCategories();	
 			unset($interface);	

@@ -3,10 +3,10 @@
 class wtmLanguages {
  
   //DATABSE PARAMETER
-  private $db_host = "127.0.0.1";
-  private $db_user = "root";
-  private $db_pass = "";
-  private $db_name = "wtm";
+  private $db_host = "xxxxxx"; //Add Host
+  private $db_user = "xxxxxx"; //Add User
+  private $db_pass = "xxxxxx"; //Add Pass
+  private $db_name = "xxxxxx"; //Add DB Name
 	private $connection;
 
   //RESULTS
@@ -31,7 +31,7 @@ class wtmLanguages {
   }
 
   private function getLanguages() {
-    $result = $this->connection->query("SELECT id, lg_name, lg_short, version FROM languages");
+    $result = $this->connection->query("SELECT id, lg_name, lg_short, version FROM wtm_languages");
 
     $counter = 0;
 
@@ -48,7 +48,7 @@ class wtmLanguages {
   public function setDatabase($language) {
     $this->language = $language;
 
-    $result = $this->connection->query("SELECT * FROM languages WHERE lg_short = '".$this->language."'");
+    $result = $this->connection->query("SELECT * FROM wtm_languages WHERE lg_short = '".$this->language."'");
     $row = $result->fetch_array(MYSQLI_ASSOC);
 
     $this->lg_host = $row["db_host"];

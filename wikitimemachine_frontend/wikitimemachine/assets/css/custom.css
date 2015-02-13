@@ -1,0 +1,134 @@
+/* General */
+body {
+  padding-top: 50px;
+  background: url(../images/bg.png) fixed no-repeat bottom right;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+p {
+  line-height: 150%;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 12px;
+}
+
+h4 {
+
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.no-border {
+  border: none;
+}
+
+/* Bootstrap */
+.row{
+  padding: 40px 15px;
+}
+
+.navbar-inverse {
+  background-color: #f6f6f6;
+  border-color: #ddd;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #333;
+}
+
+.panel-default > .panel-heading {
+  background-color: #f6f6f6;
+}
+
+.panel {
+  border-radius: 0px !important;
+}
+
+.btn-lg { 
+  border-radius: 0px;
+}
+
+.navbar a:hover {
+  color: #333 !important;
+  text-decoration: underline !important;
+}
+
+.popover-title {
+  font-weight: 600;
+}
+
+.popover hr {
+  margin: 5px 0px 5px 0px;
+}
+
+/* Wordpress */
+.current-menu-item, .current_page_item, .current-page-ancestor {
+  color: #333;
+  text-decoration: underline; 
+}
+
+/* Graph */
+#graph {
+  min-height: 500px;
+  padding: 0px;
+}
+
+.node {
+    stroke: #000;
+    stroke-width: 1px;
+    opacity: .7;
+    cursor: pointer;
+}
+
+.link {
+   	stroke: #ccc;
+    stroke-opacity: .9;
+}
+
+text {
+  font: 7px sans-serif;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+.decile {
+  font-size: 10px;
+}
+
+.decile-1 { background: #1f77b4; }
+.decile-2 { background: #ff7f0e; }
+.decile-3 { background: #2ca02c; }
+.decile-4 { background: #d62728; }
+.decile-5 { background: #9467bd; }
+.decile-6 { background: #8c564b; }
+.decile-7 { background: #e377c2; }
+.decile-8 { background: #7f7f7f; }
+.decile-9 { background: #bcbd22; }
+.decile-10 { background: #17becf; }
+.decile-11 { background: #ddd; }
+
+/* Loader */
+.loader {
+  width: 50px;
+  height: 50px;
+  background: url(../images/loader.gif);
+  background-size: 100%;
+  margin: 200px auto;
+}
