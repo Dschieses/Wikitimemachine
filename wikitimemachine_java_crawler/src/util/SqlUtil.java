@@ -2,6 +2,7 @@ package util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,175 +36,233 @@ public class SqlUtil {
 	int connectionsFinished = 0;
 
 	private String updatePageRankQuery = "UPDATE pages SET pagerank=? WHERE pageid=? AND lang=?";
-	private String MaxPageidQuery = "select MAX(Pageid) as pageid, lang from pages Group by lang";
-	private String pageCountQuery = "SELECT COUNT(*) as pages, lang FROM `connection` Group by lang";
-	private String pagerankPageidQuery = "SELECT pageid,pagerank,lang FROM `pages`";
-	private String connectionsQuery = "SELECT fromPageId, toPageId, lang FROM `connection`";
-	private final float D = 0.85f; // a constant for Pagerank calculation
+	private String MaxPageidQuery = "select MAX(Pageid) as pageid from pages ";
+	private String pageCountQuery = "SELECT COUNT(*) as pages FROM `pages`";
+	private String pagerankPageidQuery = "SELECT pageid,pagerank FROM `pages`";
+	private String connectionsQuery = "SELECT fromPageId, toPageId FROM `connection` Where fromPageId=";
+	private String totalConnectionsQuery = "SELECT Count(*) as connectionSum, fromPageId as fromPageId FROM `connection` Group by fromPageId";
+	private final float D=0.85f; //a constant for Pagerank calculation 
+	// a constant for Pagerank calculation
 
-	public void computePagerank(final String lang) {
-		new Thread() {
-			@Override
-			public void run() {
 
-				ResultSet pageid = null;
+	
+	public void computePagerank(String lang) {
+		
+		ResultSet pageid = null;
 				ResultSet pageCount = null;
-				ResultSet outdegree = null;
+				ResultSet outdegree=null;
 				DbConnector db = null;
-				Double[] pageRank = null;
-				Double outdegreeCount[] = null; // a variable needed for
-												// calculations
-				int n = 0; // a constant for a number of pages
+				float[] pageRank=null;
+				int[] pagerankid; //store pageIds here. Array is a collection of pageIds. With this it is simplier to access all pageIds
+				//HashMap<Integer,ArrayList<Integer>> connectionsArray=new HashMap<Integer, ArrayList<Integer>>();
+				int[][]connectionsArray=null;
+				/*connectionsArray=new int[600000][];
+				for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidIndex++){
+					connectionsArray[fromPageidIndex]=new int[100];
+					for(int toPageidIndex=0;toPageidIndex< connectionsArray[fromPageidIndex].length; toPageidIndex++ ){
+						connectionsArray[fromPageidIndex][toPageidIndex]=toPageidIndex;
+					}
+					System.out.println("ok "+fromPageidIndex);
+				}
+				*/
+				
+				float outdegreeCount[]=null; //a variable needed for calculations
+				int n=0; // a constant for a number of pages; appears in calculations of pagerank
 				try {
 					db = new DbConnector();
 				} catch (ClassNotFoundException e1) {
-
+					
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-
+					
 					e1.printStackTrace();
 				}
-
+				// get Max, PageId, how many pages in total and outdegree for each page
+				//Then use pageid to initialize the pagerank array
 				try {
 					pageid = db.executeQuery(MaxPageidQuery);
-					pageCount = db.executeQuery(pageCountQuery);
-					outdegree = db.executeQuery(outdegreeQuery);
+					pageCount=db.executeQuery(pageCountQuery);
+					outdegree=db.executeQuery(outdegreeQuery);
 					while (pageid.next()) {
+			
+						
+				//	if(pageid.getString("lang").equals(lang)){
+					//	connectionsArray=new ArrayList[pageid.getInt("pageid")+1];
 
-						if (pageid.getString("lang").equals(lang)) {
-
-							pageRank = new Double[Integer.parseInt(pageid.getString("pageid")) + 1];
-							outdegreeCount = new Double[pageRank.length];
-						}
+						connectionsArray=new int[pageid.getInt("pageid")+1][];
+						pageRank=new float[pageid.getInt("pageid")+1];
+						//	pageRank=new float[Integer.parseInt(pageid.getString("pageid"))+1];
+						outdegreeCount=new float[pageRank.length];
+				//		}
 					}
-					// get pages counted
-					while (pageCount.next()) {
-						if (pageCount.getString("lang").equals(lang)) {
-							n = Integer.parseInt(pageCount.getString("pages"));
-						}
-
+					//get pages counted
+					if (pageCount.next()) {
+			//			if(pageCount.getString("lang").equals(lang)){
+						n=pageCount.getInt("pages");
+						
+						
+						//	n=Integer.parseInt(pageCount.getString("pages"));
+			//			}
+						
 					}
-					// get outdegrees of each page
+				
+					//get outdegrees of each page
 					while (outdegree.next()) {
-						if (outdegree.getString("lang").equals(lang)) {
+			//			if(outdegree.getString("lang").equals(lang)){
+							
+							//a division by D is done here instead of multiplication step in the updatePagerank Method, which is done for optimization purposes. 
+						outdegreeCount[outdegree.getInt("fromPageId")]=((long)outdegree.getInt("outdegree")/D);
+						//outdegreeCount[Integer.parseInt(outdegree.getString("fromPageId"))]=Long.parseLong(outdegree.getString("outdegree"))/D;
+			//			}
+						
+					}
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				}
+					
+				pagerankid=new int[n];
+				try{
+					ResultSet connections=null;
+					connections=db.executeQuery(totalConnectionsQuery);
+					while (connections.next()) {
+			
+						connectionsArray[connections.getInt("fromPageId")]=new int[connections.getInt("connectionSum")];
+					}
+					
+				} catch (SQLException e) {
+		
+						e.printStackTrace();
+				}
+				
+				try {
+					pageid = db.executeQuery(pagerankPageidQuery);
+				} catch (SQLException e) {
+				
+					e.printStackTrace();
+				}
 
-							// a division by D is done here instead of
-							// multiplication step in the updatePagerank Method,
-							// which is done for optimization purposes.
-							outdegreeCount[Integer.parseInt(outdegree.getString("fromPageId"))] = Double
-									.parseDouble(outdegree.getString("outdegree")) / D;
+				//initialize PageRank with value 1
+				//and other variables for each pageid 
+				
+				try {
+					int pagerankidIndex=0;
+					while (pageid.next()) {
+						pagerankid[pagerankidIndex]=pageid.getInt("pageid");
+						pageRank[pagerankid[pagerankidIndex]]=1f;
+						pagerankidIndex++;
+						
 						}
-
-					}
-
-				} catch (SQLException e) {
-
-					e.printStackTrace();
-				}
-				try {
-					pageid = db.executeQuery(pagerankPageidQuery);
-				} catch (SQLException e) {
-
-					e.printStackTrace();
-				}
-
-				// initialize PageRank with value 1
-				try {
-					while (pageid.next()) {
-
-						pageRank[Integer.parseInt(pageid.getString("pageid"))] = 1d;
-					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				pageRank = updatePageRank(db, pageRank, lang, n, outdegreeCount);
-				// save the actual pagerank to the database
+			
+				//initialize connections
+				pageid=null;
+				pageCount =null;
+				outdegree =null;
+				
+				
+				//initialize a value only if the corresponding pageid exists
 				try {
-					pageid = db.executeQuery(pagerankPageidQuery);
-				} catch (SQLException e) {
-
-					e.printStackTrace();
-				}
-
-				try {
-					while (pageid.next()) {
-
-						db.executeUpdate(
-								updatePageRankQuery,
-								Arrays.asList(pageRank[Integer.parseInt(pageid.getString("pageid"))].toString(),
-										pageid.getString("pageid"), pageid.getString("lang")));
-
+					
+					//create temp array for last indexes of each Pagerank
+					int[] connectionsArrayCursor=new int[connectionsArray.length];
+		
+					ResultSet connections=null;
+					for(int pagerankidIndex=0;pagerankidIndex < pagerankid.length ;pagerankidIndex++){
+					Statement st=db.getStatement();
+					connections=st.executeQuery((connectionsQuery+pagerankid[pagerankidIndex]));
+							while (connections.next()) {
+						
+							connectionsArray[pagerankid [pagerankidIndex ]][connectionsArrayCursor[pagerankid [pagerankidIndex ]]]=connections.getInt("topageid");
+							
+							connectionsArrayCursor[pagerankid [pagerankidIndex ]]++;
+							//put(pagerankid[pagerankidIndex], new ArrayList<Integer>());
+					
+							
+							}
+						connections=null;
+						st.close();
+					//	System.out.println("wave "+pagerankidIndex+" completed"+(System.currentTimeMillis()-ct));
+						
 					}
+					
+					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				
+				pageRank=updatePageRank(pageRank, pagerankid,	connectionsArray, n,  outdegreeCount);
+			//save the actual pagerank to the database
+			try {
+					int batchArrayIndex=0;
+					int[] parameterPageId=new int[300000];
+					float[] parameterPageRank=new float[300000];
+					
+					for(int pageRankIdIndex=0;pageRankIdIndex<pagerankid.length;pageRankIdIndex++){
+						parameterPageId[batchArrayIndex]=pagerankid[pageRankIdIndex];
+						parameterPageRank[batchArrayIndex]=pageRank[pagerankid[pageRankIdIndex]];
+						batchArrayIndex++;
+						if(batchArrayIndex==300000){
+						db.executeBatchPageRankUpdate(updatePageRankQuery, parameterPageId, parameterPageRank,lang);	
+						batchArrayIndex=0;
+						}
+						}
+					if(batchArrayIndex>0){
+						db.executeBatchPageRankUpdate(updatePageRankQuery, parameterPageId, parameterPageRank,lang);	
+						batchArrayIndex=0;
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
 				try {
 					db.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
-		}.start();
+				}		
+		
 	}
-
-	public Double[] updatePageRank(DbConnector db, Double[] pageRank, String lang, int n, Double[] outdegreeCount) {
-		double prconst = ((1d - D));
-		// ResultSet pageid=null;
-		ResultSet connections = null;
-		Double[] pageRankTmp = new Double[pageRank.length];
-		// initialize a value only if the corresponding pageid exists
-		for (int i = 0; i < pageRankTmp.length; i++) {
-			if (pageRank[i] != null) {
-				pageRankTmp[i] = 0d;
+	
+	public float[] updatePageRank(float[] pageRank, int[] pagerankid,	int[][] connectionsArray,int n, float[] outdegreeCount){
+		float prconst =(float) ((1d-D));
+		boolean noChange=true;
+		float[] pageRankTmp=new float[pageRank.length];
+		
+		do{
+			noChange=true;
+		//initiate sum operation of the pagerank
+for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidIndex++){
+	if(connectionsArray[fromPageidIndex]!=null)
+			for(int toPageidIndex=0;toPageidIndex < connectionsArray[fromPageidIndex].length; toPageidIndex++ ){
+				pageRankTmp[connectionsArray[fromPageidIndex][toPageidIndex]]=
+						pageRankTmp[connectionsArray[fromPageidIndex][toPageidIndex]]+
+						(pageRank[fromPageidIndex]/	outdegreeCount[fromPageidIndex]);
+						}
+				
 			}
-		}
-		try {
-			connections = db.executeQuery(connectionsQuery);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// initiate sum operation of the pagerank
-		try {
-			while (connections.next()) {
-				if (connections.getString("lang").equals(lang)) {
-
-					pageRankTmp[Integer.parseInt(connections.getString("topageid"))] = pageRankTmp[Integer
-							.parseInt(connections.getString("topageid"))]
-							+ (pageRank[Integer.parseInt(connections.getString("frompageid"))] / outdegreeCount[Integer
-									.parseInt(connections.getString("frompageid"))]);
+			
+			for(int i=1;i<pageRankTmp.length;i++){	
+				pageRankTmp[i]=prconst+pageRankTmp[i] ;
+				if( noChange && (pageRank[i] - pageRankTmp[i]>0.00002f)||(pageRank[i] -pageRankTmp[i]<-0.00002f)) {
+					noChange=false;
+					System.out.println(pageRank[i] - pageRankTmp[i]);
 				}
+				
 			}
-			for (int i = 1; i < pageRankTmp.length; i++) {
-				if (pageRankTmp[i] != null) {
+			
 
-					pageRankTmp[i] = prconst + pageRankTmp[i];
-				}
+			for(int i=0;i<pageRank.length;i++){
+				pageRank[i]=pageRankTmp[i];
+				pageRankTmp[i]=0f;
 			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		boolean noChange = true;
-		for (int i = 1; i < pageRank.length; i++) {
-			if (pageRankTmp[i] != null) {
-
-				if ((Math.round(pageRank[i] * 1000) / 1000d) != (Math.round(pageRankTmp[i] * 1000) / 1000d)) {
-					noChange = false;
-					i = pageRank.length;
-				}
-			}
-		}
-		if (!noChange) {
-			return updatePageRank(db, pageRankTmp, lang, n, outdegreeCount);
-		}
-		return pageRankTmp;
+			
+	}while(!noChange);
+		return pageRank;
 	}
 
 	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {

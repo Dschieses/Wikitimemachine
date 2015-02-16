@@ -48,6 +48,21 @@ public class DbConnector {
 		st.executeUpdate(query);
 	}
 
+	public void executeBatchPageRankUpdate(String query,int[] parameterPageId, float[] parameterPageRank, String lang) throws SQLException {
+		con.setAutoCommit(false);
+		PreparedStatement pstmt = con.prepareStatement(query);
+		
+			for (int i = 0;i<parameterPageId.length;i++) {
+				pstmt.setInt(2, parameterPageId[i]);
+				pstmt.setFloat(1, parameterPageRank[i]);
+				pstmt.setString(3, lang);
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
+
+		
+	}
+	
 	public ResultSet executeQuery(String statement, List<String> parameters) throws SQLException {
 
 		prepStmt = con.prepareStatement(statement);
@@ -68,6 +83,16 @@ public class DbConnector {
 		return executeQuery(statement, null);
 	}
 
+	public Statement getStatement() {
+		
+		try {
+			return con.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public void close(ResultSet rs) throws SQLException {
 		if (!rs.isClosed()) {
 			rs.close();
