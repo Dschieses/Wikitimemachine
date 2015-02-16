@@ -11,39 +11,115 @@ import javax.swing.JOptionPane;
 import entity.Category;
 import entity.Person;
 
+/**
+ * 
+ * The class has all methods implemented for creating/updating SQL database entities. This covers "pages", "category", "pagetocategory" and "connection" tables.
+ *  
+ *
+ */
 public class SqlUtil {
-
-	int i = 0;
+	
+	//int i = 0;
 	private int listSplit = 25;
+	/**
+	 *  a SQL query for inserting a new person entity into the "pages" table.
+	 */
 	private String personUpdate = "INSERT INTO pages (pageId,title,ns,lang) VALUES (?,?,?,?);";
+	/**
+	 *  a SQL query for inserting a new category entity into the "category" table.
+	 */
 	private String categoryUpdate = "INSERT INTO category (categoryTitle,lang) VALUES (?,?);";
+	/**
+	 * a SQL query for getting a category id of a specific category title.
+	 */	
 	private String getCategory = "SELECT categoryId FROM category WHERE categoryTitle=?";
+	/**
+	 *  a SQL query for inserting a new page-to-category entity into the "personToCategory" table.
+	 */
 	private String personToCategory = "INSERT INTO pagetocategory (pageId,lang,categoryId) VALUES (?,?,?)";
 	private String lastInserted = "SELECT LAST_INSERT_ID()";
+	/**
+	 *  a SQL query for inserting a new connection entity into the "connection" table. The connection represents a link betwenn 2 page id entities.
+	 */
 	private String linkUpdate = "INSERT INTO connection (fromPageId,toPageId,lang) VALUES (?,?,?)";
+	/**
+	 * a SQL query for getting a set of category names.
+	 */	
 	private String selectAllCategories = "SELECT DISTINCT categoryTitle,categoryId FROM category WHERE categoryTitle  LIKE '%geboren%' OR categoryTitle  LIKE '%gestorben%'";
+	/**
+	 * a SQL query for getting an indegree value of a specific pageid.
+	 */	
 	private String indegreeQuery = "SELECT COUNT(*) as indegree,toPageId FROM `connection` GROUP BY toPageId";
+	/**
+	 * a SQL query for getting an outdegree value of a specific pageid.
+	 */	
 	private String outdegreeQuery = "SELECT COUNT(*) as outdegree,fromPageId, lang FROM `connection` GROUP BY fromPageId, lang";
+	/**
+	 * a SQL query for setting a birth date for a specific page id.
+	 */	
 	private final String birthQuery = "UPDATE pages SET birthDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+	/**
+	 * a SQL query for setting a death date for a specific page id.
+	 */	
 	private final String deathQuery = "UPDATE pages SET deathDate=? WHERE lang=? AND pageid IN (SELECT pageId FROM pagetocategory WHERE lang=? AND categoryId=?)";
+	/**
+	 *  a SQL query for updating indegree for a specific page id.
+	 */
 	private String updateIndegreeQuery = "UPDATE pages SET indegree=? WHERE pageid=?";
+	/**
+	 *  a SQL query for updating outdegree for a specific page id.
+	 */
 	private String updateOutdegreeQuery = "UPDATE pages SET outdegree=? WHERE pageid=?";
+	/**
+	 *  a SQL query for updating page rank for a specific page id.
+	 */
+	private String updatePageRankQuery = "UPDATE pages SET pagerank=? WHERE pageid=? AND lang=?";
+	/**
+	 *  a SQL query for getting the biggest value of a page id.
+	 */
+	private String MaxPageidQuery = "select MAX(Pageid) as pageid from pages ";
+	/**
+	 *  a SQL query for getting the total number of all page entities.
+	 */
+	private String pageCountQuery = "SELECT COUNT(*) as pages FROM `pages`";
+	/**
+	 *  a SQL query for getting all page ids and corresponding page ranks.
+	 */
+	private String pagerankPageidQuery = "SELECT pageid,pagerank FROM `pages`";
+	/**
+	 *  a SQL query for getting all connections between a specific page id and other page ids.
+	 */
+	private String connectionsQuery = "SELECT fromPageId, toPageId FROM `connection` Where fromPageId=";
+	/**
+	 *  a SQL query for getting the number of all connections from a specific page id
+	 */
+	private String totalConnectionsQuery = "SELECT Count(*) as connectionSum, fromPageId as fromPageId FROM `connection` Group by fromPageId";
+	
+/**
+ * maximum number of threads used
+ */
 	private int maxThreads = 15;
-	private ResultSet r;
+		
 	protected boolean watchDogFinished = false;
+	
+	/**
+	 * A counter for finished category extraction.
+	 */
 	int categoriesFinished = 0;
+	/**
+	 * A counter for finished person extraction.
+	 */
 	int personsFinished = 0;
+	/**
+	 * A counter for finished connection extraction.
+	 */
 	int connectionsFinished = 0;
 
-	private String updatePageRankQuery = "UPDATE pages SET pagerank=? WHERE pageid=? AND lang=?";
-	private String MaxPageidQuery = "select MAX(Pageid) as pageid from pages ";
-	private String pageCountQuery = "SELECT COUNT(*) as pages FROM `pages`";
-	private String pagerankPageidQuery = "SELECT pageid,pagerank FROM `pages`";
-	private String connectionsQuery = "SELECT fromPageId, toPageId FROM `connection` Where fromPageId=";
-	private String totalConnectionsQuery = "SELECT Count(*) as connectionSum, fromPageId as fromPageId FROM `connection` Group by fromPageId";
-	private final float D=0.85f; //a constant for Pagerank calculation 
-	// a constant for Pagerank calculation
-
+	/**
+	 * a constant for Pagerank calculation
+	 */
+	private final float D=0.85f;  
+	
 
 	
 	public void computePagerank(String lang) {
@@ -267,7 +343,7 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 
 	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {
 		DbConnector db = new DbConnector();
-
+		ResultSet r;
 		r = db.executeQuery(selectAllCategories);
 		RegexParser rp = new RegexParser();
 
