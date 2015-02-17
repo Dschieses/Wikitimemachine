@@ -24,7 +24,10 @@ public class CategoryApi {
 	public CategoryApi() {
 		p = new PageApi();
 	}
-
+/**
+ * The method imports categories for each identified person from the Wikipedia web page to the person object.
+ * @param p The person object where the categories will be temporaly stored.
+ */
 	@SuppressWarnings("unchecked")
 	public void getCategories(Person p) throws Exception {
 		HttpUtil h = new HttpUtil();
@@ -39,7 +42,12 @@ public class CategoryApi {
 		p.setCategoryList((List<Category>)gson.fromJson(jsonArray.toString(),new TypeToken<List<Category>>() {}.getType()));
 
 	}
-
+/**
+ * The method gets a list of people who belong to a certain category from Wikipedia.
+ * @param c The category which is common to the result list of people
+ * @return The list of people who belong to a certain category
+ * 
+ */
 	public List<Person> getCategoryMembers(Category c) throws Exception {
 		List<Person> list = new ArrayList<Person>();
 		
@@ -56,6 +64,10 @@ public class CategoryApi {
 		return list;
 	}
 
+	/**
+	 * A method for determining whether a json query has more results
+	 * @return The method returns false if the end is reached and true if the end is not reached
+	 */
 	public boolean getCmContinue() throws JSONException {
 		if (!json.has("query-continue")) {
 			cmcontinue = "";

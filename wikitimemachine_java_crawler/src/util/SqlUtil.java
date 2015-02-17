@@ -130,17 +130,8 @@ public class SqlUtil {
 				DbConnector db = null;
 				float[] pageRank=null;
 				int[] pagerankid; //store pageIds here. Array is a collection of pageIds. With this it is simplier to access all pageIds
-				//HashMap<Integer,ArrayList<Integer>> connectionsArray=new HashMap<Integer, ArrayList<Integer>>();
 				int[][]connectionsArray=null;
-				/*connectionsArray=new int[600000][];
-				for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidIndex++){
-					connectionsArray[fromPageidIndex]=new int[100];
-					for(int toPageidIndex=0;toPageidIndex< connectionsArray[fromPageidIndex].length; toPageidIndex++ ){
-						connectionsArray[fromPageidIndex][toPageidIndex]=toPageidIndex;
-					}
-					System.out.println("ok "+fromPageidIndex);
-				}
-				*/
+				
 				
 				float outdegreeCount[]=null; //a variable needed for calculations
 				int n=0; // a constant for a number of pages; appears in calculations of pagerank
@@ -272,7 +263,7 @@ public class SqlUtil {
 					e.printStackTrace();
 				}
 				
-				pageRank=updatePageRank(pageRank, pagerankid,	connectionsArray, n,  outdegreeCount);
+				pageRank=updatePageRank(pageRank, connectionsArray, n,  outdegreeCount);
 			//save the actual pagerank to the database
 			try {
 					int batchArrayIndex=0;
@@ -303,8 +294,18 @@ public class SqlUtil {
 				}		
 		
 	}
-	
-	public float[] updatePageRank(float[] pageRank, int[] pagerankid,	int[][] connectionsArray,int n, float[] outdegreeCount){
+	/**
+	 * The method is used to only compute pagerank after all pre-work is being done. That means all necessary data is loaded from a database and is initialized as objects.
+	 * The computation is done according to the recursive formula taken from Wikipedia. The implementation is done as an iterative process in order to mind errors occurring due to continuous recursion.
+	 * Further the memory consumption and computation speed are taken into the consideration.
+	 * One iteration consists of 3 steps: 1. calculate the sum of incoming page rank quotes for each page. 2. Add the constant (1-d). 3. Determine whether the difference to the previous result is significant, i.d. bigger than 0.00002. 
+	 * @param pageRank an array of pagerank values, where each index is a page id. The last index is the maximum page id value and the 0-index is not used.
+	 * @param connectionsArray For each page id an array of connections to other page id is stored here. The connection definition is used according to the page rank calculation. The first index is page id. The second index is the index of a connection. Each array cell contains the destination page id. 
+	 * @param n total number of pages.
+	 * @param outdegreeCount outdegree of each page id. The index of the array is a page id.
+	 * @return calculated array pageranks for each page id. The index is a page id .
+	 */
+	public float[] updatePageRank(float[] pageRank,	int[][] connectionsArray,int n, float[] outdegreeCount){
 		float prconst =(float) ((1d-D));
 		boolean noChange=true;
 		float[] pageRankTmp=new float[pageRank.length];
@@ -340,7 +341,12 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 	}while(!noChange);
 		return pageRank;
 	}
-
+/**
+ * The method determines the year, in which a person was born/died. It gets from data stored in categories an appropriate birth/death date and stores it into the right 
+ * database table.
+ * @param lang a language in which the birth date/death date is written.
+ * 
+ */
 	public void determineDates(final String lang) throws SQLException, ClassNotFoundException {
 		DbConnector db = new DbConnector();
 		ResultSet r;
@@ -427,7 +433,9 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		setOutdegree();
 
 	}
-
+/**
+ * The method sets indegree for each page id. It does not need any inputs nor outputs as it works directly with the database. It has a 2 steps approach. In the 1. step it gets the indegree for a page id by executing a SQL query. 2. step is write the indegree into the database.
+ */
 	private void setIndegree() {
 		new Thread() {
 
@@ -472,6 +480,9 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		}.start();
 	}
 
+	/**
+	 * The method sets outdegree for each page id. It does not need any inputs nor outputs as it works directly with the database. It has a 2 steps approach. In the 1. step it gets the outdegree for a page id by executing a SQL query. 2. step is write the indegree into the database.
+	 */
 	private void setOutdegree() {
 		new Thread() {
 			@Override
