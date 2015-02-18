@@ -16,8 +16,18 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 
 import entity.Person;
-
+/**
+ * 
+ * The class is used to access the contents of a Json formatted text. 
+ *
+ */
 public class IO {
+	/**
+	 * A content is read from a file and is converted to a person object
+	 * @param path a path to a file with content to convert
+	 * @return a list of person objects
+	 * 
+	 */
 	public List<Person> readFromJsonFile(String path) throws FileNotFoundException {
 		Scanner testScanner = new Scanner(new BufferedReader(new FileReader(path)));
 		Gson g = new Gson();
@@ -30,7 +40,12 @@ public class IO {
 		path = null;
 		return pageList;
 	}
-
+/**
+ * A method to write a list of persons in Json format to file
+ * @param personList a list of person objects
+ * @param path a path to a file, where the list of persons should be written
+ * 
+ */
 	public void writeToJsonFile(List<Person> personList, String path) throws IOException {
 		Gson g = new Gson();
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));

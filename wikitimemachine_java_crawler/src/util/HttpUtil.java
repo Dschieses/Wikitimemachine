@@ -9,9 +9,18 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
-
+/**
+ * 
+ * The class contains a method to build a connection to a http web page and to read its contents.
+ *
+ */
 public class HttpUtil {
-
+/**
+ * A method to build a connection to a http web page and to read its contents.
+ * @param url an URL of the web page
+ * @return contents of the web page in text form
+ * 
+ */
 	public String sendGet(String url) throws IOException {
 		HttpClient client = null;
 		HttpGet request = null;

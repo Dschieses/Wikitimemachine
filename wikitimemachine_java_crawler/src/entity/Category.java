@@ -1,5 +1,13 @@
+/*
+ * Created Oct 2014 - Feb 2015 during COINS
+ * by Peter Praeder, Michael Koetting, Vladimir Trajt
+ */
 package entity;
-
+/**
+ * 
+ * @author vv
+ *
+ */
 public class Category {
 	private String title;
 
