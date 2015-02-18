@@ -1,3 +1,7 @@
+/*
+ * Created Oct 2014 - Feb 2015 during COINS
+ * by Peter Praeder, Michael Koetting, Vladimir Trajt
+ */
 package ui;
 
 import java.awt.Cursor;
@@ -49,6 +53,11 @@ import util.SqlUtil;
 import util.StoreMethods;
 import entity.Person;
 
+/**
+ * The main GUI class which has all crawler windows other than data base specific, which are in the DBSettings class.
+ * 
+ *
+ */
 public class MainGui {
 
 	private static final String LAST_USED_FOLDER = "WIKITIMEMACHINE_LAST_USED_FOLDER";

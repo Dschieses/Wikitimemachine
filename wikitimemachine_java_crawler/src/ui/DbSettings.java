@@ -1,3 +1,7 @@
+/*
+ * Created Oct 2014 - Feb 2015 during COINS
+ * by Peter Praeder, Michael Koetting, Vladimir Trajt
+ */
 package ui;
 
 import java.awt.EventQueue;
@@ -21,15 +25,47 @@ import javax.swing.border.EmptyBorder;
 import util.DbConnectionStrings;
 import util.DbConnector;
 
+/**
+ * This class represents a GUI for a database connection.
+ * 
+ *
+ */
 public class DbSettings extends JFrame {
 
+	/**
+	 * a GUI field
+	 */
 	private JPanel contentPane;
+
+	/**
+	 * a GUI field
+	 */
 	private JTextField txtServer;
+
+	/**
+	 * a GUI field
+	 */
 	private JTextField txtPort;
+
+	/**
+	 * a GUI field
+	 */
 	private JTextField txtDatabase;
+
+	/**
+	 * a GUI field
+	 */
 	private JTextField txtUser;
+
+	/**
+	 * a GUI field
+	 */
 	private JPasswordField pwdPassword;
 
+	/**
+	 * The main launch method
+	 * 
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -181,7 +217,9 @@ public class DbSettings extends JFrame {
 		contentPane.add(btnTest, gbc_btnTest);
 		this.pack();
 	}
-
+/**
+ * the method saves the database settings into the databse settings object
+ */
 	private void save() {
 		DbConnectionStrings.getInstance().setDb(txtDatabase.getText());
 		DbConnectionStrings.getInstance().setDbPwd(String.copyValueOf(pwdPassword.getPassword()));
