@@ -351,7 +351,7 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		DbConnector db = new DbConnector();
 		ResultSet r;
 		r = db.executeQuery(selectAllCategories);
-		RegexParser rp = new RegexParser();
+		RegexParser rp = new RegexParser(lang);
 
 		while (r.next()) {
 			String category = r.getString("categoryTitle");
@@ -525,7 +525,10 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 			}
 		}.start();
 	}
-
+ /**
+  * A method to watch over active Threads
+  * @param method
+  */
 	public void startWatchDog(final StoreMethods method) {
 		new Thread() {
 			@Override
@@ -592,7 +595,14 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 			}
 		}.start();
 	}
-
+/**
+ * The method stores attributes of objects "person" depending on which kind of an attribute should be stored 
+ * @param pList a list of objects "person"
+ * @param method a kind of operation which should be applied to the list
+ * @param language a current language of Wikipedia pages
+ * 
+ * 
+ */
 	public void store(List<Person> pList, StoreMethods method, String language) throws SQLException,
 			ClassNotFoundException {
 		if (pList == null) {
@@ -618,7 +628,11 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		}
 
 	}
-
+/**
+ * Stores categories to which a person of a provided list belongs to 
+ * @param pList list of persons
+ * @param lang  a current language of Wikipedia pages
+ */
 	// TODO: Check closing and connections
 	private void storeCategories(final List<Person> pList, final String lang) {
 		new Thread() {
@@ -703,7 +717,12 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		}.start();
 
 	}
-
+/**
+ * 
+ *Stores connections  which a person of a provided list has to other persons on Wikipedia 
+ * @param pList list of persons
+ * @param lang  a current language of Wikipedia pages
+ */
 	private void storeConnections(final List<Person> pList, final String lang) {
 		new Thread() {
 
@@ -746,7 +765,11 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		}.start();
 
 	}
-
+/**
+ * Stores pages which represent a person in a specific Wikipedia language 
+ * @param pList list of persons
+ * @param lang  a current language of Wikipedia pages
+ */
 	private void storePages(final List<Person> pList, final String lang) {
 		new Thread() {
 
