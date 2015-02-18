@@ -351,7 +351,7 @@ for(int fromPageidIndex=0;fromPageidIndex < connectionsArray.length ;fromPageidI
 		DbConnector db = new DbConnector();
 		ResultSet r;
 		r = db.executeQuery(selectAllCategories);
-		RegexParser rp = new RegexParser();
+		RegexParser rp = new RegexParser(lang);
 
 		while (r.next()) {
 			String category = r.getString("categoryTitle");
