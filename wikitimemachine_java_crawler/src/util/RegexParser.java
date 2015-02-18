@@ -3,7 +3,11 @@ package util;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * 
+ * 
+ *
+ */
 public class RegexParser {
 
 	// List, which contains all loaded regular expresisons
